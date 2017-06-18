@@ -11,5 +11,4 @@ Short install instructions:
 - [mod2gbt](https://github.com/AntonioND/gbt-player/raw/master/legacy_gbdk/mod2gbt/mod2gbt.exe) on c:\gbdk\bin
 - [Game Boy Map Builder](http://www.devrs.com/gb/hmgd/gbmb.html) on c:\gbdk\tools\gbmb18
 - [Game Boy Tile Designer](http://www.devrs.com/gb/hmgd/gbtd.html) on c:\gbdk\tools\gbtd22
-- A ZGB_PATH environment variable pointing to the zgb/common/ directory
 - An IDE like [Visual Stuio](https://www.visualstudio.com) or at least a simple editor like [Notepad++](https://notepad-plus-plus.org/)
