@@ -1,6 +1,6 @@
 /*
 
- SRC/TILES.H
+ TILES.H
 
  Include File.
 
@@ -10,7 +10,7 @@
   Compression          : None.
   Counter              : None.
   Tile size            : 8 x 8
-  Tiles                : 0 to 1
+  Tiles                : 0 to 2
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -28,4 +28,4 @@
 /* Start of tile array. */
 extern unsigned char tiles[];
 
-/* End of SRC/TILES.H */
+/* End of TILES.H */
