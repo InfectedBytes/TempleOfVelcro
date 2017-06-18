@@ -3,5 +3,6 @@ PROJECT_NAME = BitBitGame
 all: build_gb
 
 N_BANKS = 4
+ZGB_PATH=../zgb/common
 
 include $(ZGB_PATH)/src/MakefileCommon
