@@ -13,6 +13,8 @@ extern UINT8 n_sprite_types;
 
 UINT8 collision_tiles[] = { 1, 0 };
 
+extern const unsigned char * const test_mod_Data[];
+  
 void Start_STATE_GAME() {
 	UINT8 i;
 	SET_PAL0(0, 1, 2, 3);
@@ -28,6 +30,8 @@ void Start_STATE_GAME() {
 	InitScrollTiles(0, 2, tiles, 3);
 	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
 	SHOW_BKG;
+  
+  PlayMusic(test_mod_Data, 3, 1);
 }
 
 void Update_STATE_GAME() {
