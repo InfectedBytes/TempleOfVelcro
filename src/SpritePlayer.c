@@ -9,6 +9,7 @@ int pal = 0;
 
 void Start_SPRITE_PLAYER() {
 	PAL0;
+	COLLISION_BORDER(2, 0, 12, 16);
 }
 
 void Update_SPRITE_PLAYER() {
