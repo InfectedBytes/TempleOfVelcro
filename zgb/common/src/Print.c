@@ -9,6 +9,30 @@ UINT8 print_y = 0;
 UINT8 font_idx = 128;
 UINT8 print_target = PRINT_BKG;
 
+// The following function is not part of the original ZGB engine and was added by InfectedBytes
+void UIntToHexString(UINT16 n, unsigned char* str) {
+	UINT16 tmp = n;
+	UINT8 size = 0;
+	unsigned char c;
+
+	if (n == 0) {
+		str[0] = '0';
+		str[1] = '\0';
+	} else {
+		while (tmp) {
+			tmp >>= 4;
+			size++;
+		}
+		str[size--] = '\0';
+		while (n) {
+			c = n & 0xF;
+			if (c < 0xA) str[size--] = '0' + c;
+			else str[size--] = 'A' + c - 0xA;
+			n >>= 4;
+		}
+	}
+}
+
 void UIntToString(UINT16 n, unsigned char* str) {
 	UINT16 tmp = n;
 	UINT8 size = 0;
@@ -84,7 +108,12 @@ void Printf(const char* txt, ...){
 							UIntToString(va_arg(list, UINT16), tmp);
 							Printf(tmp);
 							txt += 2;
-							break;
+							continue;
+						case 'x':
+							UIntToHexString(va_arg(list, UINT16), tmp);
+							Printf(tmp);
+							txt += 2;
+							continue;
 					}
 					break;
 			}

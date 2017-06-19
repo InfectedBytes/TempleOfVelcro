@@ -14,7 +14,7 @@ extern UINT8 n_sprite_types;
 
 UINT8 collision_tiles[] = { 1, 0 };
 
-extern const unsigned char * const test_mod_Data[];
+extern UINT8* test_mod_Data[];
   
 void Start_STATE_GAME() {
 	UINT8 i;
@@ -33,7 +33,7 @@ void Start_STATE_GAME() {
 	SHOW_BKG;
 
 	INIT_WINDOW(font, 3, 0, 1);
-	PlayMusic(test_mod_Data, 3, 1);
+	PlayMusic(test_mod_Data, 5, 0);
 }
 
 void Update_STATE_GAME() {

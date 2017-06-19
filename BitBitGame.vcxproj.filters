@@ -11,13 +11,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\ZGBMain.h">
+    <ClInclude Include="src\SpritePlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\StateGame.h">
+    <ClInclude Include="src\StateGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\SpritePlayer.h">
+    <ClInclude Include="src\ZGBMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

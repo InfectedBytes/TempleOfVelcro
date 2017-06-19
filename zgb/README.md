@@ -1,5 +1,7 @@
 # ZGB
 This directory contains the ZGB engine, which is a little engine for the original *Game Boy* and *Game Boy Color*.
+We have modified a few small parts of it. The following changes were made:
+ - Added hexadecimal output to the Printf function
 
 ## Features
  - Coding in C using [gbdk](http://gbdk.sourceforge.net/)
