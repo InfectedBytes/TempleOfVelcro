@@ -25,10 +25,22 @@ DECLARE_STACK(sprite_manager_sprites_pool, N_SPRITE_MANAGER_SPRITES);
 DECLARE_VECTOR(sprite_manager_updatables, N_SPRITE_MANAGER_SPRITES);
 
 UINT8 sprite_manager_removal_check;
+UINT8 nextFreeOamIdx;
+
+UINT8 DefragmentOamIndices() {
+	struct Sprite* sprite;
+	UINT8 i;
+	UINT8 idx = 0u;
+	SPRITEMANAGER_ITERATE(i, sprite) {
+		sprite->oam_idx = idx;
+		idx += GetOamCount(1, sprite->size);
+	}
+	return idx;
+}
 
 void SpriteManagerReset() {
-	UINT8 i;
-
+	UINT8 i,j,frames;
+	nextFreeOamIdx = 0;
 	//Call Destroy on all sprites still on the list
 	for(i = 0u; i != sprite_manager_updatables[0]; ++ i) {
 		THIS = sprite_manager_sprites[sprite_manager_updatables[i + 1]];
@@ -41,11 +53,12 @@ void SpriteManagerReset() {
 	sprite_manager_sprites_pool[0] = 0;
 	for(i = 0; i != N_SPRITE_MANAGER_SPRITES; ++i) {
 		sprite_manager_sprites[i] = &sprite_manager_sprites_mem[sizeof(struct Sprite) * (UINT16)i];
-		sprite_manager_sprites[i]->oam_idx = i << 1;
+		sprite_manager_sprites[i]->oam_idx = 0;
 
-		StackPush(sprite_manager_sprites_pool, i);		
-		move_sprite(i << 1, 200, 200);
-		move_sprite((i << 1) + 1, 200, 200);
+		StackPush(sprite_manager_sprites_pool, i);
+		frames = GetOamCount(1, THIS->oam_idx);
+		for(j = 0; j < frames; j++)
+			move_sprite(j, 200, 200);
 	}
 
 	//Clear the list of updatable sprites
@@ -62,6 +75,7 @@ struct Sprite* SpriteManagerAdd(UINT8 sprite_type, UINT16 x, UINT16 y) {
 	struct Sprite* sprite;
 	UINT8 sprite_idx;
 	UINT16 spriteIdxTmp; //Yes, another bug in the compiler forced me to change the type here to UINT16 instead of UINT8
+	UINT8 frames;
 
 	sprite_idx = StackPop(sprite_manager_sprites_pool);
 	sprite = sprite_manager_sprites[sprite_idx];
@@ -70,6 +84,12 @@ struct Sprite* SpriteManagerAdd(UINT8 sprite_type, UINT16 x, UINT16 y) {
 	sprite->lim_x = 32u;
 	sprite->lim_y = 32u;
 	sprite->flags = 0;
+
+	frames = GetOamCount(1, spriteFrameSizes[sprite_type]);
+	if (nextFreeOamIdx + frames >= OAM_LIMIT)
+		nextFreeOamIdx = DefragmentOamIndices();
+	sprite->oam_idx = nextFreeOamIdx;
+	nextFreeOamIdx += frames;
 
 	VectorAdd(sprite_manager_updatables, sprite_idx);
 
@@ -109,14 +129,18 @@ void SpriteManagerRemoveSprite(struct Sprite* sprite) {
 }
 
 void SpriteManagerFlushRemove() {
+	UINT8 i;
+	UINT8 frames;
 	//We must remove sprites in inverse order because everytime we remove one the vector shrinks and displaces all elements
 	for(THIS_IDX = sprite_manager_updatables[0] - 1; THIS_IDX + 1 != 0u; THIS_IDX -= 1u) {
 		THIS = sprite_manager_sprites[sprite_manager_updatables[THIS_IDX + 1u]];
 		if(THIS->marked_for_removal) {
 			StackPush(sprite_manager_sprites_pool, sprite_manager_updatables[THIS_IDX + 1u]);
 			VectorRemovePos(sprite_manager_updatables, THIS_IDX);
-			move_sprite(THIS->oam_idx, 200, 200);
-			move_sprite(THIS->oam_idx + 1, 200, 200);
+
+			frames = GetOamCount(1, THIS->size);
+			for (i = 0u; i < frames; i++)
+				move_sprite(THIS->oam_idx + i, 200u, 200u);
 				
 			PUSH_BANK(spriteBanks[THIS->type]);
 				spriteDestroyFuncs[THIS->type]();

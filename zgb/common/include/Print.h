@@ -12,6 +12,7 @@ typedef enum {
 	PRINT_WIN
 } PRINT_TARGET;
 
+void UIntToHexString(UINT16 n, unsigned char* str);
 void UIntToString(UINT16 n, unsigned char* str);
 void IntToString (INT16  n, unsigned char* str);
 

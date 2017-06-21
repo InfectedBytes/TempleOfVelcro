@@ -1,5 +1,6 @@
 #include "OAMManager.h"
 #include "BankManager.h"
+#include "Frame.h"
 
 UINT8 last_sprite_loaded = 0;
 UINT8 sprites_pal[256];
@@ -7,11 +8,12 @@ UINT8 sprites_pal[256];
 UINT8 LoadSprite(UINT8 n_tiles, unsigned char* data, UINT8 bank, UINT8 frame_size, unsigned char* palette_idx) {
 	UINT8 i;
 	UINT8 j;
+	UINT8 inc = GetFrameCount(1, frame_size);
 
 	PUSH_BANK(bank);
 	set_sprite_data(last_sprite_loaded, n_tiles, data);
-	for(i = 0; i < n_tiles; i += (1 << frame_size)) {
-		for(j = 0; j < 1 << frame_size; ++j) {
+	for(i = 0; i < n_tiles; i += inc) {
+		for(j = 0; j < inc; ++j) {
 			sprites_pal[last_sprite_loaded + i + j] = palette_idx ? *(palette_idx) : 0; 
 		}
 		if(palette_idx)

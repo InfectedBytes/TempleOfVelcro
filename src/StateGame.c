@@ -4,6 +4,7 @@ UINT8 bank_STATE_GAME = 2;
 
 #include "..\res\src\tiles.h"
 #include "..\res\src\map.h"
+#include "..\res\src\font.h"
 
 #include "ZGBMain.h"
 #include "Scroll.h"
@@ -13,7 +14,7 @@ extern UINT8 n_sprite_types;
 
 UINT8 collision_tiles[] = { 1, 0 };
 
-extern const unsigned char * const test_mod_Data[];
+extern UINT8* test_mod_Data[];
   
 void Start_STATE_GAME() {
 	UINT8 i;
@@ -30,9 +31,14 @@ void Start_STATE_GAME() {
 	InitScrollTiles(0, 3, tiles, 3);
 	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
 	SHOW_BKG;
-  
-  PlayMusic(test_mod_Data, 5, 1);
+	INIT_WINDOW(font, 3, 0, 1);
+	PlayMusic(test_mod_Data, 5, 0);
 }
 
 void Update_STATE_GAME() {
+	BOTTOM_LINES(1);
+	PRINT_POS(0, 0); // Always set the print pos
+	// Printf is a UINT16* vararg function, therefore UINT8 values must be casted explicitly
+	// just for testing, the bottom line could be used for debugging (and of course live counters, etc.)
+	Printf("WY: %d   ", (UINT16)WY_REG);
 }

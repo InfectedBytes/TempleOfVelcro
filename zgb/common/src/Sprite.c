@@ -1,6 +1,7 @@
 #include "Sprite.h"
 #include "Scroll.h"
 #include "BankManager.h"
+#include "Frame.h"
 
 void InitSprite(struct Sprite* sprite, FrameSize size, UINT8 first_tile) {
 	sprite->size = size;
@@ -18,6 +19,7 @@ void InitSprite(struct Sprite* sprite, FrameSize size, UINT8 first_tile) {
 		case FRAME_8x8:   sprite->coll_w =  8u; sprite->coll_h =  8u; break;
 		case FRAME_8x16:  sprite->coll_w =  8u; sprite->coll_h = 16u; break;
 		case FRAME_16x16: sprite->coll_w = 16u; sprite->coll_h = 16u; break;
+		case FRAME_24x32: sprite->coll_w = 24u; sprite->coll_h = 32u; break;
 		case FRAME_32x32: sprite->coll_w = 32u; sprite->coll_h = 32u; break;
 	}
 }
@@ -48,8 +50,7 @@ void DrawSprite(struct Sprite* sprite) {
 	} else {
 		frame = sprite->current_frame;
 	}
-	
-	DrawFrame(sprite->oam_idx, sprite->size, sprite->first_tile + (frame << sprite->size), sprite->x, sprite->y, sprite->flags);
+	DrawFrame(sprite->oam_idx, sprite->size, sprite->first_tile + GetFrameCount(frame, sprite->size), sprite->x, sprite->y, sprite->flags);
 }
 
 unsigned char* tile_coll;
