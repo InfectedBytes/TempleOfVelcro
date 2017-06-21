@@ -5,7 +5,9 @@
 #include "Stack.h"
 #include "Sprite.h"
 
+// if you only plan to use 8x8 or 8x16 sprites, you can increase this value to 40
 #define N_SPRITE_MANAGER_SPRITES 20
+#define OAM_LIMIT 40
 
 #define SPRITEMANAGER_ITERATE(i, spr) for(i = 0u, spr = sprite_manager_sprites[sprite_manager_updatables[1]]; i != sprite_manager_updatables[0]; ++i, spr = sprite_manager_sprites[sprite_manager_updatables[i + 1u]])
 

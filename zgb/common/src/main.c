@@ -87,7 +87,7 @@ void InitSpriteInfo(UINT8 type, UINT8 bank, Void_Func_SpritePtr startFunc, Void_
 	spriteDatas[type] = data;
 	spriteDataBanks[type] = dataBank;
 	spriteFrameSizes[type] = size;
-	spriteNumFrames[type] = num_frames << size;
+	spriteNumFrames[type] = GetFrameCount(num_frames, size);
 
 	spritePalDatas[type] = pal_data;
 }  
