@@ -4,13 +4,18 @@
 #include "SpriteManager.h"
 #include "ZGBMain.h"
 #include "Utils.h"
+#include "Scroll.h"
+#include "Math.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
 int pal = 0;
+const UINT8 anim[] = {4, 0, 1, 2, 3};
 
 void Start_SPRITE_PLAYER() {
 	PAL0;
 	COLLISION_BORDER(2, 3, 12, 13);
+	SetSpriteAnim(THIS, anim, 5);
+	scroll_target = THIS;
 }
 
 void Update_SPRITE_PLAYER() {
@@ -23,10 +28,10 @@ void Update_SPRITE_PLAYER() {
 	}
 	// apply gravity and check if sprite is grounded
 	if (TranslateSprite(THIS, 0, 3)) {
-		BIT_SET(data->Flags, GROUNDED_BIT);
-		BIT_CLEAR(data->Flags, DOUBLE_JUMP_BIT);
+		SET_BIT(data->Flags, GROUNDED_BIT);
+		UNSET_BIT(data->Flags, DOUBLE_JUMP_BIT);
 	} else {
-		BIT_CLEAR(data->Flags, GROUNDED_BIT);
+		UNSET_BIT(data->Flags, GROUNDED_BIT);
 	}
 
 	// handle input
@@ -41,10 +46,10 @@ void Update_SPRITE_PLAYER() {
 	if (KEY_TICKED(J_B)) PAL(pal = 1 - pal);
 	// jump
 	if (KEY_TICKED(J_A)) {
-		if (BIT_GET(data->Flags, GROUNDED_BIT)) {
+		if (GET_BIT(data->Flags, GROUNDED_BIT)) {
 			data->Jump = JUMP_STRENGTH;
-		} else if (!BIT_GET(data->Flags, DOUBLE_JUMP_BIT)) {
-			BIT_SET(data->Flags, DOUBLE_JUMP_BIT);
+		} else if (!GET_BIT(data->Flags, DOUBLE_JUMP_BIT)) {
+			SET_BIT(data->Flags, DOUBLE_JUMP_BIT);
 			data->Jump = JUMP_STRENGTH;
 		}
 	}
