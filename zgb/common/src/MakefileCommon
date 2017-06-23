@@ -16,6 +16,7 @@ LCC = c:/gbdk/bin/lcc.exe
 SDCC = c:/gbdk/bin/sdcc.exe
 MOD2GBT = c:/gbdk/bin/mod2gbt.exe
 BGB = c:/gbdk/bin/bgb/bgb.exe
+RGBASM = c:/gbdk/bin/rgbasm.exe
 
 ifneq ($(strip $(N_BANKS)),)
 	LFLAGS_NBANKS = -Wl-yt1 -Wl-yo$(N_BANKS)
@@ -40,7 +41,8 @@ ASMS      = $(foreach dir,.,$(notdir $(wildcard $(dir)/*.s)))
 CLASSES   = $(foreach dir,.,$(notdir $(wildcard $(dir)/*.c)))
 RESOURCES = $(foreach dir,../res/src,$(notdir $(wildcard $(dir)/*.c)))
 MUSICS    = $(foreach dir,../res/music,$(notdir $(wildcard $(dir)/*.mod)))
-OBJS = $(RESOURCES:%.c=$(OBJDIR_RES)/%.o) $(MUSICS:%.mod=$(OBJDIR_RES)/%.mod.o) $(CLASSES:%.c=$(OBJDIR)/%.o) $(ASMS:%.s=$(OBJDIR)/%.o)
+MUSICZ80  = $(foreach dir,../res/music,$(notdir $(wildcard $(dir)/*.z80)))
+OBJS = $(RESOURCES:%.c=$(OBJDIR_RES)/%.o) $(MUSICS:%.mod=$(OBJDIR_RES)/%.mod.o) $(MUSICZ80:%.z80=$(OBJDIR_RES)/%.z80.o) $(CLASSES:%.c=$(OBJDIR)/%.o) $(ASMS:%.s=$(OBJDIR)/%.o)
 
 
 #until I can find a way to create a .lib I'll be linking the.o files from my common library
@@ -78,6 +80,10 @@ $(OBJDIR_RES)/%.mod.o: ../res/music/%.mod
 	@$(MOD2GBT) $< $(basename $(basename $(notdir $<)))_mod -c $(subst .b,,$(suffix $(<:%.mod=%))) > /dev/null
 	@mv output.c $(OBJDIR)/music_tmp.c
 	@$(CC) $(CFLAGS) -c -o $@ $(OBJDIR)/music_tmp.c
+
+$(OBJDIR_RES)/%.z80.o: ../res/music/%.z80
+	@echo compiling music z80: $<
+	@$(RGBASM) -o$@ -i$(dir $<) $<
 	
 $(BINDIR)/$(PROJECT_NAME).$(EXTENSION): $(OBJDIR) $(OBJDIR_RES) $(BINDIR) $(OBJS) $(COMMON_OBJS)
 	@echo Linking
