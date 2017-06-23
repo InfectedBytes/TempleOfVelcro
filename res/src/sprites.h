@@ -1,6 +1,6 @@
 /*
 
- TILES.H
+ SPRITES.H
 
  Include File.
 
@@ -10,7 +10,7 @@
   Compression          : None.
   Counter              : None.
   Tile size            : 8 x 8
-  Tiles                : 0 to 4
+  Tiles                : 0 to 3
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -28,4 +28,4 @@
 /* Start of tile array. */
 extern unsigned char tiles[];
 
-/* End of TILES.H */
+/* End of SPRITES.H */
