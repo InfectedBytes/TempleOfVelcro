@@ -6,21 +6,29 @@
 #include "Utils.h"
 #include "Scroll.h"
 #include "Math.h"
+#include "StateGame.h"
+#include "main.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
 int pal = 0;
-const UINT8 anim[] = {4, 0, 1, 2, 3};
 
 void Start_SPRITE_PLAYER() {
 	PAL0;
 	COLLISION_BORDER(2, 3, 12, 13);
-	SetSpriteAnim(THIS, anim, 5);
 	scroll_target = THIS;
 }
 
 void Update_SPRITE_PLAYER() {
 	UINT16 trigger, tx, ty;
 	PlayerData* data = (PlayerData*)THIS->custom_data;
+	BOTTOM_LINES(1); // for HUD
+
+	if (gameover) {
+		if (KEY_TICKED(J_START)) {
+			SetState(STATE_GAME);
+		}
+		return;
+	}
 	// apply jump
 	if (data->Jump != 0) {
 		data->Jump--;
@@ -37,10 +45,10 @@ void Update_SPRITE_PLAYER() {
 
 	// handle input
 	if (KEY_PRESSED(J_LEFT)) {
-		TranslateSprite(THIS, -WALK_SPEED, 0);
+		TranslateSprite(THIS, -(WALK_SPEED << delta_time), 0);
 	}
 	if (KEY_PRESSED(J_RIGHT)) {
-		TranslateSprite(THIS, WALK_SPEED, 0);
+		TranslateSprite(THIS, WALK_SPEED << delta_time, 0);
 	}
 
 	// for testing: toggle palette
@@ -55,12 +63,15 @@ void Update_SPRITE_PLAYER() {
 		}
 	}
 
-	PRINT_POS(9, 0);
-	// find trigger: mask 0b00000001 => ignore bit 0 of the tile id
-	// this will therefore find tile id 2 and 3
-	trigger = FIND_TRIGGER(THIS, 2, 1, &tx, &ty);
-	if(trigger) Printf("Trigger %d   ", (UINT16)trigger);
-	else Printf("No trigger    ");
+	PRINT_POS(0, 0);
+	// find spikes
+	trigger = FIND_TRIGGER(THIS, 4, 0, &tx, &ty);
+	if (trigger) {
+		gameover = 1u;
+		Printf("GAMEOVER PRESS START");
+	} else {
+		Printf("   YOU ARE ALIVE    ");
+	}
 }
 
 void Destroy_SPRITE_PLAYER() {

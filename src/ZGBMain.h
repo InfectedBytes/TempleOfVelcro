@@ -8,6 +8,8 @@
 #include "Utils.h"
 #include "Math.h"
 
+#define MAX_TILE_ID 99
+
 typedef enum {
 	STATE_GAME,
 
@@ -16,6 +18,7 @@ typedef enum {
 
 typedef enum {
 	SPRITE_PLAYER,
+	SPRITE_ENEMY,
 
 	N_SPRITE_TYPES
 } SPRITE_TYPE;

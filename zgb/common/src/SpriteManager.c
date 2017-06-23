@@ -56,10 +56,9 @@ void SpriteManagerReset() {
 		sprite_manager_sprites[i]->oam_idx = 0;
 
 		StackPush(sprite_manager_sprites_pool, i);
-		frames = GetOamCount(1, THIS->oam_idx);
-		for(j = 0; j < frames; j++)
-			move_sprite(j, 200, 200);
 	}
+	for (i = 0; i != 40; i++)
+		move_sprite(i, 200, 200);
 
 	//Clear the list of updatable sprites
 	sprite_manager_updatables[0] = 0;
