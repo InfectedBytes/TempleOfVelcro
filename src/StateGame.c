@@ -32,7 +32,7 @@ void Start_STATE_GAME() {
 	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
 	SHOW_BKG;
 	INIT_WINDOW(font, 3, 0, 1);
-	PlayMusic(test_mod_Data, 5, 0);
+	PlayMusic(test_mod_Data, 5, 1);
 }
 
 void Update_STATE_GAME() {
