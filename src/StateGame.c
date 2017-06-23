@@ -28,7 +28,7 @@ void Start_STATE_GAME() {
 
 	//scroll_target = SpriteManagerAdd(SPRITE_PLAYER, 50, 50);
 
-	InitScrollTiles(0, 3, tiles, 3);
+	InitScrollTiles(0, 4, tiles, 3);
 	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
 	SHOW_BKG;
 	INIT_WINDOW(font, 3, 0, 1);
@@ -40,5 +40,5 @@ void Update_STATE_GAME() {
 	PRINT_POS(0, 0); // Always set the print pos
 	// Printf is a UINT16* vararg function, therefore UINT8 values must be casted explicitly
 	// just for testing, the bottom line could be used for debugging (and of course live counters, etc.)
-	Printf("WY: %d   ", (UINT16)WY_REG);
+	Printf("WY: %d  ", (UINT16)WY_REG);
 }

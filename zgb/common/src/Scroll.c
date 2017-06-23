@@ -354,17 +354,23 @@ UINT8 GetScrollTile(UINT16 x, UINT16 y) {
 	return ret;
 }
 
-UINT8 ScrollFindTile(UINT16 map_w, unsigned char* map, UINT8 bank, UINT8 tile,
+UINT8 ScrollFindTile(UINT16 map_w, unsigned char* map, UINT8 bank, UINT8 tile, UINT8 mask,
 	UINT8 start_x, UINT8 start_y, UINT8 w, UINT8 h,
 	UINT16* x, UINT16* y) {
-	UINT16 xt = 0;
-	UINT16 yt = 0;
-	UINT8 found = 1;
+	UINT16 xt;
+	UINT16 yt;
+	UINT8 found;
+	mask = ~mask;
+	tile &= mask;
 
 	PUSH_BANK(bank);
-	for(xt = start_x; xt != start_x + w; ++ xt) {
-		for(yt = start_y; yt != start_y + h; ++ yt) {
-			if(map[map_w * yt + xt] == (UINT16)tile) { //That cast over there is mandatory and gave me a lot of headaches
+	// instead of calculating map_w * yt each iteration, we only do the multplication once 
+	// and then always add the map width
+	// start_y is only needed for the initialization, therefore we also use it as the counter
+	for(yt = map_w * start_y, start_y = 0; start_y != h; ++start_y, yt += map_w) {
+		for(xt = start_x; xt != start_x + w; ++xt) {
+			found = map[yt + xt];
+			if((found & mask) == (UINT16)tile) { //That cast over there is mandatory and gave me a lot of headaches
 				goto done;
 			}
 		}

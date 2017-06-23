@@ -19,6 +19,7 @@ void Start_SPRITE_PLAYER() {
 }
 
 void Update_SPRITE_PLAYER() {
+	UINT16 trigger, tx, ty;
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 	// apply jump
 	if (data->Jump != 0) {
@@ -53,6 +54,13 @@ void Update_SPRITE_PLAYER() {
 			data->Jump = JUMP_STRENGTH;
 		}
 	}
+
+	PRINT_POS(9, 0);
+	// find trigger: mask 0b00000001 => ignore bit 0 of the tile id
+	// this will therefore find tile id 2 and 3
+	trigger = FIND_TRIGGER(THIS, 2, 1, &tx, &ty);
+	if(trigger) Printf("Trigger %d   ", (UINT16)trigger);
+	else Printf("No trigger    ");
 }
 
 void Destroy_SPRITE_PLAYER() {

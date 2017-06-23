@@ -1,6 +1,9 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include "Scroll.h"
+#include "Sprite.h"
+
 #define SET_PAL0(a, b, c, d) OBP0_REG = PAL_DEF(a, b, c, d)
 #define SET_PAL1(a, b, c, d) OBP1_REG = PAL_DEF(a, b, c, d)
 #define UsePalette(sprite, pal) (sprite)->flags = ((sprite)->flags & 0xEF) | ((pal & 0x01) << 4)
@@ -22,5 +25,9 @@
 	THIS->coll_y = y; \
 	THIS->coll_w = w; \
 	THIS->coll_h = h;
+
+#define FIND_TRIGGER(sprite, tile, mask, sx, sy) ScrollFindTile(scroll_tiles_w, scroll_map, scroll_bank, tile, mask, \
+	(sprite->x + sprite->coll_x) >> 3, (sprite->y + sprite->coll_y) >> 3, \
+	(sprite->coll_w >> 3) + 1, (sprite->coll_h >> 3) + 1, sx, sy)
 
 #endif

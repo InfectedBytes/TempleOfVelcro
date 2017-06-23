@@ -28,7 +28,7 @@ extern UINT8 clamp_enabled;
 
 void ZInitScrollTilesColor(UINT8 first_tile, UINT8 n_tiles, UINT8* tile_data, UINT8 tile_bank, UINT8* palette_entries);
 void InitScrollColor(UINT16 map_w, UINT16 map_h, unsigned char* map, UINT8* coll_list, UINT8* coll_list_down, UINT8 bank, unsigned char* color_map);
-void InitWindow(UINT8 x, UINT8 y, UINT8 w, UINT8 h, UINT8* map, UINT8 bank, unsigned char* color_map);
+void InitWindow(UINT8 x, UINT8 y, UINT8 w, UINT8 h, UINT8* map, UINT8 bank, UINT8* color_map);
 void ScrollSetMapColor(UINT16 map_w, UINT16 map_h, unsigned char* map, UINT8 bank, unsigned char* color_map);
 void ScrollUpdateRow(INT16 x, INT16 y);
 void ScrollUpdateColumn(INT16 x, INT16 y);
@@ -38,7 +38,12 @@ void FinishPendingScrollUpdates();
 
 UINT8* GetScrollTilePtr(UINT16 x, UINT16 y);
 UINT8 GetScrollTile(UINT16 x, UINT16 y);
-UINT8 ScrollFindTile(UINT16 map_w, unsigned char* map, UINT8 bank, UINT8 tile,
+// Searches the given map area for a specific tile.
+// The mask parameter can be used to match several tiles.
+// A tile T matches if (T & ~mask) == tile
+// (each bit set to 1 is used as a wildcard)
+// It returns the tile id of the found tile or 0 if it wasn't found. (Therefore you can't search for id 0)
+UINT8 ScrollFindTile(UINT16 map_w, unsigned char* map, UINT8 bank, UINT8 tile, UINT8 mask,
 	UINT8 start_x, UINT8 start_y, UINT8 w, UINT8 h,
 	UINT16* x, UINT16* y);
 
