@@ -3,13 +3,14 @@ This directory contains the ZGB engine, which is a little engine for the origina
 We have modified a few small parts of it. The following changes were made:
  - Added hexadecimal output to the Printf function (Print.h/.c)
  - Added support for 24x32 and 32x32 sprites
-  - affected files: SpriteManager.h/.c, Frame.h/.c, OAMManager.c, Sprite.c, main.c
+  - affected files: SpriteManager.h/.c, Frame.h/.c, OAMManager.c, Sprite.c, main.c, Scroll.c
   - added oam index management => each sprite keeps track of it's oam indices
   - added oam index defragmentation
   - now it is possible to use 40 small sprites (8x8, 8x16), you only have to change the `N_SPRITE_MANAGER_SPRITES` define in SpriteManager.h
     - The original engine only supported 20 sprites, because each sprite always uses two oam indices.
     - Now each sprite uses 1 to 8 oam indices, depending on the size (8x8 to 32x32)
   - If needed, larger frame sizes can be added easily (but I guess 32x32 is already pretty large)
+  - y correction in UPDATE_TILE if spawned sprite is larger than 16x16
  - Modified ScrollFindTile function (Scroll.c)
   - Removed the multiplication in each iteration
   - It can now search for several tiles at once. This is done by using an additional masking parameter

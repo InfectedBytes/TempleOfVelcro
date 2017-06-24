@@ -22,5 +22,5 @@ void InitStates() {
 
 void InitSprites() {
 	INIT_SPRITE(SPRITE_PLAYER, player, 3, FRAME_16x16, 1);
-	INIT_SPRITE(SPRITE_ENEMY, pattern, 3, FRAME_16x16, 4);
+	INIT_SPRITE(SPRITE_ENEMY, pattern, 3, FRAME_24x32, 1);
 }

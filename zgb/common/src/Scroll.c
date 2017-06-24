@@ -45,6 +45,8 @@ unsigned char* pending_w_cmap = 0;
 INT16 pending_w_x, pending_w_y;
 UINT8 pending_w_i;
 
+extern FrameSize spriteFrameSizes[];
+
 //This function was thought for updating a whole square... can't find a better one that updates one tile only!
 //#define UPDATE_TILE(X, Y, T) set_bkg_tiles(0x1F & (UINT8)X, 0x1F & (UINT8)Y, 1, 1, T)
 
@@ -71,7 +73,10 @@ void UPDATE_TILE(INT16 x, INT16 y, UINT8* t, UINT8* c) {
 			}
 
 			if(i == sprite_manager_updatables[0]) {
-				s = SpriteManagerAdd(type, x << 3, (y - 1) << 3);
+				if (U_LESS_THAN((UINT16)spriteFrameSizes[type], FRAME_24x32))
+					s = SpriteManagerAdd(type, x << 3, (y - 1) << 3);
+				else
+					s = SpriteManagerAdd(type, x << 3, ((y - 1) << 3) - 16);
 				if(s) {
 					s->unique_id = id;
 				}
