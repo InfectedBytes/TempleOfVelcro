@@ -3,8 +3,7 @@
 
 #include "Frame.h"
 #include "OAMManager.h"
-
-#define CUSTOM_DATA_SIZE 8
+#include "ZGBConfig.h"
 
 struct Sprite {
 	//Frame info
