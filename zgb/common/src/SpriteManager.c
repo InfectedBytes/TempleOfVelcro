@@ -4,6 +4,7 @@
 #include "BankManager.h"
 #include <string.h>
 #include "main.h"
+#include "Stack.h"
 
 extern UINT8 spriteBanks[];
 extern Void_Func_Void spriteStartFuncs[];
@@ -39,7 +40,7 @@ UINT8 DefragmentOamIndices() {
 }
 
 void SpriteManagerReset() {
-	UINT8 i,j,frames;
+	UINT8 i;
 	nextFreeOamIdx = 0;
 	//Call Destroy on all sprites still on the list
 	for(i = 0u; i != sprite_manager_updatables[0]; ++ i) {
@@ -57,7 +58,7 @@ void SpriteManagerReset() {
 
 		StackPush(sprite_manager_sprites_pool, i);
 	}
-	for (i = 0; i != 40; i++)
+	for (i = 0; i != OAM_LIMIT; i++)
 		move_sprite(i, 200, 200);
 
 	//Clear the list of updatable sprites
