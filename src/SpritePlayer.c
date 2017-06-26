@@ -10,11 +10,14 @@
 #include "main.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
-int pal = 0;
+int pal = 1;
+
+static UINT8 idle_anim[] = { 2, 2, 4 };
+static UINT8 walk_anim[] = { 4, 0, 1, 2, 3 };
 
 void Start_SPRITE_PLAYER() {
-	PAL0;
-	COLLISION_BORDER(2, 3, 12, 13);
+	PAL1;
+	COLLISION_BORDER(2, 8, 20, 24);
 	scroll_target = THIS;
 }
 
@@ -45,10 +48,15 @@ void Update_SPRITE_PLAYER() {
 
 	// handle input
 	if (KEY_PRESSED(J_LEFT)) {
+		SET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
+		SetSpriteAnim(THIS, walk_anim, 15);
 		TranslateSprite(THIS, -(WALK_SPEED << delta_time), 0);
-	}
-	if (KEY_PRESSED(J_RIGHT)) {
+	} else if (KEY_PRESSED(J_RIGHT)) {
+		UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
+		SetSpriteAnim(THIS, walk_anim, 15);
 		TranslateSprite(THIS, WALK_SPEED << delta_time, 0);
+	} else {
+		SetSpriteAnim(THIS, idle_anim, 15);
 	}
 
 	// for testing: toggle palette

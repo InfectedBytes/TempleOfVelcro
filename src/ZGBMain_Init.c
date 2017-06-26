@@ -10,6 +10,7 @@ UINT8 init_bank = 1;
 
 #include "../res/src/player.h"
 #include "../res/src/pattern.h"
+#include "../res/src/wario.h"
 
 UINT8 next_state = STATE_GAME;
 
@@ -21,6 +22,6 @@ void InitStates() {
 }
 
 void InitSprites() {
-	INIT_SPRITE(SPRITE_PLAYER, player, 3, FRAME_16x16, 1);
+	INIT_SPRITE(SPRITE_PLAYER, wario, 3, FRAME_24x32, 5);
 	INIT_SPRITE(SPRITE_ENEMY, pattern, 3, FRAME_24x32, 1);
 }

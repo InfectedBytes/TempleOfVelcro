@@ -1,0 +1,14 @@
+This is just a very simple utility program, which converts a png into a corresponding c file.
+It supports the following sprite sizes: 8x16, 24x32, 32x32
+The png must contain one additional line at the top. The first four pixel of this line are used to define the used palette (four different gray scales, like: 0xFFFFFF, 0x646464, 0xb4b4b4, 0x646464 and 0x000000)
+The first pixel will be the transparent color.
+
+The png file's name must contain the bank number: myAwesomeSprite.b3.png
+
+You can pack multiple frames into a single png file, by just drawing them below each other.
+For example a 24x32 sprite with 4 frames will have a png size of 24x161
+
+Usage:
+Just drag and drop a single png file onto the ConvertPng executable and it will generate the corresponding .c and .h files into the src subdirectory.
+
+If you just start the ConvertPng executable directly, it will convert all png files inside it's directory.
