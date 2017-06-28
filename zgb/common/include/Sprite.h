@@ -20,7 +20,7 @@ struct Sprite {
 	UINT16 x;
 	UINT16 y;
 
-	//Flags, currentlu used for mirror
+	//Flags, used for mirror and pallete selection
 	UINT8 flags;
 
 	//Collider (box)
