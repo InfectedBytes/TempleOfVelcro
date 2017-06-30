@@ -7,7 +7,7 @@
  Info:
    Section       : 
    Bank          : 0
-   Map size      : 40 x 18
+   Map size      : 260 x 18
    Tile set      : tiles.gbr
    Plane count   : 1 plane (8 bits)
    Plane order   : Tiles are continues
@@ -18,7 +18,7 @@
 
 */
 
-#define mapWidth 40
+#define mapWidth 260
 #define mapHeight 18
 #define mapBank 0
 
