@@ -1,17 +1,36 @@
 #pragma bank=2
 #include "SpritePlayer.h"
 #include "Keys.h"
-#include "SpriteManager.h"
 #include "ZGBMain.h"
 #include "Utils.h"
 #include "Scroll.h"
 #include "Math.h"
 #include "StateGame.h"
-#include "main.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
 static UINT8 idle_anim[] = { 2, 2, 4 };
 static UINT8 walk_anim[] = { 4, 0, 1, 2, 3 };
+
+// these variables are always pointing to the current player
+static struct Sprite* player;
+static PlayerData* data;
+
+static UINT8 normalPalette = PAL_DEF(2, 0, 1, 3);
+static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
+
+void HealPlayer() {
+	data->Health++;
+}
+
+void DamagePlayer() {
+	if (data->Invincible) return;
+	data->Health--;
+	data->Invincible = INVINCIBLE_TIME;
+}
+
+UINT8 HitsPlayer(struct Sprite* sprite) {
+	return CheckCollision(sprite, player);
+}
 
 static UINT8 UpdateVelcro() {
 	UINT16 tx, ty;
@@ -29,10 +48,13 @@ static UINT8 UpdateVelcro() {
 }
 
 void Start_SPRITE_PLAYER() {
-	PlayerData* data = (PlayerData*)THIS->custom_data;
+	player = THIS;
+	data = (PlayerData*)THIS->custom_data;
 	data->Health = 3;
 	data->Flags = 0;
 	data->Jump = 0;
+	data->Invincible = 0;
+	OBP1_REG = normalPalette;
 	PAL1;
 	COLLISION_BORDER(2, 8, 20, 24);
 	scroll_target = THIS;
@@ -43,6 +65,11 @@ void Update_SPRITE_PLAYER() {
 	struct Sprite* sprite;
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 	BOTTOM_LINES(1); // for HUD
+
+	if (data->Invincible > 0) {
+		data->Invincible--;
+		OBP1_REG = (data->Invincible & 4) ? invertPalette : normalPalette;
+	}
 
 	velcro = UpdateVelcro();
 
@@ -85,15 +112,8 @@ void Update_SPRITE_PLAYER() {
 		}
 	}
 
-	SPRITEMANAGER_ITERATE(i, sprite) {
-		if (sprite->type == SPRITE_HEART && CheckCollision(THIS, sprite)) {
-			data->Health++;
-			SpriteManagerRemoveSprite(sprite);
-		}
-	}
-
 	PRINT_POS(0, 0);
-	Printf("%d    ", (UINT16)velcro);
+	Printf("%d    ", (UINT16)data->Invincible);
 	PRINT_POS(10, 0);
 	Printf("Lives:%d  ", (UINT16)data->Health);
 }

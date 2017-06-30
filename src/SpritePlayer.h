@@ -2,6 +2,8 @@
 #define SPRITE_PLAYER_H
 
 #include "main.h"
+#include "SpriteManager.h"
+#include "Sprite.h"
 
 DECLARE_SPRITE(SPRITE_PLAYER);
 
@@ -11,10 +13,17 @@ DECLARE_SPRITE(SPRITE_PLAYER);
 #define VELCRO_JUMP_STRENGTH 8
 #define WALK_SPEED 4
 
+#define INVINCIBLE_TIME 50
+
+void HealPlayer();
+void DamagePlayer();
+UINT8 HitsPlayer(struct Sprite* sprite);
+
 typedef struct {
 	UINT8 Flags;
 	INT8 Jump;
 	UINT8 Health;
+	UINT8 Invincible;
 	// more data, like lives, etc.
 } PlayerData;
 

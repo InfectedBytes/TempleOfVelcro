@@ -4,6 +4,7 @@
 #include "ZGBMain.h"
 #include "Utils.h"
 #include "Math.h"
+#include "SpritePlayer.h"
 UINT8 bank_SPRITE_ENEMY = 2;
 
 void Start_SPRITE_ENEMY() {
@@ -13,6 +14,9 @@ void Start_SPRITE_ENEMY() {
 void Update_SPRITE_ENEMY() {
 	UINT16 trigger, tx, ty;
 	EnemyData* data = (EnemyData*)THIS->custom_data;
+
+	if (HitsPlayer(THIS))
+		DamagePlayer();
 
 	if (GET_BIT(data->Flags, MOVE_DIR_BIT)) {
 		TranslateSprite(THIS, ENEMY_WALK_SPEED, 0);

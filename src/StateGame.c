@@ -19,7 +19,6 @@ extern UINT8* test_mod_Data[];
 void Start_STATE_GAME() {
 	UINT8 i;
 	SET_PAL0(0, 1, 2, 3);
-	SET_PAL1(2, 0, 1, 3);
 	SPRITES_8x16;
 	for(i = 0; i != n_sprite_types; ++ i) {
 		SpriteManagerLoad(i);
