@@ -5,6 +5,4 @@
 
 DECLARE_STATE(STATE_GAME);
 
-extern UINT8 gameover;
-
 #endif

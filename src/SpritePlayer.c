@@ -10,10 +10,23 @@
 #include "main.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
-int pal = 1;
-
 static UINT8 idle_anim[] = { 2, 2, 4 };
 static UINT8 walk_anim[] = { 4, 0, 1, 2, 3 };
+
+static UINT8 UpdateVelcro() {
+	UINT16 tx, ty;
+	UINT8 trigger = FIND_TRIGGER(THIS, 5, 0, &tx, &ty);
+	if (trigger && !GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
+		SET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG);
+		THIS->coll_y = 0;
+		THIS->y += 8;
+	} else if (!trigger && GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
+		UNSET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG);
+		THIS->coll_y = 8;
+		THIS->y -= 8;
+	}
+	return trigger;
+}
 
 void Start_SPRITE_PLAYER() {
 	PAL1;
@@ -22,24 +35,21 @@ void Start_SPRITE_PLAYER() {
 }
 
 void Update_SPRITE_PLAYER() {
-	UINT16 trigger, tx, ty;
+	UINT8 velcro;
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 	BOTTOM_LINES(1); // for HUD
 
-	if (gameover) {
-		if (KEY_TICKED(J_START)) {
-			SetState(STATE_GAME);
-		}
-		return;
-	}
+	velcro = UpdateVelcro();
+
 	// apply jump
 	if (data->Jump != 0) {
-		data->Jump--;
-		if (TranslateSprite(THIS, 0, -data->Jump))
+		if(data->Jump > 0) data->Jump--;
+		else data->Jump++;
+		if (TranslateSprite(THIS, 0, data->Jump))
 			data->Jump = 0; // we hit a collider -> stop jump
 	}
 	// apply gravity and check if sprite is grounded
-	if (TranslateSprite(THIS, 0, 3)) {
+	if (TranslateSprite(THIS, 0, velcro ? -3 : 3)) {
 		SET_BIT(data->Flags, GROUNDED_BIT);
 		UNSET_BIT(data->Flags, DOUBLE_JUMP_BIT);
 	} else {
@@ -59,12 +69,11 @@ void Update_SPRITE_PLAYER() {
 		SetSpriteAnim(THIS, idle_anim, 15);
 	}
 
-	// for testing: toggle palette
-	if (KEY_TICKED(J_B)) PAL(pal = 1 - pal);
 	// jump
 	if (KEY_TICKED(J_A)) {
 		if (GET_BIT(data->Flags, GROUNDED_BIT)) {
-			data->Jump = JUMP_STRENGTH;
+			if (velcro) data->Jump = VELCRO_JUMP_STRENGTH;
+			else data->Jump = JUMP_STRENGTH;
 		} else if (!GET_BIT(data->Flags, DOUBLE_JUMP_BIT)) {
 			SET_BIT(data->Flags, DOUBLE_JUMP_BIT);
 			data->Jump = JUMP_STRENGTH;
@@ -72,14 +81,7 @@ void Update_SPRITE_PLAYER() {
 	}
 
 	PRINT_POS(0, 0);
-	// find spikes
-	trigger = FIND_TRIGGER(THIS, 2, 0, &tx, &ty);
-	if (trigger) {
-		gameover = 1u;
-		Printf("GAMEOVER PRESS START");
-	} else {
-		Printf("   YOU ARE ALIVE    ");
-	}
+	Printf("%d    ", (UINT16)velcro);
 }
 
 void Destroy_SPRITE_PLAYER() {
