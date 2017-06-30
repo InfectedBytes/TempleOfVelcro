@@ -60,11 +60,11 @@ void Update_SPRITE_PLAYER() {
 	if (KEY_PRESSED(J_LEFT)) {
 		SET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
 		SetSpriteAnim(THIS, walk_anim, 15);
-		TranslateSprite(THIS, -(WALK_SPEED << delta_time), 0);
+		TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
 	} else if (KEY_PRESSED(J_RIGHT)) {
 		UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
 		SetSpriteAnim(THIS, walk_anim, 15);
-		TranslateSprite(THIS, WALK_SPEED << delta_time, 0);
+		TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 	} else {
 		SetSpriteAnim(THIS, idle_anim, 15);
 	}
