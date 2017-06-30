@@ -26,6 +26,9 @@
     <ClInclude Include="src\SpriteEnemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\SpriteHeart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ZGBMain.c">
@@ -41,6 +44,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\SpriteEnemy.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpriteHeart.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

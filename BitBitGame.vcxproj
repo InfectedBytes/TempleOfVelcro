@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\SpriteHeart.c" />
     <ClCompile Include="src\SpriteEnemy.c" />
     <ClCompile Include="src\SpritePlayer.c" />
     <ClCompile Include="src\StateGame.c" />
@@ -26,6 +27,7 @@
     <ClCompile Include="src\ZGBMain_Init.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\SpriteHeart.h" />
     <ClInclude Include="src\SpriteEnemy.h" />
     <ClInclude Include="src\SpritePlayer.h" />
     <ClInclude Include="src\StateGame.h" />

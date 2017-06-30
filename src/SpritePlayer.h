@@ -14,6 +14,7 @@ DECLARE_SPRITE(SPRITE_PLAYER);
 typedef struct {
 	UINT8 Flags;
 	INT8 Jump;
+	UINT8 Health;
 	// more data, like lives, etc.
 } PlayerData;
 

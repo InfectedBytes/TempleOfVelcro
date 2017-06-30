@@ -29,13 +29,18 @@ static UINT8 UpdateVelcro() {
 }
 
 void Start_SPRITE_PLAYER() {
+	PlayerData* data = (PlayerData*)THIS->custom_data;
+	data->Health = 3;
+	data->Flags = 0;
+	data->Jump = 0;
 	PAL1;
 	COLLISION_BORDER(2, 8, 20, 24);
 	scroll_target = THIS;
 }
 
 void Update_SPRITE_PLAYER() {
-	UINT8 velcro;
+	UINT8 velcro, i;
+	struct Sprite* sprite;
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 	BOTTOM_LINES(1); // for HUD
 
@@ -80,8 +85,17 @@ void Update_SPRITE_PLAYER() {
 		}
 	}
 
+	SPRITEMANAGER_ITERATE(i, sprite) {
+		if (sprite->type == SPRITE_HEART && CheckCollision(THIS, sprite)) {
+			data->Health++;
+			SpriteManagerRemoveSprite(sprite);
+		}
+	}
+
 	PRINT_POS(0, 0);
 	Printf("%d    ", (UINT16)velcro);
+	PRINT_POS(10, 0);
+	Printf("Lives:%d  ", (UINT16)data->Health);
 }
 
 void Destroy_SPRITE_PLAYER() {
