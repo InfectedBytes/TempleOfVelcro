@@ -33,7 +33,7 @@ UINT8 HitsPlayer(struct Sprite* sprite) {
 }
 
 static UINT8 UpdateVelcro(UINT8 trigger) {
-	trigger = trigger == 5;
+	trigger = trigger == TILE_VELCRO;
 	if (trigger && !GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
 		SET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG);
 		THIS->coll_y = 0;
@@ -66,7 +66,7 @@ void Update_SPRITE_PLAYER() {
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 	BOTTOM_LINES(1); // for HUD
 
-	trigger = FIND_TRIGGER(THIS, 4, 1, &tx, &ty);
+	trigger = FIND_TRIGGER(THIS, TILE_TRIGGER, TILE_TRIGGER_MASK, &tx, &ty);
 	if (data->Invincible > 0) {
 		data->Invincible--;
 		OBP1_REG = (data->Invincible & 4) ? invertPalette : normalPalette;
@@ -83,8 +83,10 @@ void Update_SPRITE_PLAYER() {
 	}
 
 	// run up slopes
-	if (trigger == 4) {
+	if (trigger == TILE_SLOPE_UP) {
 		THIS->y -= 8;
+	} else if (trigger == TILE_SLOP_DOWN) {
+		THIS->y += 8;
 	}
 
 	// apply gravity and check if sprite is grounded
