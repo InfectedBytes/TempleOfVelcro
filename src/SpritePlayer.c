@@ -18,6 +18,9 @@ static PlayerData* data;
 static UINT8 normalPalette = PAL_DEF(2, 0, 1, 3);
 static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
 
+// for debugging: toggle autorun
+static UINT8 autorun;
+
 void HealPlayer() {
 	data->Health++;
 }
@@ -98,20 +101,29 @@ void Update_SPRITE_PLAYER() {
 		UNSET_BIT(data->Flags, GROUNDED_BIT);
 	}
 
-	// handle input
-	if (KEY_PRESSED(J_LEFT)) {
-		SET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-		SetSpriteAnim(THIS, walk_anim, 15);
-		// to prevent glitching, we just translate in two small steps instead of one large step
-		TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
-		TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
-	} else if (KEY_PRESSED(J_RIGHT)) {
+	// for debugging: toggle autorun
+	if (KEY_TICKED(J_B)) autorun = 1 - autorun;
+	if (autorun) {
 		UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
 		SetSpriteAnim(THIS, walk_anim, 15);
 		TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 		TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 	} else {
-		SetSpriteAnim(THIS, idle_anim, 15);
+		// handle input
+		if (KEY_PRESSED(J_LEFT)) {
+			SET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
+			SetSpriteAnim(THIS, walk_anim, 15);
+			// to prevent glitching, we just translate in two small steps instead of one large step
+			TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
+			TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
+		} else if (KEY_PRESSED(J_RIGHT)) {
+			UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
+			SetSpriteAnim(THIS, walk_anim, 15);
+			TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
+			TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
+		} else {
+			SetSpriteAnim(THIS, idle_anim, 15);
+		}
 	}
 
 	// jump
