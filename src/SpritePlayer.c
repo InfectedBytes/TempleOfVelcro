@@ -116,7 +116,7 @@ void Update_SPRITE_PLAYER() {
 	}
 
 	PRINT_POS(0, 0);
-	Printf("%d    ", (UINT16)data->Invincible);
+	Printf("%d    ", (UINT16)((THIS->x >> 3) - 4));
 	PRINT_POS(10, 0);
 	Printf("Lives:%d  ", (UINT16)data->Health);
 }
