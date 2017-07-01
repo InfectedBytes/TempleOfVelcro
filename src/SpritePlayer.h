@@ -4,8 +4,12 @@
 #include "main.h"
 #include "SpriteManager.h"
 #include "Sprite.h"
+#include "ZGBMain.h"
 
 DECLARE_SPRITE(SPRITE_PLAYER);
+
+#define MAX_HEALTH 2
+#define UPDATE_FRAME_CACHE(health) ReplaceFrames(scroll_target->first_tile, scroll_target->size, 8, sheep, sheepBank, 8*(health));
 
 #define GROUNDED_BIT 7u
 #define DOUBLE_JUMP_BIT 6u

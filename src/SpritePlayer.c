@@ -7,6 +7,7 @@
 #include "Math.h"
 #include "StateGame.h"
 #include "Sound.h"
+#include "../res/src/sheep.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
 #define COLL_Y 12
@@ -25,13 +26,22 @@ static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
 static UINT8 autorun;
 
 void HealPlayer() {
-	data->Health++;
+	if (data->Health < MAX_HEALTH) {
+		data->Health++;
+		UPDATE_FRAME_CACHE(MAX_HEALTH - data->Health);
+	}
 }
 
 void DamagePlayer() {
 	if (data->Invincible) return;
-	data->Health--;
-	data->Invincible = INVINCIBLE_TIME;
+	if (data->Health != 0) {
+		// TODO: damage animation
+		data->Health--;
+		data->Invincible = INVINCIBLE_TIME;
+		UPDATE_FRAME_CACHE(MAX_HEALTH - data->Health);
+	} else {
+		// TODO: gameover animation + screen
+	}
 }
 
 UINT8 HitsPlayer(struct Sprite* sprite) {
@@ -40,7 +50,7 @@ UINT8 HitsPlayer(struct Sprite* sprite) {
 
 static UINT8 UpdateVelcro() {
 	UINT8 tx, ty, trigger;
-	trigger = FIND_TOP_TRIGGER(THIS, TILE_VELCRO, TILE_VELCRO_MASK, &tx, &ty);
+	trigger = FIND_TOP_TRIGGER(THIS, TILE_VELCRO, TILE_VELCRO_MASK, &tx, &ty) && data->Health != 0; // sheep must have wool
 	if (trigger && !GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
 		SET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG);
 		THIS->coll_y = 0;
@@ -79,7 +89,7 @@ static void PlayJumpSound(UINT8 velcro) {
 void Start_SPRITE_PLAYER() {
 	player = THIS;
 	data = (PlayerData*)THIS->custom_data;
-	data->Health = 3;
+	data->Health = 2;
 	data->Flags = 0;
 	data->Jump = 0;
 	data->Invincible = 0;
