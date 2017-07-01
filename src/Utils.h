@@ -4,11 +4,16 @@
 #include "Scroll.h"
 #include "Sprite.h"
 
-#define TILE_TRIGGER 4
-#define TILE_TRIGGER_MASK 0x3
-#define TILE_VELCRO 5
-#define TILE_SLOPE_UP 6
-#define TILE_SLOP_DOWN 7
+// velcros
+#define TILE_VELCRO 6
+#define TILE_VELCRO_MASK 1
+
+// other trigger
+#define TILE_TRIGGERS 8
+#define TILE_TRIGGERS_MASK 0x7
+#define TILE_SLOPE_UP 8
+#define TILE_SLOP_DOWN 9
+#define TILE_SPIKES 10
 
 #define SET_PAL0(a, b, c, d) OBP0_REG = PAL_DEF(a, b, c, d)
 #define SET_PAL1(a, b, c, d) OBP1_REG = PAL_DEF(a, b, c, d)

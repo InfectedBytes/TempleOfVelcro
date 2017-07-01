@@ -27,7 +27,7 @@ void Start_STATE_GAME() {
 
 	//scroll_target = SpriteManagerAdd(SPRITE_PLAYER, 50, 50);
 
-	InitScrollTiles(0, 8, tiles, 3);
+	InitScrollTiles(0, 32, tiles, 3);
 	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
 	adjustableOffsetX = 16; // player should be left of the screen
 	RefreshScroll();

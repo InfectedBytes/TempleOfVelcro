@@ -37,7 +37,7 @@ UINT8 HitsPlayer(struct Sprite* sprite) {
 
 static UINT8 UpdateVelcro() {
 	UINT8 tx, ty, trigger;
-	trigger = FIND_TOP_TRIGGER(THIS, TILE_VELCRO, 0, &tx, &ty) == TILE_VELCRO;
+	trigger = FIND_TOP_TRIGGER(THIS, TILE_VELCRO, TILE_VELCRO_MASK, &tx, &ty);
 	if (trigger && !GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
 		SET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG);
 		THIS->coll_y = 0;
@@ -48,6 +48,22 @@ static UINT8 UpdateVelcro() {
 		THIS->y -= 8;
 	}
 	return trigger;
+}
+
+static void UpdateTriggers() {
+	UINT16 tx, ty;
+	UINT8 trigger = FIND_TRIGGER(THIS, TILE_TRIGGERS, TILE_TRIGGERS_MASK, &tx, &ty);
+	switch (trigger) {
+	case TILE_SLOPE_UP:
+		THIS->y -= 8;
+		break;
+	case TILE_SLOP_DOWN:
+		THIS->y += 8;
+		break;
+	case TILE_SPIKES:
+		DamagePlayer();
+		break;
+	}
 }
 
 void Start_SPRITE_PLAYER() {
@@ -64,8 +80,7 @@ void Start_SPRITE_PLAYER() {
 }
 
 void Update_SPRITE_PLAYER() {
-	UINT16 tx, ty;
-	UINT8 trigger, velcro, i;
+	UINT8 velcro, i;
 	struct Sprite* sprite;
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 	BOTTOM_LINES(1); // for HUD
@@ -76,6 +91,7 @@ void Update_SPRITE_PLAYER() {
 	}
 
 	velcro = UpdateVelcro();
+	UpdateTriggers();
 
 	// apply jump
 	if (data->Jump != 0) {
@@ -83,14 +99,6 @@ void Update_SPRITE_PLAYER() {
 		else data->Jump++;
 		if (TranslateSprite(THIS, 0, data->Jump))
 			data->Jump = 0; // we hit a collider -> stop jump
-	}
-
-	trigger = FIND_TRIGGER(THIS, TILE_SLOPE_UP, 1, &tx, &ty);
-	// run up slopes
-	if (trigger == TILE_SLOPE_UP) {
-		THIS->y -= 8;
-	} else if (trigger == TILE_SLOP_DOWN) {
-		THIS->y += 8;
 	}
 
 	// apply gravity and check if sprite is grounded
@@ -138,7 +146,7 @@ void Update_SPRITE_PLAYER() {
 	}
 
 	PRINT_POS(0, 0);
-	Printf("%d    ", (UINT16)((THIS->x >> 3) - 4));
+	Printf("%dm    ", (UINT16)((THIS->x >> 3) - 4));
 	PRINT_POS(10, 0);
 	Printf("Lives:%d  ", (UINT16)data->Health);
 }
