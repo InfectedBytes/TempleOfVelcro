@@ -32,9 +32,8 @@ UINT8 HitsPlayer(struct Sprite* sprite) {
 	return CheckCollision(sprite, player);
 }
 
-static UINT8 UpdateVelcro() {
-	UINT16 tx, ty;
-	UINT8 trigger = FIND_TRIGGER(THIS, 5, 0, &tx, &ty);
+static UINT8 UpdateVelcro(UINT8 trigger) {
+	trigger = trigger == 5;
 	if (trigger && !GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
 		SET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG);
 		THIS->coll_y = 0;
@@ -56,22 +55,24 @@ void Start_SPRITE_PLAYER() {
 	data->Invincible = 0;
 	OBP1_REG = normalPalette;
 	PAL1;
-	COLLISION_BORDER(2, 8, 20, 24);
+	COLLISION_BORDER(2, 8, 16, 24);
 	scroll_target = THIS;
 }
 
 void Update_SPRITE_PLAYER() {
-	UINT8 velcro, i;
+	UINT16 tx, ty;
+	UINT8 trigger, velcro, i;
 	struct Sprite* sprite;
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 	BOTTOM_LINES(1); // for HUD
 
+	trigger = FIND_TRIGGER(THIS, 4, 1, &tx, &ty);
 	if (data->Invincible > 0) {
 		data->Invincible--;
 		OBP1_REG = (data->Invincible & 4) ? invertPalette : normalPalette;
 	}
 
-	velcro = UpdateVelcro();
+	velcro = UpdateVelcro(trigger);
 
 	// apply jump
 	if (data->Jump != 0) {
@@ -80,6 +81,12 @@ void Update_SPRITE_PLAYER() {
 		if (TranslateSprite(THIS, 0, data->Jump))
 			data->Jump = 0; // we hit a collider -> stop jump
 	}
+
+	// run up slopes
+	if (trigger == 4) {
+		THIS->y -= 8;
+	}
+
 	// apply gravity and check if sprite is grounded
 	if (TranslateSprite(THIS, 0, velcro ? -3 : 3)) {
 		SET_BIT(data->Flags, GROUNDED_BIT);
