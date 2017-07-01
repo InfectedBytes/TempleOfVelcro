@@ -32,8 +32,9 @@ UINT8 HitsPlayer(struct Sprite* sprite) {
 	return CheckCollision(sprite, player);
 }
 
-static UINT8 UpdateVelcro(UINT8 trigger) {
-	trigger = trigger == TILE_VELCRO;
+static UINT8 UpdateVelcro() {
+	UINT8 tx, ty, trigger;
+	trigger = FIND_TOP_TRIGGER(THIS, TILE_VELCRO, 0, &tx, &ty) == TILE_VELCRO;
 	if (trigger && !GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
 		SET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG);
 		THIS->coll_y = 0;
@@ -66,13 +67,12 @@ void Update_SPRITE_PLAYER() {
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 	BOTTOM_LINES(1); // for HUD
 
-	trigger = FIND_TRIGGER(THIS, TILE_TRIGGER, TILE_TRIGGER_MASK, &tx, &ty);
 	if (data->Invincible > 0) {
 		data->Invincible--;
 		OBP1_REG = (data->Invincible & 4) ? invertPalette : normalPalette;
 	}
 
-	velcro = UpdateVelcro(trigger);
+	velcro = UpdateVelcro();
 
 	// apply jump
 	if (data->Jump != 0) {
@@ -82,6 +82,7 @@ void Update_SPRITE_PLAYER() {
 			data->Jump = 0; // we hit a collider -> stop jump
 	}
 
+	trigger = FIND_TRIGGER(THIS, TILE_SLOPE_UP, 1, &tx, &ty);
 	// run up slopes
 	if (trigger == TILE_SLOPE_UP) {
 		THIS->y -= 8;
