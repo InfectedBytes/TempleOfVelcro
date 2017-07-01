@@ -307,6 +307,7 @@ void RefreshScroll() {
 
 void MoveScroll(INT16 x, INT16 y) {
 	INT16 current_column, new_column, current_row, new_row;
+	UINT8 i;
 	
 	PUSH_BANK(scroll_bank);
 	ClampScrollLimits(&x, &y);
@@ -318,9 +319,11 @@ void MoveScroll(INT16 x, INT16 y) {
 
 	if(current_column != new_column) {
 		if(new_column > current_column) {
-			ScrollUpdateColumnWithDelay(new_column - 2u + SCREEN_TILE_REFRES_W, new_row);
+			for (i = 0; i < new_column - current_column; i++)
+				ScrollUpdateColumnWithDelay(new_column - 2u + SCREEN_TILE_REFRES_W - i, new_row);
 		} else {
-			ScrollUpdateColumnWithDelay(new_column - 1u, new_row);
+			for (i = 0; i < current_column - new_column; i++)
+				ScrollUpdateColumnWithDelay(new_column - 1u + i, new_row);
 		}
 	}
 	
