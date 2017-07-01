@@ -9,8 +9,10 @@
 #include "Sound.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
-static UINT8 idle_anim[] = { 2, 2, 4 };
-static UINT8 walk_anim[] = { 4, 0, 1, 2, 3 };
+#define COLL_Y 12
+
+static UINT8 idle_anim[] = { 3, 1, 3, 5 };
+static UINT8 walk_anim[] = { 8, 0, 1, 2, 3, 4, 5, 6, 7 };
 
 // these variables are always pointing to the current player
 static struct Sprite* player;
@@ -42,11 +44,11 @@ static UINT8 UpdateVelcro() {
 	if (trigger && !GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
 		SET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG);
 		THIS->coll_y = 0;
-		THIS->y += 8;
+		THIS->y += COLL_Y;
 	} else if (!trigger && GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
 		UNSET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG);
-		THIS->coll_y = 8;
-		THIS->y -= 8;
+		THIS->coll_y = COLL_Y;
+		THIS->y -= COLL_Y;
 	}
 	return trigger;
 }
@@ -83,7 +85,7 @@ void Start_SPRITE_PLAYER() {
 	data->Invincible = 0;
 	OBP1_REG = normalPalette;
 	PAL1;
-	COLLISION_BORDER(2, 8, 16, 24);
+	COLLISION_BORDER(6, COLL_Y, 10, 20);
 	scroll_target = THIS;
 }
 
