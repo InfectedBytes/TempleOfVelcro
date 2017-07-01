@@ -6,6 +6,7 @@
 #include "Scroll.h"
 #include "Math.h"
 #include "StateGame.h"
+#include "Sound.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
 static UINT8 idle_anim[] = { 2, 2, 4 };
@@ -64,6 +65,13 @@ static void UpdateTriggers() {
 		DamagePlayer();
 		break;
 	}
+}
+
+static void PlayJumpSound(UINT8 velcro) {
+	if (velcro)
+		PlayFx(CHANNEL_4, 20, 0x06, 0xF2, 0x7D, 0xC0);
+	else
+		PlayFx(CHANNEL_1, 20, 0x56, 0x81, 0xF2, 0x92, 0x84);
 }
 
 void Start_SPRITE_PLAYER() {
@@ -143,9 +151,11 @@ void Update_SPRITE_PLAYER() {
 	// jump
 	if (KEY_TICKED(J_A)) {
 		if (GET_BIT(data->Flags, GROUNDED_BIT)) {
+			PlayJumpSound(velcro);
 			if (velcro) data->Jump = VELCRO_JUMP_STRENGTH;
 			else data->Jump = JUMP_STRENGTH;
 		} else if (!GET_BIT(data->Flags, DOUBLE_JUMP_BIT)) {
+			PlayJumpSound(FALSE);
 			SET_BIT(data->Flags, DOUBLE_JUMP_BIT);
 			data->Jump = JUMP_STRENGTH;
 		}
