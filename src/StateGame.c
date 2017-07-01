@@ -29,6 +29,8 @@ void Start_STATE_GAME() {
 
 	InitScrollTiles(0, 6, tiles, 3);
 	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
+	adjustableOffsetX = 16; // player should be left of the screen
+	RefreshScroll();
 	SHOW_BKG;
 	INIT_WINDOW(font, 3, 0, 1);
 	PlayMusic(test_mod_Data, 5, 1);
