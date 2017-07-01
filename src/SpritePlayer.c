@@ -97,8 +97,14 @@ void Update_SPRITE_PLAYER() {
 	if (data->Jump != 0) {
 		if(data->Jump > 0) data->Jump--;
 		else data->Jump++;
-		if (TranslateSprite(THIS, 0, data->Jump))
-			data->Jump = 0; // we hit a collider -> stop jump
+		if (data->Jump <= -8) {
+			TranslateSprite(THIS, 0, -8);
+			if (TranslateSprite(THIS, 0, data->Jump + 8))
+				data->Jump = 0; // we hit a collider -> stop jump
+		} else {
+			if (TranslateSprite(THIS, 0, data->Jump))
+				data->Jump = 0; // we hit a collider -> stop jump
+		}
 	}
 
 	// apply gravity and check if sprite is grounded
