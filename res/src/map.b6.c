@@ -1,6 +1,6 @@
 /*
 
- MAP.B3.C
+ MAP.B6.C
 
  Map Source File.
 
@@ -746,4 +746,4 @@ const unsigned  char map[] =
   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
 };
 
-/* End of MAP.B3.C */
+/* End of MAP.B6.C */

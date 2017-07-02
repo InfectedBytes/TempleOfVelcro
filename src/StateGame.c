@@ -26,7 +26,7 @@ void Start_STATE_GAME() {
 	SHOW_SPRITES;
 
 	InitScrollTiles(0, 32, tiles, 3);
-	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 3);
+	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 6);
 	adjustableOffsetX = 16; // player should be left of the screen
 	RefreshScroll();
 	SHOW_BKG;
