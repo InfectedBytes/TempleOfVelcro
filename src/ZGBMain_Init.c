@@ -26,5 +26,5 @@ void InitStates() {
 
 void InitSprites() {
 	INIT_SPRITE(SPRITE_PLAYER, sheep3, 3, FRAME_24x32, 14);
-	INIT_SPRITE(SPRITE_HEART, pickups, 3, FRAME_8x16, 3);
+	INIT_SPRITE(SPRITE_HEART, pickups, 3, FRAME_8x16, 6);
 }
