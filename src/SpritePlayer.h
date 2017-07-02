@@ -9,7 +9,7 @@
 DECLARE_SPRITE(SPRITE_PLAYER);
 
 #define MAX_HEALTH 2
-#define WALK_ANIM_SPEED 20
+#define WALK_ANIM_SPEED 40
 // Helper macro used to switch the player's frames
 #define UPDATE_FRAME_CACHE(health) ReplaceFrames(scroll_target->first_tile, scroll_target->size, 7, sheep, sheepBank, 7*(health));
 
