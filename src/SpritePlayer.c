@@ -8,6 +8,7 @@
 #include "StateGame.h"
 #include "Sound.h"
 #include "../res/src/sheep.h"
+#include "../res/src/map.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
 #define COLL_Y 12
@@ -33,6 +34,19 @@ static void SetAnimationState(AnimationState state) {
 		case DAMAGE: SetSpriteAnim(player, damage_anim, 10); break;
 	}
 }
+
+static void DrawGui() {
+	UINT8 i;
+	INT16 metersLeft = mapWidth - (THIS->x >> 3) - 10;
+	if (metersLeft < 0) metersLeft = 0;
+	BOTTOM_LINES(1);
+	PRINT_POS(0, 0);
+	Printf(" %dm    ", (UINT16)metersLeft);
+	PRINT_POS(16, 0);
+	for (i = 0; i < data->Health; i++) Printf("*");
+	for (i = data->Health; i < MAX_HEALTH; i++) Printf(" ");
+}
+
 // If player is not at full health, this function will increment the player's health and updates the frame cache.
 // Caution: THIS is not necessarily the player!
 void HealPlayer() {
@@ -47,7 +61,7 @@ void HealPlayer() {
 void DamagePlayer() {
 	if (data->Invincible) return;
 	SetAnimationState(DAMAGE);
-	if (data->Health != 0) {
+	if (data->Health != 1) {
 		// TODO: damage animation
 		data->Health--;
 		data->Invincible = INVINCIBLE_TIME + DAMAGE_FREEZE_TIME;
@@ -105,7 +119,7 @@ static void PlayJumpSound(UINT8 velcro) {
 void Start_SPRITE_PLAYER() {
 	player = THIS;
 	data = (PlayerData*)THIS->custom_data;
-	data->Health = 2;
+	data->Health = MAX_HEALTH;
 	data->Flags = 0;
 	data->Jump = 0;
 	data->Invincible = 0;
@@ -118,7 +132,8 @@ void Start_SPRITE_PLAYER() {
 void Update_SPRITE_PLAYER() {
 	UINT8 velcro;
 	PlayerData* data = (PlayerData*)THIS->custom_data;
-	BOTTOM_LINES(1); // for HUD
+	
+	DrawGui();
 
 	velcro = UpdateVelcro();
 	UpdateTriggers();
@@ -192,11 +207,6 @@ void Update_SPRITE_PLAYER() {
 			data->Jump = JUMP_STRENGTH;
 		}
 	}
-
-	PRINT_POS(0, 0);
-	Printf("%dm    ", (UINT16)((THIS->x >> 3) - 4));
-	PRINT_POS(10, 0);
-	Printf("Lives:%d  ", (UINT16)data->Health);
 }
 
 void Destroy_SPRITE_PLAYER() {
