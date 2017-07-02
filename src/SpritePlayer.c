@@ -14,6 +14,7 @@ UINT8 bank_SPRITE_PLAYER = 2;
 
 static UINT8 idle_anim[] = { 2, 1, 3 };
 static UINT8 walk_anim[] = { 12, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 4, 3 };
+static UINT8 damage_anim[] = {2, 5, 6};
 
 // these variables are always pointing to the current player
 static struct Sprite* player;
@@ -25,7 +26,15 @@ static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
 // for debugging: toggle autorun
 static UINT8 autorun;
 
+static void SetAnimationState(AnimationState state) {
+	switch (state) {
+		case IDLE: SetSpriteAnim(player, idle_anim, 15); break;
+		case WALK: SetSpriteAnim(player, walk_anim, WALK_ANIM_SPEED); break;
+		case DAMAGE: SetSpriteAnim(player, damage_anim, 10); break;
+	}
+}
 // If player is not at full health, this function will increment the player's health and updates the frame cache.
+// Caution: THIS is not necessarily the player!
 void HealPlayer() {
 	if (data->Health < MAX_HEALTH) {
 		data->Health++;
@@ -34,19 +43,21 @@ void HealPlayer() {
 }
 
 // If player is not invincible, this function will decrement the player's health and updates the frame cache.
+// Caution: THIS is not necessarily the player!
 void DamagePlayer() {
 	if (data->Invincible) return;
+	SetAnimationState(DAMAGE);
 	if (data->Health != 0) {
 		// TODO: damage animation
 		data->Health--;
-		data->Invincible = INVINCIBLE_TIME;
-		UPDATE_FRAME_CACHE(MAX_HEALTH - data->Health);
+		data->Invincible = INVINCIBLE_TIME + DAMAGE_FREEZE_TIME;
 	} else {
 		// TODO: gameover animation + screen
 	}
 }
 
 // Checks whether the provided sprite collides with the player or not.
+// Caution: THIS is not necessarily the player!
 UINT8 HitsPlayer(struct Sprite* sprite) {
 	return CheckCollision(sprite, player);
 }
@@ -110,13 +121,18 @@ void Update_SPRITE_PLAYER() {
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 	BOTTOM_LINES(1); // for HUD
 
-	if (data->Invincible > 0) {
-		data->Invincible--;
-		OBP1_REG = (data->Invincible & 4) ? invertPalette : normalPalette;
-	}
-
 	velcro = UpdateVelcro();
 	UpdateTriggers();
+
+	if (data->Invincible > 0) {
+		data->Invincible--;
+		// blink effect
+		OBP1_REG = (data->Invincible & 4) ? invertPalette : normalPalette;
+		if (data->Invincible > INVINCIBLE_TIME) // freeze and animate
+			return;
+		if ((UINT16)data->Invincible == INVINCIBLE_TIME) // set new frames
+			UPDATE_FRAME_CACHE(MAX_HEALTH - data->Health);
+	}
 
 	// apply jump
 	if (data->Jump != 0) {
@@ -144,24 +160,24 @@ void Update_SPRITE_PLAYER() {
 	if (KEY_TICKED(J_B)) autorun = 1 - autorun;
 	if (autorun) {
 		UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-		SetSpriteAnim(THIS, walk_anim, 15);
+		SetAnimationState(WALK);
 		TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 		TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 	} else {
 		// handle input
 		if (KEY_PRESSED(J_LEFT)) {
 			SET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-			SetSpriteAnim(THIS, walk_anim, WALK_ANIM_SPEED);
+			SetAnimationState(WALK);
 			// to prevent glitching, we just translate in two small steps instead of one large step
 			TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
 			TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
 		} else if (KEY_PRESSED(J_RIGHT)) {
 			UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-			SetSpriteAnim(THIS, walk_anim, WALK_ANIM_SPEED);
+			SetAnimationState(WALK);
 			TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 			TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 		} else {
-			SetSpriteAnim(THIS, idle_anim, 15);
+			SetAnimationState(IDLE);
 		}
 	}
 

@@ -22,6 +22,8 @@ DECLARE_SPRITE(SPRITE_PLAYER);
 
 // Time the player is invincible after he got hit
 #define INVINCIBLE_TIME 50
+// Time the movement is freezed after player took damage (damage animation)
+#define DAMAGE_FREEZE_TIME 10
 
 void HealPlayer();
 void DamagePlayer();
@@ -33,5 +35,12 @@ typedef struct {
 	UINT8 Health;
 	UINT8 Invincible;
 } PlayerData;
+
+typedef enum {
+	IDLE, // only for debug
+	WALK, 
+	//JUMP,
+	DAMAGE
+} AnimationState;
 
 #endif
