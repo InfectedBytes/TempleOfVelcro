@@ -4,6 +4,7 @@ UINT8 init_bank = 1;
 
 
 #include "StateGame.h"
+#include "StateMenu.h"
 
 #include "SpritePlayer.h"
 #include "SpriteEnemy.h"
@@ -14,13 +15,14 @@ UINT8 init_bank = 1;
 #include "../res/src/sheep.h"
 #include "../res/src/pickups.h"
 
-UINT8 next_state = STATE_GAME;
+UINT8 next_state = STATE_MENU;
 
 SET_N_STATES(N_STATES);
 SET_N_SPRITE_TYPES(N_SPRITE_TYPES);
 
 void InitStates() {
 	INIT_STATE(STATE_GAME);
+	INIT_STATE(STATE_MENU);
 }
 
 void InitSprites() {

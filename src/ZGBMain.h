@@ -16,6 +16,7 @@ void ReplaceFrames(UINT8 firstTile, FrameSize frameSize, UINT8 frames, UINT8* da
 
 typedef enum {
 	STATE_GAME,
+	STATE_MENU,
 
 	N_STATES
 } STATE;
