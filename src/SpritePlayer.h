@@ -9,13 +9,13 @@
 DECLARE_SPRITE(SPRITE_PLAYER);
 
 #define MAX_HEALTH 2
-#define WALK_ANIM_SPEED 40
+#define WALK_ANIM_SPEED 30
 // Helper macro used to switch the player's frames
 #define UPDATE_FRAME_CACHE(health) ReplaceFrames(scroll_target->first_tile, scroll_target->size, 7, sheep, sheepBank, 7*(health));
 
 #define GROUNDED_BIT 7u
 #define DOUBLE_JUMP_BIT 6u
-#define JUMP_STRENGTH -12
+#define JUMP_STRENGTH -14
 #define VELCRO_JUMP_STRENGTH 8
 // This is only half of the walkspeed. It is applied in two small steps, in order to prevent glitching
 #define WALK_SPEED 4

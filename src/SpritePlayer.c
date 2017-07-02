@@ -116,8 +116,7 @@ void Start_SPRITE_PLAYER() {
 }
 
 void Update_SPRITE_PLAYER() {
-	UINT8 velcro, i;
-	struct Sprite* sprite;
+	UINT8 velcro;
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 	BOTTOM_LINES(1); // for HUD
 
@@ -149,7 +148,7 @@ void Update_SPRITE_PLAYER() {
 	}
 
 	// apply gravity and check if sprite is grounded
-	if (TranslateSprite(THIS, 0, velcro ? -3 : 3)) {
+	if (TranslateSprite(THIS, 0, velcro ? -3 : (5 + delta_time))) {
 		SET_BIT(data->Flags, GROUNDED_BIT);
 		UNSET_BIT(data->Flags, DOUBLE_JUMP_BIT);
 	} else {
