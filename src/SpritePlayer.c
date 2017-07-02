@@ -7,6 +7,7 @@
 #include "Math.h"
 #include "StateGame.h"
 #include "Sound.h"
+#include "../res/src/SoundEffects.h"
 #include "../res/src/sheep1.h"
 #include "../res/src/sheep2.h"
 #include "../res/src/sheep3.h"
@@ -136,10 +137,11 @@ static void UpdateTriggers() {
 }
 
 static void PlayJumpSound(UINT8 velcro) {
-	if (velcro)
-		PlayFx(CHANNEL_4, 20, 0x06, 0xF2, 0x7D, 0xC0);
-	else
-		PlayFx(CHANNEL_1, 20, 0x56, 0x81, 0xF2, 0x92, 0x84);
+	if (velcro) {
+		PLAYFX(player_jump_velcro);
+	} else {
+		PLAYFX(player_jump);
+	}
 }
 
 void Start_SPRITE_PLAYER() {
