@@ -21,6 +21,6 @@
 #define SPRITES_24X32_ENABLED
 
 // This define is used to enable the drawing of 32x32 sprites
-#define SPRITES_32X32_ENABLED
+//#define SPRITES_32X32_ENABLED
 
 #endif

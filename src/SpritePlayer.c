@@ -7,10 +7,13 @@
 #include "Math.h"
 #include "StateGame.h"
 #include "Sound.h"
+#include "../res/src/sheep.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
-static UINT8 idle_anim[] = { 2, 2, 4 };
-static UINT8 walk_anim[] = { 4, 0, 1, 2, 3 };
+#define COLL_Y 12
+
+static UINT8 idle_anim[] = { 3, 1, 3, 5 };
+static UINT8 walk_anim[] = { 8, 0, 1, 2, 3, 4, 5, 6, 7 };
 
 // these variables are always pointing to the current player
 static struct Sprite* player;
@@ -22,44 +25,58 @@ static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
 // for debugging: toggle autorun
 static UINT8 autorun;
 
+// If player is not at full health, this function will increment the player's health and updates the frame cache.
 void HealPlayer() {
-	data->Health++;
+	if (data->Health < MAX_HEALTH) {
+		data->Health++;
+		UPDATE_FRAME_CACHE(MAX_HEALTH - data->Health);
+	}
 }
 
+// If player is not invincible, this function will decrement the player's health and updates the frame cache.
 void DamagePlayer() {
 	if (data->Invincible) return;
-	data->Health--;
-	data->Invincible = INVINCIBLE_TIME;
+	if (data->Health != 0) {
+		// TODO: damage animation
+		data->Health--;
+		data->Invincible = INVINCIBLE_TIME;
+		UPDATE_FRAME_CACHE(MAX_HEALTH - data->Health);
+	} else {
+		// TODO: gameover animation + screen
+	}
 }
 
+// Checks whether the provided sprite collides with the player or not.
 UINT8 HitsPlayer(struct Sprite* sprite) {
 	return CheckCollision(sprite, player);
 }
 
+// Checks for velcros and updates the internal states if we switch between modes.
 static UINT8 UpdateVelcro() {
 	UINT8 tx, ty, trigger;
 	trigger = FIND_TOP_TRIGGER(THIS, TILE_VELCRO, TILE_VELCRO_MASK, &tx, &ty);
 	if (trigger && !GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
 		SET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG);
 		THIS->coll_y = 0;
-		THIS->y += 8;
+		THIS->y += COLL_Y;
 	} else if (!trigger && GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
 		UNSET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG);
-		THIS->coll_y = 8;
-		THIS->y -= 8;
+		THIS->coll_y = COLL_Y;
+		THIS->y -= COLL_Y;
 	}
 	return trigger;
 }
 
+// Checks for trigger collisions (slopes, spikes, etc.)
 static void UpdateTriggers() {
 	UINT16 tx, ty;
 	UINT8 trigger = FIND_TRIGGER(THIS, TILE_TRIGGERS, TILE_TRIGGERS_MASK, &tx, &ty);
 	switch (trigger) {
 	case TILE_SLOPE_UP:
-		THIS->y -= 8;
+		THIS->y -= 12;
 		break;
 	case TILE_SLOP_DOWN:
-		THIS->y += 8;
+		THIS->y += 12;
 		break;
 	case TILE_SPIKES:
 		DamagePlayer();
@@ -77,13 +94,13 @@ static void PlayJumpSound(UINT8 velcro) {
 void Start_SPRITE_PLAYER() {
 	player = THIS;
 	data = (PlayerData*)THIS->custom_data;
-	data->Health = 3;
+	data->Health = 2;
 	data->Flags = 0;
 	data->Jump = 0;
 	data->Invincible = 0;
 	OBP1_REG = normalPalette;
 	PAL1;
-	COLLISION_BORDER(2, 8, 16, 24);
+	COLLISION_BORDER(6, COLL_Y, 10, 20);
 	scroll_target = THIS;
 }
 

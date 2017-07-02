@@ -1,5 +1,7 @@
 #include "ZGBMain.h"
 #include "Math.h"
+#include "Sprite.h"
+#include "BankManager.h"
 
 UINT8 GetTileReplacement(UINT8* tile_ptr, UINT8* tile) {
 	if(current_state == STATE_GAME) {
@@ -12,4 +14,10 @@ UINT8 GetTileReplacement(UINT8* tile_ptr, UINT8* tile) {
 	}
 
 	return 255u;
+}
+
+void ReplaceFrames(UINT8 firstTile, FrameSize frameSize, UINT8 frames, UINT8* data, UINT8 dataBank, UINT16 skipFrames) {
+	PUSH_BANK(dataBank);
+	set_sprite_data(firstTile, GetFrameCount(frames, frameSize), data + ((UINT16)GetFrameCount(skipFrames, frameSize) << 4));
+	POP_BANK;
 }
