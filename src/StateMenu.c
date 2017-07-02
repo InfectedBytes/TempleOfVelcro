@@ -10,7 +10,7 @@ UINT8 bank_STATE_MENU = 4;
 #include "Scroll.h"
 #include "../res/src/menuMap.h"
 #include "../res/src/tiles.h"
-#include "..\res\src\font.h"
+#include "../res/src/font.h"
 
 
 /* ----- Defines ----- */
@@ -74,6 +74,7 @@ void Start_STATE_MENU(void) {
 
 void Update_STATE_MENU(void) {
 	BOTTOM_LINES(8);
+
 	/* check for menu selection by pressing START or A */
 	if (KEY_TICKED(J_A | J_START)) {
 		/* get the next state from current menu selection */
@@ -123,6 +124,9 @@ UINT8 StateMenu_GetNextState(UINT8 selection) {
 
 	if (MENU_GOTO_GAME == selection) {
 		result = STATE_GAME;
+	}
+	else if (MENU_GOTO_CREDITS == selection) {
+		result = STATE_CREDITS;
 	}
 
 	return result;
