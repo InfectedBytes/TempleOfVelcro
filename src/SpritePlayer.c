@@ -59,9 +59,9 @@ static void DrawGui() {
 	INT16 metersLeft = mapWidth - (THIS->x >> 3) - 10;
 	if (metersLeft < 0) metersLeft = 0;
 	BOTTOM_LINES(1);
-	PRINT_POS(0, 0);
+	PRINT_POS(14, 0);
 	Printf(" %dm    ", (UINT16)metersLeft);
-	PRINT_POS(16, 0);
+	PRINT_POS(1, 0);
 	for (i = 0; i < data->Health; i++) Printf("*");
 	for (i = data->Health; i < MAX_HEALTH; i++) Printf(" ");
 }
@@ -128,6 +128,9 @@ static void UpdateTriggers() {
 		break;
 	case TILE_SPIKES:
 		DamagePlayer();
+		break;
+	case TILE_INSTANT_DEATH:
+		KillPlayer();
 		break;
 	}
 }
