@@ -10,7 +10,6 @@ UINT8 init_bank = 1;
 #include "SpriteEnemy.h"
 #include "SpriteHeart.h"
 
-#include "../res/src/player.h"
 #include "../res/src/wario.h"
 #include "../res/src/sheep.h"
 #include "../res/src/pickups.h"

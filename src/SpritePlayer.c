@@ -25,6 +25,7 @@ static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
 // for debugging: toggle autorun
 static UINT8 autorun;
 
+// If player is not at full health, this function will increment the player's health and updates the frame cache.
 void HealPlayer() {
 	if (data->Health < MAX_HEALTH) {
 		data->Health++;
@@ -32,6 +33,7 @@ void HealPlayer() {
 	}
 }
 
+// If player is not invincible, this function will decrement the player's health and updates the frame cache.
 void DamagePlayer() {
 	if (data->Invincible) return;
 	if (data->Health != 0) {
@@ -44,10 +46,12 @@ void DamagePlayer() {
 	}
 }
 
+// Checks whether the provided sprite collides with the player or not.
 UINT8 HitsPlayer(struct Sprite* sprite) {
 	return CheckCollision(sprite, player);
 }
 
+// Checks for velcros and updates the internal states if we switch between modes.
 static UINT8 UpdateVelcro() {
 	UINT8 tx, ty, trigger;
 	trigger = FIND_TOP_TRIGGER(THIS, TILE_VELCRO, TILE_VELCRO_MASK, &tx, &ty);
@@ -63,6 +67,7 @@ static UINT8 UpdateVelcro() {
 	return trigger;
 }
 
+// Checks for trigger collisions (slopes, spikes, etc.)
 static void UpdateTriggers() {
 	UINT16 tx, ty;
 	UINT8 trigger = FIND_TRIGGER(THIS, TILE_TRIGGERS, TILE_TRIGGERS_MASK, &tx, &ty);
