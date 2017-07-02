@@ -29,6 +29,7 @@ static struct Sprite* player;
 static PlayerData* data;
 
 static AnimationState lastState, currentState;
+static UINT8 gameoverTimer;
 
 static UINT8 normalPalette = PAL_DEF(2, 0, 1, 3);
 static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
@@ -45,6 +46,7 @@ static void SetAnimationState(AnimationState state) {
 		case JUMP: SetSpriteAnim(player, jump_anim, 10); break;
 		case FALL: SetSpriteAnim(player, fall_anim, 10); break;
 		case DAMAGE: SetSpriteAnim(player, damage_anim, 10); break;
+		case DEAD: SetSpriteAnim(player, gameover_anim, 10); break;
 	}
 }
 
@@ -64,6 +66,11 @@ static void DrawGui() {
 	for (i = data->Health; i < MAX_HEALTH; i++) Printf(" ");
 }
 
+void KillPlayer() {
+	data->Health = 0;
+	gameoverTimer = GAMEOVER_ANIM_TIME;
+}
+
 // If player is not at full health, this function will increment the player's health and updates the frame cache.
 // Caution: THIS is not necessarily the player!
 void HealPlayer() {
@@ -77,6 +84,10 @@ void HealPlayer() {
 // Caution: THIS is not necessarily the player!
 void DamagePlayer() {
 	if (data->Invincible) return;
+	if (data->Health == 1) {
+		KillPlayer();
+		return;
+	}
 	SetAnimationState(DAMAGE);
 	data->Health--;
 	data->Invincible = INVINCIBLE_TIME + DAMAGE_FREEZE_TIME;
@@ -138,6 +149,7 @@ void Start_SPRITE_PLAYER() {
 	OBP1_REG = normalPalette;
 	PAL1;
 	COLLISION_BORDER(6, COLL_Y, 10, 20);
+	THIS->lim_x = THIS->lim_y = 100;
 	scroll_target = THIS;
 	lastState = currentState = IDLE;
 	SetAnimationState(currentState);
@@ -146,11 +158,20 @@ void Start_SPRITE_PLAYER() {
 void Update_SPRITE_PLAYER() {
 	UINT8 velcro;
 	PlayerData* data = (PlayerData*)THIS->custom_data;
+
+	if (data->Health == 0) {
+		SetAnimationState(DEAD);
+		if (gameoverTimer-- == 0) SetState(STATE_GAMEOVER);
+		else if (gameoverTimer > (GAMEOVER_ANIM_TIME >> 1) + 5) THIS->y--;
+		else THIS->y+=2;
+		return;
+	}
 	
 	DrawGui();
 
 	velcro = UpdateVelcro();
 	UpdateTriggers();
+	if (data->Health == 0) return;
 
 	if (data->Invincible > 0) {
 		data->Invincible--;

@@ -26,6 +26,8 @@ DECLARE_SPRITE(SPRITE_PLAYER);
 #define INVINCIBLE_TIME 50
 // Time the movement is freezed after player took damage (damage animation)
 #define DAMAGE_FREEZE_TIME 10
+// gameover animation time
+#define GAMEOVER_ANIM_TIME 80
 
 void HealPlayer();
 void DamagePlayer();
@@ -43,7 +45,8 @@ typedef enum {
 	WALK, 
 	JUMP,
 	FALL,
-	DAMAGE
+	DAMAGE,
+	DEAD
 } AnimationState;
 
 #endif
