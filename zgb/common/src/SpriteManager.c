@@ -32,6 +32,9 @@ UINT8 DefragmentOamIndices() {
 	struct Sprite* sprite;
 	UINT8 i;
 	UINT8 idx = 0u;
+	for (i = 0; i < OAM_LIMIT; i++) {
+		move_sprite(i, 200, 200);
+	}
 	SPRITEMANAGER_ITERATE(i, sprite) {
 		sprite->oam_idx = idx;
 		idx += GetOamCount(1, sprite->size);

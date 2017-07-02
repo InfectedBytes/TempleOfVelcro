@@ -50,7 +50,7 @@ UINT8 HitsPlayer(struct Sprite* sprite) {
 
 static UINT8 UpdateVelcro() {
 	UINT8 tx, ty, trigger;
-	trigger = FIND_TOP_TRIGGER(THIS, TILE_VELCRO, TILE_VELCRO_MASK, &tx, &ty) && data->Health != 0; // sheep must have wool
+	trigger = FIND_TOP_TRIGGER(THIS, TILE_VELCRO, TILE_VELCRO_MASK, &tx, &ty);
 	if (trigger && !GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
 		SET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG);
 		THIS->coll_y = 0;
@@ -68,10 +68,10 @@ static void UpdateTriggers() {
 	UINT8 trigger = FIND_TRIGGER(THIS, TILE_TRIGGERS, TILE_TRIGGERS_MASK, &tx, &ty);
 	switch (trigger) {
 	case TILE_SLOPE_UP:
-		THIS->y -= 8;
+		THIS->y -= 12;
 		break;
 	case TILE_SLOP_DOWN:
-		THIS->y += 8;
+		THIS->y += 12;
 		break;
 	case TILE_SPIKES:
 		DamagePlayer();
