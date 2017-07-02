@@ -17,9 +17,12 @@ UINT8 bank_SPRITE_PLAYER = 2;
 
 static UINT8* spriteSheets[] = { sheep1, sheep2, sheep3 };
 
+static UINT8 idle_anim[] = { 3, 1, 3, 3 };
 static UINT8 walk_anim[] = { 12, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 4, 3 };
 static UINT8 damage_anim[] = {2, 12, 13};
 static UINT8 gameover_anim[] = { 2, 8, 9};
+static UINT8 jump_anim[] = { 3, 5, 6, 6 };
+static UINT8 fall_anim[] = { 1, 7 };
 
 // these variables are always pointing to the current player
 static struct Sprite* player;
@@ -37,7 +40,10 @@ static void SetAnimationState(AnimationState state) {
 	lastState = currentState;
 	currentState = state;
 	switch (state) {
+		case IDLE: SetSpriteAnim(player, idle_anim, 10); break;
 		case WALK: SetSpriteAnim(player, walk_anim, WALK_ANIM_SPEED); break;
+		case JUMP: SetSpriteAnim(player, jump_anim, 10); break;
+		case FALL: SetSpriteAnim(player, fall_anim, 10); break;
 		case DAMAGE: SetSpriteAnim(player, damage_anim, 10); break;
 	}
 }
@@ -104,7 +110,7 @@ static void UpdateTriggers() {
 	UINT8 trigger = FIND_TRIGGER(THIS, TILE_TRIGGERS, TILE_TRIGGERS_MASK, &tx, &ty);
 	switch (trigger) {
 	case TILE_SLOPE_UP:
-		THIS->y -= 12;
+		THIS->y -= 16;
 		break;
 	case TILE_SLOP_DOWN:
 		THIS->y += 12;
@@ -133,8 +139,8 @@ void Start_SPRITE_PLAYER() {
 	PAL1;
 	COLLISION_BORDER(6, COLL_Y, 10, 20);
 	scroll_target = THIS;
-	lastState = currentState = WALK;
-	SetAnimationState(WALK);
+	lastState = currentState = IDLE;
+	SetAnimationState(currentState);
 }
 
 void Update_SPRITE_PLAYER() {
@@ -178,11 +184,13 @@ void Update_SPRITE_PLAYER() {
 	}
 
 	// apply gravity and check if sprite is grounded
-	if (TranslateSprite(THIS, 0, velcro ? -3 : (5 + delta_time))) {
+	if (TranslateSprite(THIS, 0, velcro ? VELCRO_GRAVITY : (GRAVITY + delta_time))) {
 		SET_BIT(data->Flags, GROUNDED_BIT);
 		UNSET_BIT(data->Flags, DOUBLE_JUMP_BIT);
+		SetAnimationState(WALK);
 	} else {
 		UNSET_BIT(data->Flags, GROUNDED_BIT);
+		if(data->Jump >= -GRAVITY) SetAnimationState(FALL);
 	}
 
 	// for debugging: toggle autorun
@@ -202,6 +210,8 @@ void Update_SPRITE_PLAYER() {
 			UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
 			TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 			TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
+		} else {
+			SetAnimationState(IDLE);
 		}
 	}
 
@@ -209,10 +219,12 @@ void Update_SPRITE_PLAYER() {
 	if (KEY_TICKED(J_A)) {
 		if (GET_BIT(data->Flags, GROUNDED_BIT)) {
 			PlayJumpSound(velcro);
+			SetAnimationState(JUMP);
 			if (velcro) data->Jump = VELCRO_JUMP_STRENGTH;
 			else data->Jump = JUMP_STRENGTH;
 		} else if (!GET_BIT(data->Flags, DOUBLE_JUMP_BIT)) {
 			PlayJumpSound(FALSE);
+			SetAnimationState(JUMP);
 			SET_BIT(data->Flags, DOUBLE_JUMP_BIT);
 			data->Jump = JUMP_STRENGTH;
 		}

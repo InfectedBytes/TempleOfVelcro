@@ -8,6 +8,8 @@
 
 DECLARE_SPRITE(SPRITE_PLAYER);
 
+#define GRAVITY 5
+#define VELCRO_GRAVITY -3
 #define MAX_HEALTH 3
 #define WALK_ANIM_SPEED 30
 // Helper macro used to switch the player's frames
@@ -37,8 +39,10 @@ typedef struct {
 } PlayerData;
 
 typedef enum {
+	IDLE, // only for debugging
 	WALK, 
-	//JUMP,
+	JUMP,
+	FALL,
 	DAMAGE
 } AnimationState;
 
