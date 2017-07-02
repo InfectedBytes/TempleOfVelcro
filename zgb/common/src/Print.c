@@ -97,6 +97,7 @@ void Printf(const char* txt, ...){
 				case  '?': c = font_idx + 44; break;
 				case  '*': c = font_idx + 45; break;
 				case  '@': c = font_idx + 46; break;
+				case  '_': c = font_idx + 47; break;
 				case  '%':
 					switch(*(txt + 1)) {
 						case 'd':

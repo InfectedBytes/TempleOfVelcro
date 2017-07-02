@@ -32,7 +32,7 @@ UINT8 bank_STATE_CREDITS = 4;
 /* ----- Functions ----- */
 void Start_STATE_CREDITS(void) {
 	/* setup background logo */
-	InitScrollTiles(0, 32, tiles, 3);
+	InitScrollTiles(0, 33, tiles, 3);
 	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, 4);
 	RefreshScroll();
 
@@ -46,13 +46,13 @@ void Start_STATE_CREDITS(void) {
 	Printf("@DIMACHOTIN");
 
 	PRINT_POS(MENU_CREDITS_COL, MENU_CREDITS_LINE + 2);
-	Printf("@INFECTEDBYTES");
+	Printf("@INFECTED_BYTES");
 
 	PRINT_POS(MENU_CREDITS_COL, MENU_CREDITS_LINE + 3);
 	Printf("@STONYYBIRD");
 
 	PRINT_POS(MENU_CREDITS_COL, MENU_CREDITS_LINE + 4);
-	Printf("@VAULTKID");
+	Printf("@IAMVAULTKID");
 
 	PRINT_POS(MENU_HELP_COL, MENU_HELP_LINE);
 	Printf("PRESS ANY KEY");

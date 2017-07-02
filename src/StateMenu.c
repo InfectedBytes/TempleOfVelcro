@@ -40,7 +40,7 @@ static UINT8 selection = 0;
 /* ----- Functions ----- */
 void Start_STATE_MENU(void) {
 	/* setup background logo */
-	InitScrollTiles(0, 32, tiles, 3);
+	InitScrollTiles(0, 33, tiles, 3);
 	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, 4);
 	RefreshScroll();
 
