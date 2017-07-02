@@ -20,6 +20,7 @@ void Start_STATE_GAMEOVER() {
 	Printf("Gameover");
 	PRINT_POS(3, 12);
 	Printf("Press any key");
+	BGP_REG = PAL_DEF(0, 1, 2, 3);
 }
 
 void Update_STATE_GAMEOVER() {

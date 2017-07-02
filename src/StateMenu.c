@@ -61,6 +61,7 @@ void Start_STATE_MENU(void) {
 
 	StateMenu_UpdateSelection(MENU_GOTO_GAME);
 	SHOW_BKG;
+	BGP_REG = PAL_DEF(0, 1, 2, 3);
 
 	/* TODO: play menu sound or keep music from intro */
 #if 0
