@@ -32,7 +32,7 @@ UINT8 bank_STATE_CREDITS = 4;
 /* ----- Functions ----- */
 void Start_STATE_CREDITS(void) {
 	/* setup background logo */
-	InitScrollTiles(0, 33, tiles, 3);
+	InitScrollTiles(0, 32, tiles, 3);
 	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, 4);
 	RefreshScroll();
 
