@@ -25,7 +25,7 @@ void InitStates() {
 }
 
 void InitSprites() {
-	INIT_SPRITE(SPRITE_PLAYER, sheep, 3, FRAME_24x32, 8);
+	INIT_SPRITE(SPRITE_PLAYER, sheep, 3, FRAME_24x32, 7);
 	INIT_SPRITE(SPRITE_ENEMY, wario, 3, FRAME_24x32, 1);
 	INIT_SPRITE(SPRITE_HEART, pickups, 3, FRAME_8x16, 3);
 }

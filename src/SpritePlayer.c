@@ -12,8 +12,8 @@ UINT8 bank_SPRITE_PLAYER = 2;
 
 #define COLL_Y 12
 
-static UINT8 idle_anim[] = { 3, 1, 3, 5 };
-static UINT8 walk_anim[] = { 8, 0, 1, 2, 3, 4, 5, 6, 7 };
+static UINT8 idle_anim[] = { 2, 1, 3 };
+static UINT8 walk_anim[] = { 12, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 4, 3 };
 
 // these variables are always pointing to the current player
 static struct Sprite* player;
@@ -151,13 +151,13 @@ void Update_SPRITE_PLAYER() {
 		// handle input
 		if (KEY_PRESSED(J_LEFT)) {
 			SET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-			SetSpriteAnim(THIS, walk_anim, 15);
+			SetSpriteAnim(THIS, walk_anim, WALK_ANIM_SPEED);
 			// to prevent glitching, we just translate in two small steps instead of one large step
 			TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
 			TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
 		} else if (KEY_PRESSED(J_RIGHT)) {
 			UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-			SetSpriteAnim(THIS, walk_anim, 15);
+			SetSpriteAnim(THIS, walk_anim, WALK_ANIM_SPEED);
 			TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 			TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 		} else {
