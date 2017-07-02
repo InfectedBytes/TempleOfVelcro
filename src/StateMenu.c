@@ -14,7 +14,8 @@ UINT8 bank_STATE_MENU = 4;
 #define MENU_TITLE_LINE     2
 #define MENU_SELECTION_LINE 4
 #define MENU_SELECTION_COL  4
-#define MENU_TEXT_COL       6
+#define MENU_HELP_COL       2
+#define MENU_HELP_LINE      10
 
 
 /* ----- Types / Enums ----- */
@@ -47,6 +48,11 @@ void Start_STATE_MENU(void) {
 
 	PRINT_POS(MENU_SELECTION_COL, MENU_SELECTION_LINE + 2);
 	Printf("  Credits");
+
+	PRINT_POS(MENU_HELP_COL, MENU_HELP_LINE);
+	Printf("UP DOWN: change");
+	PRINT_POS(MENU_HELP_COL, MENU_HELP_LINE + 1);
+	Printf("A START: select");
 
 	StateMenu_UpdateSelection(MENU_GOTO_GAME);
 	SHOW_BKG;
