@@ -16,9 +16,9 @@ UINT8 GetTileReplacement(UINT8* tile_ptr, UINT8* tile) {
 	return 255u;
 }
 
-void ReplaceFrames(UINT8 firstTile, FrameSize frameSize, UINT8 frames, UINT8* data, UINT8 dataBank, UINT16 skipFrames) {
+void ReplaceFrames(UINT8 firstTile, FrameSize frameSize, UINT8 frames, UINT8* data, UINT8 dataBank) {
 	PUSH_BANK(dataBank);
-	set_sprite_data(firstTile, GetFrameCount(frames, frameSize), data + ((UINT16)GetFrameCount(skipFrames, frameSize) << 4));
+	set_sprite_data(firstTile, GetFrameCount(frames, frameSize), data);
 	POP_BANK;
 }
 

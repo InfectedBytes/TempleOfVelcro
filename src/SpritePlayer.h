@@ -11,7 +11,7 @@ DECLARE_SPRITE(SPRITE_PLAYER);
 #define MAX_HEALTH 3
 #define WALK_ANIM_SPEED 30
 // Helper macro used to switch the player's frames
-#define UPDATE_FRAME_CACHE(health) ReplaceFrames(scroll_target->first_tile, scroll_target->size, 7, sheep, sheepBank, 7*(health));
+#define UPDATE_FRAME_CACHE ReplaceFrames(player->first_tile, player->size, 14, spriteSheets[data->Health - 1], 3)
 
 #define GROUNDED_BIT 7u
 #define DOUBLE_JUMP_BIT 6u
@@ -37,7 +37,6 @@ typedef struct {
 } PlayerData;
 
 typedef enum {
-	IDLE, // only for debug
 	WALK, 
 	//JUMP,
 	DAMAGE

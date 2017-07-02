@@ -7,19 +7,25 @@
 #include "Math.h"
 #include "StateGame.h"
 #include "Sound.h"
-#include "../res/src/sheep.h"
+#include "../res/src/sheep1.h"
+#include "../res/src/sheep2.h"
+#include "../res/src/sheep3.h"
 #include "../res/src/map.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
 #define COLL_Y 12
 
-static UINT8 idle_anim[] = { 2, 1, 3 };
+static UINT8* spriteSheets[] = { sheep1, sheep2, sheep3 };
+
 static UINT8 walk_anim[] = { 12, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 4, 3 };
-static UINT8 damage_anim[] = {2, 5, 6};
+static UINT8 damage_anim[] = {2, 12, 13};
+static UINT8 gameover_anim[] = { 2, 8, 9};
 
 // these variables are always pointing to the current player
 static struct Sprite* player;
 static PlayerData* data;
+
+static AnimationState lastState, currentState;
 
 static UINT8 normalPalette = PAL_DEF(2, 0, 1, 3);
 static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
@@ -28,11 +34,16 @@ static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
 static UINT8 autorun;
 
 static void SetAnimationState(AnimationState state) {
+	lastState = currentState;
+	currentState = state;
 	switch (state) {
-		case IDLE: SetSpriteAnim(player, idle_anim, 15); break;
 		case WALK: SetSpriteAnim(player, walk_anim, WALK_ANIM_SPEED); break;
 		case DAMAGE: SetSpriteAnim(player, damage_anim, 10); break;
 	}
+}
+
+static void RevertAnimationState() {
+	SetAnimationState(lastState);
 }
 
 static void DrawGui() {
@@ -52,7 +63,7 @@ static void DrawGui() {
 void HealPlayer() {
 	if (data->Health < MAX_HEALTH) {
 		data->Health++;
-		UPDATE_FRAME_CACHE(MAX_HEALTH - data->Health);
+		UPDATE_FRAME_CACHE;
 	}
 }
 
@@ -122,6 +133,8 @@ void Start_SPRITE_PLAYER() {
 	PAL1;
 	COLLISION_BORDER(6, COLL_Y, 10, 20);
 	scroll_target = THIS;
+	lastState = currentState = WALK;
+	SetAnimationState(WALK);
 }
 
 void Update_SPRITE_PLAYER() {
@@ -144,8 +157,10 @@ void Update_SPRITE_PLAYER() {
 			HIDE_WIN;
 			return;
 		}
-		if ((UINT16)data->Invincible == INVINCIBLE_TIME) // set new frames
-			UPDATE_FRAME_CACHE(MAX_HEALTH - data->Health);
+		if ((UINT16)data->Invincible == INVINCIBLE_TIME) { // set new frames
+			UPDATE_FRAME_CACHE;
+			RevertAnimationState();
+		}
 	}
 
 	// apply jump
@@ -174,24 +189,19 @@ void Update_SPRITE_PLAYER() {
 	if (KEY_TICKED(J_B)) autorun = 1 - autorun;
 	if (autorun) {
 		UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-		SetAnimationState(WALK);
 		TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 		TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 	} else {
 		// handle input
 		if (KEY_PRESSED(J_LEFT)) {
 			SET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-			SetAnimationState(WALK);
 			// to prevent glitching, we just translate in two small steps instead of one large step
 			TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
 			TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
 		} else if (KEY_PRESSED(J_RIGHT)) {
 			UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-			SetAnimationState(WALK);
 			TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
 			TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
-		} else {
-			SetAnimationState(IDLE);
 		}
 	}
 
