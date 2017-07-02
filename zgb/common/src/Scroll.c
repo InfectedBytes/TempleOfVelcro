@@ -99,6 +99,8 @@ void UPDATE_TILE(INT16 x, INT16 y, UINT8* t, UINT8* c) {
 			set_bkg_tiles(0x1F & (x + scroll_offset_x), 0x1F & (y + scroll_offset_y), 1, 1, c);
 			VBK_REG = 0;
 		}
+	#else
+		(void)c;
 	#endif
 }
 
@@ -121,6 +123,8 @@ void InitWindow(UINT8 x, UINT8 y, UINT8 w, UINT8 h, UINT8* map, UINT8 bank, UINT
 	VBK_REG = 1;
 		set_win_tiles(x, y, w, h, cmap);
 	VBK_REG = 0;
+	#else
+		(void)cmap;
 	#endif
 
 	POP_BANK;
