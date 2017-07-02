@@ -131,7 +131,7 @@ void main() {
 	add_VBL(vbl_update);
 	add_TIM(MusicUpdate);
 	TMA_REG = _cpu == CGB_TYPE ? 120U : 0xBCU;
-  TAC_REG = 0x04U;
+	TAC_REG = 0x04U;
 
 	set_interrupts(VBL_IFLAG | TIM_IFLAG);
 	enable_interrupts();

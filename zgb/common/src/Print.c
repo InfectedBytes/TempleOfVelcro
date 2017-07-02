@@ -87,15 +87,16 @@ void Printf(const char* txt, ...){
 			c = font_idx + 27 + *txt - '0';
 		} else {
 			switch(*txt) {
-				case  '!': c= font_idx + 37; break;
-				case '\'': c= font_idx + 38; break;
-				case  '(': c= font_idx + 39; break;
-				case  ')': c= font_idx + 40; break;
-				case  '-': c= font_idx + 41; break;
-				case  '.': c= font_idx + 42; break;
-				case  ':': c= font_idx + 43; break;
-				case  '?': c= font_idx + 44; break;
-				case  '*': c= font_idx + 45; break;
+				case  '!': c = font_idx + 37; break;
+				case '\'': c = font_idx + 38; break;
+				case  '(': c = font_idx + 39; break;
+				case  ')': c = font_idx + 40; break;
+				case  '-': c = font_idx + 41; break;
+				case  '.': c = font_idx + 42; break;
+				case  ':': c = font_idx + 43; break;
+				case  '?': c = font_idx + 44; break;
+				case  '*': c = font_idx + 45; break;
+				case  '@': c = font_idx + 46; break;
 				case  '%':
 					switch(*(txt + 1)) {
 						case 'd':

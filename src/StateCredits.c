@@ -36,8 +36,6 @@ void Start_STATE_CREDITS(void) {
 	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, 4);
 	RefreshScroll();
 
-	//INIT_WINDOW(font, 3, 0, 1);
-
 	/* clear screen */
 	Clear();
 
@@ -45,20 +43,21 @@ void Start_STATE_CREDITS(void) {
 	Printf("TWITTER:");
 
 	PRINT_POS(MENU_CREDITS_COL, MENU_CREDITS_LINE + 1);
-	Printf("DIMACHOTIN");
+	Printf("@DIMACHOTIN");
 
 	PRINT_POS(MENU_CREDITS_COL, MENU_CREDITS_LINE + 2);
-	Printf("INFECTEDBYTES");
+	Printf("@INFECTEDBYTES");
 
 	PRINT_POS(MENU_CREDITS_COL, MENU_CREDITS_LINE + 3);
-	Printf("STONYYBIRD");
+	Printf("@STONYYBIRD");
 
 	PRINT_POS(MENU_CREDITS_COL, MENU_CREDITS_LINE + 4);
-	Printf("VAULTKID");
+	Printf("@VAULTKID");
 
 	PRINT_POS(MENU_HELP_COL, MENU_HELP_LINE);
 	Printf("PRESS ANY KEY");
 
+	BOTTOM_LINES(8);
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	SHOW_BKG;
 	SHOW_WIN;

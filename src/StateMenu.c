@@ -44,7 +44,7 @@ void Start_STATE_MENU(void) {
 	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, 4);
 	RefreshScroll();
 
-	INIT_WINDOW(font, 3, 0, 1);
+	INIT_WINDOW(font, 3, 0, 8);
 
 	// clear screen
 	Clear();
