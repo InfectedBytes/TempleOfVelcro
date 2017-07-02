@@ -21,3 +21,11 @@ void ReplaceFrames(UINT8 firstTile, FrameSize frameSize, UINT8 frames, UINT8* da
 	set_sprite_data(firstTile, GetFrameCount(frames, frameSize), data + ((UINT16)GetFrameCount(skipFrames, frameSize) << 4));
 	POP_BANK;
 }
+
+void Clear() {
+	UINT8 i;
+	for (i = 0; i < 18; i++) {
+		PRINT_POS(0, i);
+		Printf("                    ");
+	}
+}

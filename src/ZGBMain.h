@@ -13,10 +13,12 @@
 // Helper function, used to replace the players frame cache.
 // This function can't be in switchable ROM, because it will swap banks in order to copy the frames.
 void ReplaceFrames(UINT8 firstTile, FrameSize frameSize, UINT8 frames, UINT8* data, UINT8 dataBank, UINT16 skipFrames);
+void Clear();
 
 typedef enum {
 	STATE_GAME,
 	STATE_MENU,
+	STATE_GAMEOVER,
 
 	N_STATES
 } STATE;

@@ -7,15 +7,17 @@ UINT8 bank_STATE_MENU = 4;
 /* ----- Includes ----- */
 #include "Keys.h"
 #include "ZGBMain.h"
+#include "Scroll.h"
+#include "../res/src/menuMap.h"
+#include "../res/src/tiles.h"
 #include "..\res\src\font.h"
 
 
 /* ----- Defines ----- */
-#define MENU_TITLE_LINE     2
-#define MENU_SELECTION_LINE 4
+#define MENU_SELECTION_LINE 1
 #define MENU_SELECTION_COL  4
 #define MENU_HELP_COL       2
-#define MENU_HELP_LINE      10
+#define MENU_HELP_LINE      6
 
 
 /* ----- Types / Enums ----- */
@@ -37,12 +39,15 @@ static UINT8 selection = 0;
 
 /* ----- Functions ----- */
 void Start_STATE_MENU(void) {
-	/* setup the screen content */
-	INIT_FONT(font, 3, PRINT_BKG);
+	/* setup background logo */
+	InitScrollTiles(0, 32, tiles, 3);
+	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, 4);
+	RefreshScroll();
 
-	PRINT_POS(MENU_SELECTION_COL, MENU_TITLE_LINE);
-	Printf("Game menu");
+	INIT_WINDOW(font, 3, 0, 1);
 
+	// clear screen
+	Clear();
 	PRINT_POS(MENU_SELECTION_COL, MENU_SELECTION_LINE);
 	Printf("  Play");
 
@@ -67,13 +72,16 @@ void Start_STATE_MENU(void) {
 }
 
 void Update_STATE_MENU(void) {
+	BOTTOM_LINES(8);
 	/* check for menu selection by pressing START or A */
-	if (KEY_PRESSED(J_A | J_START)) {
+	if (KEY_TICKED(J_A | J_START)) {
 		/* get the next state from current menu selection */
 		UINT8 nextState = StateMenu_GetNextState(selection);
 
 		/* check if next state is valid */
 		if (255 != nextState) {
+			Clear();
+			HIDE_WIN;
 			/* switch to next state, abort this function */
 			SetState(nextState);
 			return;

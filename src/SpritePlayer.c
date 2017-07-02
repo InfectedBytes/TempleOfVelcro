@@ -61,13 +61,8 @@ void HealPlayer() {
 void DamagePlayer() {
 	if (data->Invincible) return;
 	SetAnimationState(DAMAGE);
-	if (data->Health != 1) {
-		// TODO: damage animation
-		data->Health--;
-		data->Invincible = INVINCIBLE_TIME + DAMAGE_FREEZE_TIME;
-	} else {
-		// TODO: gameover animation + screen
-	}
+	data->Health--;
+	data->Invincible = INVINCIBLE_TIME + DAMAGE_FREEZE_TIME;
 }
 
 // Checks whether the provided sprite collides with the player or not.
@@ -144,6 +139,11 @@ void Update_SPRITE_PLAYER() {
 		OBP1_REG = (data->Invincible & 4) ? invertPalette : normalPalette;
 		if (data->Invincible > INVINCIBLE_TIME) // freeze and animate
 			return;
+		if (data->Health == 0) {
+			SetState(STATE_GAMEOVER);
+			HIDE_WIN;
+			return;
+		}
 		if ((UINT16)data->Invincible == INVINCIBLE_TIME) // set new frames
 			UPDATE_FRAME_CACHE(MAX_HEALTH - data->Health);
 	}
