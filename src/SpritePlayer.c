@@ -19,11 +19,11 @@ UINT8 bank_SPRITE_PLAYER = 2;
 static UINT8* spriteSheets[] = { sheep1, sheep2, sheep3 };
 
 static UINT8 idle_anim[] = { 3, 1, 3, 3 };
-static UINT8 walk_anim[] = { 12, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 4, 3 };
+UINT8 walk_anim[] = { 12, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 4, 3 }; // not static, because it is also used in credits
 static UINT8 damage_anim[] = {2, 12, 13};
 static UINT8 gameover_anim[] = { 2, 8, 9};
-static UINT8 jump_anim[] = { 3, 5, 6, 6 };
-static UINT8 fall_anim[] = { 1, 7 };
+UINT8 jump_anim[] = { 3, 5, 6, 6 }; // not static, because it is also used in credits
+UINT8 fall_anim[] = { 1, 7 }; // not static, because it is also used in credits
 static UINT8 victory_anim[] = { 3, 11, 10, 11 };
 
 // these variables are always pointing to the current player

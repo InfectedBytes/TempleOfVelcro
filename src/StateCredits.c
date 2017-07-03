@@ -8,7 +8,8 @@ UINT8 bank_STATE_CREDITS = 4;
 #include "Keys.h"
 #include "ZGBMain.h"
 #include "Scroll.h"
-#include "../res/src/menuMap.h"
+#include "SpriteManager.h"
+#include "../res/src/creditsMap.h"
 #include "../res/src/tiles.h"
 #include "../res/src/font.h"
 
@@ -19,6 +20,9 @@ UINT8 bank_STATE_CREDITS = 4;
 #define MENU_HELP_COL       3
 #define MENU_HELP_LINE      7
 
+#define CREDIT_SPAWN_TIME 80
+#define CREDIT_SPAWN_Y 40
+
 
 /* ----- Types / Enums ----- */
 
@@ -27,14 +31,23 @@ UINT8 bank_STATE_CREDITS = 4;
 
 
 /* ----- Variables ----- */
-
+static UINT8 sheepSpawnCountdown;
+UINT16 creditSheepCounter;
+static UINT8 collision_tiles[] = { 1, 0 };
 
 /* ----- Functions ----- */
 void Start_STATE_CREDITS(void) {
+	/* init sprites */
+	creditSheepCounter = 0;
+	sheepSpawnCountdown = CREDIT_SPAWN_TIME >> 2;
+	SET_PAL0(2, 0, 1, 3);
+	SPRITES_8x16;
+	SpriteManagerLoad(SPRITE_CREDIT_SHEEP);
+	SHOW_SPRITES;
+
 	/* setup background logo */
 	InitScrollTiles(0, 32, tiles, 3);
-	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, 4);
-	RefreshScroll();
+	InitScroll(creditMapWidth, creditMapHeight, creditMap, collision_tiles, 0, 4);
 
 	/* clear screen */
 	Clear();
@@ -72,7 +85,14 @@ void Start_STATE_CREDITS(void) {
 }
 
 void Update_STATE_CREDITS(void) {
+	MoveScroll(20, 0);
+	if (sheepSpawnCountdown-- == 0) {
+		SpriteManagerAdd(SPRITE_CREDIT_SHEEP, 0, CREDIT_SPAWN_Y);
+		sheepSpawnCountdown = CREDIT_SPAWN_TIME;
+	}
 	BOTTOM_LINES(8);
+	PRINT_POS(10, 0);
+	Printf("%u", creditSheepCounter);
 
 	/* leave the credits on any input */
 	if (KEY_TICKED(0xFFU))
