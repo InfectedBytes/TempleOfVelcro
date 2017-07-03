@@ -186,7 +186,7 @@ void Update_SPRITE_PLAYER() {
 	// handle dying animation
 	if (data->Health == 0) {
 		SetAnimationState(DEAD);
-		if (gameoverTimer-- == 0) SetState(STATE_GAMEOVER);
+		if (gameoverTimer-- == 0) SetState(STATE_GAMEOVER, 1);
 		else if (gameoverTimer > (GAMEOVER_ANIM_TIME >> 1) + 5) THIS->y--;
 		else THIS->y+=2;
 		return;
@@ -210,7 +210,7 @@ void Update_SPRITE_PLAYER() {
 		TranslateSprite(THIS, 0, GRAVITY); // we don't want to stop mid air
 
 		if (gameoverTimer-- == 0) {
-			SetState(STATE_VICTORY);
+			SetState(STATE_VICTORY, 1);
 		}
 
 		return;
@@ -228,7 +228,7 @@ void Update_SPRITE_PLAYER() {
 		if (data->Invincible > INVINCIBLE_TIME) // freeze and animate
 			return;
 		if (data->Health == 0) {
-			SetState(STATE_GAMEOVER);
+			SetState(STATE_GAMEOVER, 1);
 			HIDE_WIN;
 			return;
 		}

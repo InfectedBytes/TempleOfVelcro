@@ -31,11 +31,11 @@ static void StateMenu_UpdateSelection(UINT8 sel);
 
 /* ----- Variables ----- */
 static UINT8 selection = 0;
-static MenuEntry mainMenuEntries[] = {
+static const MenuEntry mainMenuEntries[] = {
 	{1, "  Play"},
 	{3, "  Credits"}
 };
-static MenuEntry difficultyMenuEntries[] = {
+static const MenuEntry difficultyMenuEntries[] = {
 	{1, "  Easy"},
 	{2, "  Normal"},
 	{3, "  Hard"},
@@ -46,6 +46,8 @@ static Menu mainMenu = { 2, mainMenuEntries, StateMenu_Select };
 static Menu difficultyMenu = { 4, difficultyMenuEntries, StateMenu_SelectDifficulty };
 
 static Menu* currentMenu;
+
+extern UINT8* menu_mod_Data[];
 
 /* ----- Functions ----- */
 
@@ -82,13 +84,8 @@ void Start_STATE_MENU(void) {
 	SHOW_BKG;
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 
-	/* TODO: play menu sound or keep music from intro */
-#if 0
-	PlayMusic(test_mod_Data, 5, 1);
-	NR52_REG = 0x80; // Enables sound, you should always setup this first
-	NR51_REG = 0xFF;// Enables all channels (left and right)
-	NR50_REG = 0x77;// Max volume
-#endif
+	/* play menu sound */
+	PlayMusic(menu_mod_Data, 5, 1);
 }
 
 void Update_STATE_MENU(void) {
@@ -156,7 +153,7 @@ void StateMenu_Select(UINT8 selection) {
 			break;
 		case 1: // Credits
 			HIDE_WIN;
-			SetState(STATE_CREDITS);
+			SetState(STATE_CREDITS, 0);
 			break;
 	}
 }
@@ -168,6 +165,6 @@ void StateMenu_SelectDifficulty(UINT8 selection) {
 	} else { // 0-2 Difficulty
 		HIDE_WIN;
 		SetDifficulty(selection);
-		SetState(STATE_GAME);
+		SetState(STATE_GAME, 1);
 	}
 }

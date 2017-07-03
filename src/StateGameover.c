@@ -9,6 +9,8 @@ UINT8 bank_STATE_GAMEOVER = 4;
 #include "../res/src/gameoverMap.h"
 #include "../res/src/tiles.h"
 
+extern UINT8* gameover_mod_Data[];
+
 void Start_STATE_GAMEOVER() {
 	HIDE_WIN;
 	InitScrollTiles(0, 32, tiles, 3);
@@ -21,10 +23,13 @@ void Start_STATE_GAMEOVER() {
 	Printf("Press any key");
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	SHOW_BKG;
+
+	/* play menu sound */
+	PlayMusic(gameover_mod_Data, 5, 1);
 }
 
 void Update_STATE_GAMEOVER() {
 	if (KEY_TICKED(-1)) {
-		SetState(STATE_MENU);
+		SetState(STATE_MENU, 1);
 	}
 }

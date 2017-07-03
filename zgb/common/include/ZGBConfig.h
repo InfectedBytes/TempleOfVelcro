@@ -44,4 +44,13 @@
 
 // This define is used to enable the signed print, for e.g.: Printf("%d %i", value, value)
 //#define PRINT_SIGNED_ENABLED
+
+
+
+/*********************************************\
+|                    MAIN                     |
+\*********************************************/
+// setup sound channels at startup
+#define SOUND_AT_START_ENABLED
+
 #endif

@@ -80,7 +80,7 @@ void Update_STATE_CREDITS(void) {
 		/* switch to next state, abort this function */
 		Clear();
 		HIDE_WIN;
-		SetState(STATE_MENU);
+		SetState(STATE_MENU, 0);
 		return;
 	}
 }
