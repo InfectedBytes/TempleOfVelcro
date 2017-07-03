@@ -11,6 +11,7 @@ UINT8 init_bank = 1;
 
 #include "SpritePlayer.h"
 #include "SpriteHeart.h"
+#include "SpriteCreditSheep.h"
 
 #include "../res/src/sheep3.h"
 #include "../res/src/pickups.h"
@@ -31,4 +32,5 @@ void InitStates() {
 void InitSprites() {
 	INIT_SPRITE(SPRITE_PLAYER, sheep3, 3, FRAME_24x32, 14);
 	INIT_SPRITE(SPRITE_HEART, pickups, 3, FRAME_8x16, 6);
+	INIT_SPRITE(SPRITE_CREDIT_SHEEP, sheep3, 3, FRAME_24x32, 14);
 }

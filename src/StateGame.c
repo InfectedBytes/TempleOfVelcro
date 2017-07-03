@@ -17,12 +17,10 @@ UINT8 collision_tiles[] = { 1, 4, 0 };
 extern UINT8* level_mod_Data[];
   
 void Start_STATE_GAME() {
-	UINT8 i;
 	SET_PAL0(0, 1, 2, 3);
 	SPRITES_8x16;
-	for(i = 0; i != n_sprite_types; ++ i) {
-		SpriteManagerLoad(i);
-	}
+	SpriteManagerLoad(SPRITE_PLAYER);
+	SpriteManagerLoad(SPRITE_HEART);
 	SHOW_SPRITES;
 
 	InitScrollTiles(0, 32, tiles, 3);
