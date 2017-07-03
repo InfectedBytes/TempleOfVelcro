@@ -193,7 +193,7 @@ void Update_SPRITE_PLAYER() {
 	// draw information on window
 	DrawGui(metersLeft);
 
-	// check if finished
+	// check for victory
 	if (0 == metersLeft) {
 		if (VICTORY != GetAnimationState()) {
 			OBP1_REG = normalPalette;
@@ -203,7 +203,7 @@ void Update_SPRITE_PLAYER() {
 		SetAnimationState(VICTORY);
 
 		if (gameoverTimer-- == 0) {
-			SetState(STATE_GAMEOVER);
+			SetState(STATE_VICTORY);
 		}
 
 		return;
