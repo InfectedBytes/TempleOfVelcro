@@ -74,14 +74,6 @@ void Start_STATE_CREDITS(void) {
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	SHOW_BKG;
 	SHOW_WIN;
-
-	/* TODO: play credits sound or keep music from intro? */
-#if 0
-	PlayMusic(test_mod_Data, 5, 1);
-	NR52_REG = 0x80; // Enables sound, you should always setup this first
-	NR51_REG = 0xFF;// Enables all channels (left and right)
-	NR50_REG = 0x77;// Max volume
-#endif
 }
 
 void Update_STATE_CREDITS(void) {
