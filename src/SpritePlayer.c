@@ -88,6 +88,7 @@ void HealPlayer() {
 		data->Health++;
 		UPDATE_FRAME_CACHE;
 	}
+	PLAYFX(player_heal);
 }
 
 // If player is not invincible, this function will decrement the player's health and updates the frame cache.
@@ -99,6 +100,7 @@ void DamagePlayer() {
 		return;
 	}
 	SetAnimationState(DAMAGE);
+	PLAYFX(player_damage);
 	data->Health--;
 	data->Invincible = INVINCIBLE_TIME + DAMAGE_FREEZE_TIME;
 }

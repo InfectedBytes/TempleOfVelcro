@@ -14,7 +14,7 @@ extern UINT8 n_sprite_types;
 
 UINT8 collision_tiles[] = { 1, 4, 0 };
 
-extern UINT8* test_mod_Data[];
+extern UINT8* level_mod_Data[];
   
 void Start_STATE_GAME() {
 	UINT8 i;
@@ -32,7 +32,7 @@ void Start_STATE_GAME() {
 	SHOW_BKG;
 	INIT_WINDOW(font, 3, 0, 1);
 	HIDE_WIN; // hide for now
-	PlayMusic(test_mod_Data, 5, 1);
+	PlayMusic(level_mod_Data, 5, 1);
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	NR52_REG = 0x80; //Enables sound, you should always setup this first
 	NR51_REG = 0xFF; //Enables all channels (left and right)
