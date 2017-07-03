@@ -16,6 +16,15 @@ void ReplaceFrames(UINT8 firstTile, FrameSize frameSize, UINT8 frames, UINT8* da
 void Clear();
 
 typedef enum {
+	EASY,
+	NORMAL,
+	HARD
+} Difficulty;
+
+void SetDifficulty(Difficulty dif);
+Difficulty GetDifficulty();
+
+typedef enum {
 	STATE_GAME,
 	STATE_MENU,
 	STATE_GAMEOVER,

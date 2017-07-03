@@ -39,6 +39,10 @@ static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
 // for debugging: toggle autorun
 static UINT8 autorun;
 
+// difficulty values
+static UINT8 speedSetting;
+static UINT8 gravitySetting;
+
 static void SetAnimationState(AnimationState state) {
 	lastState = currentState;
 	currentState = state;
@@ -169,6 +173,9 @@ void Start_SPRITE_PLAYER() {
 	scroll_target = THIS;
 	lastState = currentState = IDLE;
 	SetAnimationState(currentState);
+	// difficulty
+	speedSetting = WALK_SPEED + GetDifficulty();
+	gravitySetting = GRAVITY + GetDifficulty();
 }
 
 void Update_SPRITE_PLAYER() {
@@ -200,6 +207,7 @@ void Update_SPRITE_PLAYER() {
 		}
 
 		SetAnimationState(WIN);
+		TranslateSprite(THIS, 0, GRAVITY); // we don't want to stop mid air
 
 		if (gameoverTimer-- == 0) {
 			SetState(STATE_GAMEOVER);
@@ -245,7 +253,7 @@ void Update_SPRITE_PLAYER() {
 	}
 
 	// apply gravity and check if sprite is grounded
-	if (TranslateSprite(THIS, 0, velcro ? VELCRO_GRAVITY : (GRAVITY + delta_time))) {
+	if (TranslateSprite(THIS, 0, velcro ? VELCRO_GRAVITY : (gravitySetting + delta_time))) {
 		if (!velcro && !GET_BIT(data->Flags, GROUNDED_BIT)) {
 			PLAYFX(player_grounded);
 		}
@@ -254,26 +262,26 @@ void Update_SPRITE_PLAYER() {
 		SetAnimationState(WALK);
 	} else {
 		UNSET_BIT(data->Flags, GROUNDED_BIT);
-		if(data->Jump >= -GRAVITY) SetAnimationState(FALL);
+		if(data->Jump >= -gravitySetting) SetAnimationState(FALL);
 	}
 
 	// for debugging: toggle autorun
 	if (KEY_TICKED(J_B)) autorun = 1 - autorun;
 	if (autorun) {
 		UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-		TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
-		TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
+		TranslateSprite(THIS, speedSetting + delta_time, 0);
+		TranslateSprite(THIS, speedSetting + delta_time, 0);
 	} else {
 		// handle input
 		if (KEY_PRESSED(J_LEFT)) {
 			SET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
 			// to prevent glitching, we just translate in two small steps instead of one large step
-			TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
-			TranslateSprite(THIS, -(WALK_SPEED + delta_time), 0);
+			TranslateSprite(THIS, -(speedSetting + delta_time), 0);
+			TranslateSprite(THIS, -(speedSetting + delta_time), 0);
 		} else if (KEY_PRESSED(J_RIGHT)) {
 			UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-			TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
-			TranslateSprite(THIS, WALK_SPEED + delta_time, 0);
+			TranslateSprite(THIS, speedSetting + delta_time, 0);
+			TranslateSprite(THIS, speedSetting + delta_time, 0);
 		} else {
 			SetAnimationState(IDLE);
 		}

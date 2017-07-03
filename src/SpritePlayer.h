@@ -8,7 +8,7 @@
 
 DECLARE_SPRITE(SPRITE_PLAYER);
 
-#define GRAVITY 5
+#define GRAVITY 3
 #define VELCRO_GRAVITY -3
 #define MAX_HEALTH 3
 #define WALK_ANIM_SPEED 30
@@ -20,7 +20,7 @@ DECLARE_SPRITE(SPRITE_PLAYER);
 #define JUMP_STRENGTH -14
 #define VELCRO_JUMP_STRENGTH 8
 // This is only half of the walkspeed. It is applied in two small steps, in order to prevent glitching
-#define WALK_SPEED 4
+#define WALK_SPEED 2
 
 // Time the player is invincible after he got hit
 #define INVINCIBLE_TIME 50

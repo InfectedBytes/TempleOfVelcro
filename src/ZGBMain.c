@@ -3,6 +3,17 @@
 #include "Sprite.h"
 #include "BankManager.h"
 
+
+static Difficulty difficulty = NORMAL;
+
+void SetDifficulty(Difficulty dif) {
+	difficulty = dif;
+}
+
+Difficulty GetDifficulty() {
+	return difficulty;
+}
+
 UINT8 GetTileReplacement(UINT8* tile_ptr, UINT8* tile) {
 	if(current_state == STATE_GAME) {
 		if(U_LESS_THAN(127 - (UINT16)*tile_ptr, N_SPRITE_TYPES)) {
