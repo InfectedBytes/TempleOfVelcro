@@ -32,13 +32,17 @@ void DrawFrame(UINT8 oam_idx, FrameSize size, int idx, UINT16 x, UINT16 y, UINT8
 	y0 = y + 16u + yShift;
 	y1 = y + 32u - yShift;
 	switch (size) {
+#ifdef SPRITES_8X8_ENABLED
 	case FRAME_8x8:
 		DrawOAMSprite(oam_idx, idx, x + 8u, y + 16u, flags);
 		break;
+#endif
 
+#ifdef SPRITES_8X16_ENABLED
 	case FRAME_8x16:
 		DrawOAMSprite(oam_idx, idx, x + 8u, y + 16u, flags);
 		break;
+#endif
 
 #ifdef SPRITES_16X16_ENABLED
 	case FRAME_16x16:

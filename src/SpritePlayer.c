@@ -68,7 +68,7 @@ static void DrawGui(INT16 metersLeft) {
 
 	// print meters left
 	PRINT_POS(14, 0);
-	Printf(" %dm    ", (UINT16)metersLeft);
+	Printf(" %um    ", (UINT16)metersLeft);
 
 	// print health
 	PRINT_POS(1, 0);
