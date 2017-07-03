@@ -246,6 +246,9 @@ void Update_SPRITE_PLAYER() {
 
 	// apply gravity and check if sprite is grounded
 	if (TranslateSprite(THIS, 0, velcro ? VELCRO_GRAVITY : (GRAVITY + delta_time))) {
+		if (!velcro && !GET_BIT(data->Flags, GROUNDED_BIT)) {
+			PLAYFX(player_grounded);
+		}
 		SET_BIT(data->Flags, GROUNDED_BIT);
 		UNSET_BIT(data->Flags, DOUBLE_JUMP_BIT);
 		SetAnimationState(WALK);
