@@ -2,6 +2,7 @@
 #define ZCONSOLE_H
 
 #include <gb/gb.h> 
+#include "ZGBConfig.h"
 
 #define FONT_TILE_COUNT 53
 #define INIT_FONT(FONT, FONT_BANK, TARGET)  InitScrollTiles(255 - FONT_TILE_COUNT, FONT_TILE_COUNT, FONT, FONT_BANK); \
@@ -14,9 +15,14 @@ typedef enum {
 	PRINT_WIN
 } PRINT_TARGET;
 
-void UIntToHexString(UINT16 n, unsigned char* str);
+
 void UIntToString(UINT16 n, unsigned char* str);
+#ifdef PRINT_SIGNED_ENABLED
 void IntToString (INT16  n, unsigned char* str);
+#endif
+#ifdef PRINT_HEX_ENABLED
+void UIntToHexString(UINT16 n, unsigned char* str);
+#endif
 
 void Printf(const char* txt, ...);
 #define PRINT_POS(X, Y) print_x = X; print_y  = Y

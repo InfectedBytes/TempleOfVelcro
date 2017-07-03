@@ -9,6 +9,7 @@ UINT8 print_y = 0;
 UINT8 font_idx = 128;
 UINT8 print_target = PRINT_BKG;
 
+#ifdef PRINT_HEX_ENABLED
 // The following function is not part of the original ZGB engine and was added by InfectedBytes
 void UIntToHexString(UINT16 n, unsigned char* str) {
 	UINT16 tmp = n;
@@ -32,6 +33,7 @@ void UIntToHexString(UINT16 n, unsigned char* str) {
 		}
 	}
 }
+#endif
 
 void UIntToString(UINT16 n, unsigned char* str) {
 	UINT16 tmp = n;
@@ -56,6 +58,7 @@ void UIntToString(UINT16 n, unsigned char* str) {
 	}
 }
 
+#ifdef PRINT_SIGNED_ENABLED
 void IntToString(INT16 n, unsigned char* str) {
 	int tmp = n;
 	UINT8 size = 0;
@@ -68,6 +71,7 @@ void IntToString(INT16 n, unsigned char* str) {
 
 	UIntToString(n, str);
 }
+#endif
 
 void Printf(const char* txt, ...){
 	UINT8 idx = 0;
@@ -101,23 +105,27 @@ void Printf(const char* txt, ...){
 				case  '_': c = font_idx + 48; break;
 				case  '%':
 					switch(*(txt + 1)) {
+#ifdef PRINT_SIGNED_ENABLED
 						case 'd':
 						case 'i':
 							IntToString(va_arg(list, INT16), tmp);
 							Printf(tmp);
 							txt += 2;
 							continue;
+#endif
 
 						case 'u':
 							UIntToString(va_arg(list, UINT16), tmp);
 							Printf(tmp);
 							txt += 2;
 							continue;
+#ifdef PRINT_HEX_ENABLED
 						case 'x':
 							UIntToHexString(va_arg(list, UINT16), tmp);
 							Printf(tmp);
 							txt += 2;
 							continue;
+#endif
 					}
 					break;
 			}
