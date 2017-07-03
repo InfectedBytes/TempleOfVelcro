@@ -28,6 +28,8 @@ DECLARE_SPRITE(SPRITE_PLAYER);
 #define DAMAGE_FREEZE_TIME 10
 // gameover animation time
 #define GAMEOVER_ANIM_TIME 80
+// win animation time
+#define WIN_ANIM_TIME 100
 
 void HealPlayer();
 void DamagePlayer();
@@ -46,7 +48,8 @@ typedef enum {
 	JUMP,
 	FALL,
 	DAMAGE,
-	DEAD
+	DEAD,
+	WIN
 } AnimationState;
 
 #endif

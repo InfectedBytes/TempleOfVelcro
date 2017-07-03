@@ -24,6 +24,7 @@ static UINT8 damage_anim[] = {2, 12, 13};
 static UINT8 gameover_anim[] = { 2, 8, 9};
 static UINT8 jump_anim[] = { 3, 5, 6, 6 };
 static UINT8 fall_anim[] = { 1, 7 };
+static UINT8 win_anim[] = { 3, 11, 10, 11 };
 
 // these variables are always pointing to the current player
 static struct Sprite* player;
@@ -42,12 +43,13 @@ static void SetAnimationState(AnimationState state) {
 	lastState = currentState;
 	currentState = state;
 	switch (state) {
-		case IDLE: SetSpriteAnim(player, idle_anim, 10); break;
-		case WALK: SetSpriteAnim(player, walk_anim, WALK_ANIM_SPEED); break;
-		case JUMP: SetSpriteAnim(player, jump_anim, 10); break;
-		case FALL: SetSpriteAnim(player, fall_anim, 10); break;
+		case IDLE:   SetSpriteAnim(player, idle_anim, 10); break;
+		case WALK:   SetSpriteAnim(player, walk_anim, WALK_ANIM_SPEED); break;
+		case JUMP:   SetSpriteAnim(player, jump_anim, 10); break;
+		case FALL:   SetSpriteAnim(player, fall_anim, 10); break;
 		case DAMAGE: SetSpriteAnim(player, damage_anim, 10); break;
-		case DEAD: SetSpriteAnim(player, gameover_anim, 10); break;
+		case DEAD:   SetSpriteAnim(player, gameover_anim, 10); break;
+		case WIN:    SetSpriteAnim(player, win_anim, 8); break;
 	}
 }
 
@@ -55,10 +57,12 @@ static void RevertAnimationState() {
 	SetAnimationState(lastState);
 }
 
-static void DrawGui() {
+static AnimationState GetAnimationState(void) {
+	return currentState;
+}
+
+static void DrawGui(INT16 metersLeft) {
 	UINT8 i;
-	INT16 metersLeft = mapWidth - (THIS->x >> 3) - 10;
-	if (metersLeft < 0) metersLeft = 0;
 
 	BOTTOM_LINES(1);
 
@@ -167,8 +171,10 @@ void Start_SPRITE_PLAYER() {
 
 void Update_SPRITE_PLAYER() {
 	UINT8 velcro;
+	INT16 metersLeft;
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 
+	// handle dying animation
 	if (data->Health == 0) {
 		SetAnimationState(DEAD);
 		if (gameoverTimer-- == 0) SetState(STATE_GAMEOVER);
@@ -176,13 +182,35 @@ void Update_SPRITE_PLAYER() {
 		else THIS->y+=2;
 		return;
 	}
-	
-	DrawGui();
+
+	// calculate meters left
+	metersLeft = mapWidth - (THIS->x >> 3) - 10;
+	if (metersLeft < 0) metersLeft = 0;
+
+	// draw information on window
+	DrawGui(metersLeft);
+
+	// check if finished
+	if (0 == metersLeft) {
+		if (WIN != GetAnimationState()) {
+			OBP1_REG = normalPalette;
+			gameoverTimer = WIN_ANIM_TIME;
+		}
+
+		SetAnimationState(WIN);
+
+		if (gameoverTimer-- == 0) {
+			SetState(STATE_GAMEOVER);
+		}
+
+		return;
+	}
 
 	velcro = UpdateVelcro();
 	UpdateTriggers();
 	if (data->Health == 0) return;
 
+	// handle invincible animation
 	if (data->Invincible > 0) {
 		data->Invincible--;
 		// blink effect
