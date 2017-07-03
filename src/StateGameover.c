@@ -18,7 +18,7 @@ void Start_STATE_GAMEOVER() {
 	INIT_FONT(font, 3, PRINT_BKG);
 	PRINT_POS(6, 8);
 	Printf("Gameover");
-	PRINT_POS(3, 12);
+	PRINT_POS(3, 11);
 	Printf("Press any key");
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 }
