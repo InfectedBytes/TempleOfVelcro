@@ -24,7 +24,7 @@ static UINT8 damage_anim[] = {2, 12, 13};
 static UINT8 gameover_anim[] = { 2, 8, 9};
 static UINT8 jump_anim[] = { 3, 5, 6, 6 };
 static UINT8 fall_anim[] = { 1, 7 };
-static UINT8 win_anim[] = { 3, 11, 10, 11 };
+static UINT8 victory_anim[] = { 3, 11, 10, 11 };
 
 // these variables are always pointing to the current player
 static struct Sprite* player;
@@ -47,13 +47,13 @@ static void SetAnimationState(AnimationState state) {
 	lastState = currentState;
 	currentState = state;
 	switch (state) {
-		case IDLE:   SetSpriteAnim(player, idle_anim, 10); break;
-		case WALK:   SetSpriteAnim(player, walk_anim, WALK_ANIM_SPEED); break;
-		case JUMP:   SetSpriteAnim(player, jump_anim, 10); break;
-		case FALL:   SetSpriteAnim(player, fall_anim, 10); break;
-		case DAMAGE: SetSpriteAnim(player, damage_anim, 10); break;
-		case DEAD:   SetSpriteAnim(player, gameover_anim, 10); break;
-		case WIN:    SetSpriteAnim(player, win_anim, 8); break;
+		case IDLE:    SetSpriteAnim(player, idle_anim, 10); break;
+		case WALK:    SetSpriteAnim(player, walk_anim, WALK_ANIM_SPEED); break;
+		case JUMP:    SetSpriteAnim(player, jump_anim, 10); break;
+		case FALL:    SetSpriteAnim(player, fall_anim, 10); break;
+		case DAMAGE:  SetSpriteAnim(player, damage_anim, 10); break;
+		case DEAD:    SetSpriteAnim(player, gameover_anim, 10); break;
+		case VICTORY: SetSpriteAnim(player, victory_anim, 8); break;
 	}
 }
 
@@ -164,6 +164,7 @@ void Start_SPRITE_PLAYER() {
 	data = (PlayerData*)THIS->custom_data;
 	data->Health = MAX_HEALTH;
 	data->Flags = 0;
+	SET_BIT(data->Flags, GROUNDED_BIT);
 	data->Jump = 0;
 	data->Invincible = 0;
 	OBP1_REG = normalPalette;
@@ -199,18 +200,18 @@ void Update_SPRITE_PLAYER() {
 	// draw information on window
 	DrawGui(metersLeft);
 
-	// check if finished
+	// check for victory
 	if (0 == metersLeft) {
-		if (WIN != GetAnimationState()) {
+		if (VICTORY != GetAnimationState()) {
 			OBP1_REG = normalPalette;
-			gameoverTimer = WIN_ANIM_TIME;
+			gameoverTimer = VICTORY_ANIM_TIME;
 		}
 
-		SetAnimationState(WIN);
+		SetAnimationState(VICTORY);
 		TranslateSprite(THIS, 0, GRAVITY); // we don't want to stop mid air
 
 		if (gameoverTimer-- == 0) {
-			SetState(STATE_GAMEOVER);
+			SetState(STATE_VICTORY);
 		}
 
 		return;

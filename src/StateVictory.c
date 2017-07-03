@@ -1,6 +1,6 @@
 #pragma bank=4
-#include "StateGameover.h"
-UINT8 bank_STATE_GAMEOVER = 4;
+#include "StateVictory.h"
+UINT8 bank_STATE_VICTORY = 4;
 
 #include "ZGBMain.h"
 #include "Keys.h"
@@ -9,21 +9,21 @@ UINT8 bank_STATE_GAMEOVER = 4;
 #include "../res/src/gameoverMap.h"
 #include "../res/src/tiles.h"
 
-void Start_STATE_GAMEOVER() {
+void Start_STATE_VICTORY() {
 	HIDE_WIN;
 	InitScrollTiles(0, 32, tiles, 3);
 	InitScroll(gameoverMapWidth, gameoverMapHeight, gameoverMap, 0, 0, 4);
 	RefreshScroll();
+	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	INIT_FONT(font, 3, PRINT_BKG);
 	PRINT_POS(6, 8);
-	Printf("Gameover");
+	Printf("Victory!");
 	PRINT_POS(3, 11);
 	Printf("Press any key");
-	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	SHOW_BKG;
 }
 
-void Update_STATE_GAMEOVER() {
+void Update_STATE_VICTORY() {
 	if (KEY_TICKED(-1)) {
 		SetState(STATE_MENU);
 	}

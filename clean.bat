@@ -1,3 +1,4 @@
+@echo off
 set ZGB_PATH=zgb\common
 C:\gbdk\bin\make-3.81-bin\bin\make -C %ZGB_PATH%\src clean BUILD_TYPE=Release
 C:\gbdk\bin\make-3.81-bin\bin\make -C %ZGB_PATH%\src clean BUILD_TYPE=Debug
