@@ -1,0 +1,8 @@
+#ifndef SPRITE_CREDIT_SHEEP_H
+#define SPRITE_CREDIT_SHEEP_H
+
+#include "main.h"
+
+DECLARE_SPRITE(SPRITE_CREDIT_SHEEP);
+
+#endif
