@@ -91,6 +91,14 @@ void Start_STATE_MENU(void) {
 void Update_STATE_MENU(void) {
 	BOTTOM_LINES(8);
 
+	/* Toggle autorun mode */
+	if (KEY_TICKED(J_B) && KEY_PRESSED(J_SELECT)) {
+		SetAutorun(!GetAutorun());
+		PRINT_POS(MENU_INFO_COL, MENU_INFO_LINE);
+		if (GetAutorun()) Printf("Autorun on ");
+		else Printf("Autorun off");
+	}
+
 	/* check for menu selection by pressing START or A */
 	if (KEY_TICKED(J_A | J_START)) {
 		currentMenu->Select(selection);

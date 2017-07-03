@@ -5,14 +5,13 @@
 
 
 static Difficulty difficulty = NORMAL;
+static UINT8 autorun = TRUE;
 
-void SetDifficulty(Difficulty dif) {
-	difficulty = dif;
-}
+void SetDifficulty(Difficulty dif) { difficulty = dif; }
+Difficulty GetDifficulty() { return difficulty; }
 
-Difficulty GetDifficulty() {
-	return difficulty;
-}
+void SetAutorun(UINT8 run) { autorun = run; }
+UINT8 GetAutorun() { return autorun; }
 
 UINT8 GetTileReplacement(UINT8* tile_ptr, UINT8* tile) {
 	if(current_state == STATE_GAME) {
