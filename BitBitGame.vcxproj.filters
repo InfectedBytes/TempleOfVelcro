@@ -35,6 +35,9 @@
     <ClInclude Include="src\StateCredits.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\StateVictory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ZGBMain.c">
@@ -59,6 +62,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\StateCredits.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StateVictory.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
