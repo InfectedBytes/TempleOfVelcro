@@ -59,12 +59,17 @@ static void DrawGui() {
 	UINT8 i;
 	INT16 metersLeft = mapWidth - (THIS->x >> 3) - 10;
 	if (metersLeft < 0) metersLeft = 0;
+
 	BOTTOM_LINES(1);
+
+	// print meters left
 	PRINT_POS(14, 0);
 	Printf(" %dm    ", (UINT16)metersLeft);
+
+	// print health
 	PRINT_POS(1, 0);
 	for (i = 0; i < data->Health; i++) Printf("*");
-	for (i = data->Health; i < MAX_HEALTH; i++) Printf(" ");
+	for (i = data->Health; i < MAX_HEALTH; i++) Printf("°");
 }
 
 void KillPlayer() {

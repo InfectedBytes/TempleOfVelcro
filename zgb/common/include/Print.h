@@ -3,7 +3,7 @@
 
 #include <gb/gb.h> 
 
-#define FONT_TILE_COUNT 48
+#define FONT_TILE_COUNT 53
 #define INIT_FONT(FONT, FONT_BANK, TARGET)  InitScrollTiles(255 - FONT_TILE_COUNT, FONT_TILE_COUNT, FONT, FONT_BANK); \
 											font_idx = 255 - FONT_TILE_COUNT; print_target = TARGET
 
