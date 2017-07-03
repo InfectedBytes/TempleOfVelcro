@@ -172,8 +172,7 @@ void Start_SPRITE_PLAYER() {
 	player = THIS;
 	data = (PlayerData*)THIS->custom_data;
 	data->Health = MAX_HEALTH;
-	data->Flags = 0;
-	SET_BIT(data->Flags, GROUNDED_BIT);
+	data->Flags = (1 << GROUNDED_BIT);
 	data->Jump = 0;
 	data->Invincible = 0;
 	OBP1_REG = normalPalette;
