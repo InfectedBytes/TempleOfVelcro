@@ -24,6 +24,9 @@ typedef enum {
 void SetDifficulty(Difficulty dif);
 Difficulty GetDifficulty();
 
+void SetAutorun(UINT8 run);
+UINT8 GetAutorun();
+
 typedef enum {
 	STATE_GAME,
 	STATE_MENU,

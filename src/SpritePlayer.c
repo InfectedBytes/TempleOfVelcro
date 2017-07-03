@@ -32,12 +32,10 @@ static PlayerData* data;
 
 static AnimationState lastState, currentState;
 static UINT8 gameoverTimer;
+static UINT8 countdownTimer;
 
 static UINT8 normalPalette = PAL_DEF(2, 0, 1, 3);
 static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
-
-// for debugging: toggle autorun
-static UINT8 autorun;
 
 // difficulty values
 static UINT8 speedSetting;
@@ -159,6 +157,17 @@ static void PlayJumpSound(UINT8 velcro) {
 	}
 }
 
+static UINT8 StartupInProgress() {
+	if (countdownTimer != 0) {
+		UINT8 countdown = (countdownTimer / 50) + 1;
+		PRINT_POS(7, 0);
+		if (--countdownTimer == 0) Printf("  "); // countdown finished
+		else Printf("%u", (UINT16)countdown);
+		return TRUE;
+	}
+	return FALSE;
+}
+
 void Start_SPRITE_PLAYER() {
 	player = THIS;
 	data = (PlayerData*)THIS->custom_data;
@@ -177,12 +186,24 @@ void Start_SPRITE_PLAYER() {
 	// difficulty
 	speedSetting = WALK_SPEED + GetDifficulty();
 	gravitySetting = GRAVITY + GetDifficulty();
+	if(GetAutorun()) countdownTimer = START_DELAY;
+	else countdownTimer = 0;
 }
 
 void Update_SPRITE_PLAYER() {
 	UINT8 velcro;
 	INT16 metersLeft;
 	PlayerData* data = (PlayerData*)THIS->custom_data;
+
+	// calculate meters left
+	metersLeft = mapWidth - (THIS->x >> 3) - 10;
+	if (metersLeft < 0) metersLeft = 0;
+
+	// draw information on window
+	DrawGui(metersLeft);
+
+	// if startup sequence is not yet done => return
+	if (StartupInProgress()) return;
 
 	// handle dying animation
 	if (data->Health == 0) {
@@ -192,13 +213,6 @@ void Update_SPRITE_PLAYER() {
 		else THIS->y+=2;
 		return;
 	}
-
-	// calculate meters left
-	metersLeft = mapWidth - (THIS->x >> 3) - 10;
-	if (metersLeft < 0) metersLeft = 0;
-
-	// draw information on window
-	DrawGui(metersLeft);
 
 	// check for victory
 	if (0 == metersLeft) {
@@ -266,9 +280,7 @@ void Update_SPRITE_PLAYER() {
 		if(data->Jump >= -gravitySetting) SetAnimationState(FALL);
 	}
 
-	// for debugging: toggle autorun
-	if (KEY_TICKED(J_B)) autorun = 1 - autorun;
-	if (autorun) {
+	if (GetAutorun()) {
 		UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
 		TranslateSprite(THIS, speedSetting + delta_time, 0);
 		TranslateSprite(THIS, speedSetting + delta_time, 0);
