@@ -376,7 +376,7 @@ void Update_SPRITE_PLAYER() {
 	UpdateTriggers();
 	if (data->Health == 0) return; // TODO: why is this necessary?
 
-	HandleInvincible(data);
+	if (HandleInvincible(data)) return;
 
 	ApplyJump(data);
 
