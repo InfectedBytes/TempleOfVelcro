@@ -41,6 +41,8 @@ static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
 static UINT8 speedSetting;
 static UINT8 gravitySetting;
 
+static UINT8 overwriteAutorunSetting;
+
 static void SetAnimationState(AnimationState state) {
 	lastState = currentState;
 	currentState = state;
@@ -61,6 +63,31 @@ static void RevertAnimationState(void) {
 
 static AnimationState GetAnimationState(void) {
 	return currentState;
+}
+
+static void OverwriteAutorun(UINT8 overwrite, UINT8 autorun) {
+	overwriteAutorunSetting = 0;
+
+	if (overwrite) {
+		overwriteAutorunSetting |= 1;
+	}
+
+	if (autorun) {
+		overwriteAutorunSetting |= 2;
+	}
+}
+
+static UINT8 IsAutorunOverwritten(void) {
+	return ((overwriteAutorunSetting & 1) != 0);
+}
+
+static UINT8 GetRealAutorun(void)
+{
+	if (overwriteAutorunSetting & 1) {
+		return ((overwriteAutorunSetting & 2) != 0);
+	} else {
+		return GetAutorun();
+	}
 }
 
 static void DrawGui(INT16 metersLeft) {
@@ -134,17 +161,18 @@ static void UpdateTriggers(void) {
 	UINT16 tx, ty;
 	UINT8 trigger = FIND_TRIGGER(THIS, TILE_TRIGGERS, TILE_TRIGGERS_MASK, &tx, &ty);
 	switch (trigger) {
+	case 0: break;
+	case TILE_INSTANT_DEATH:
+		KillPlayer();
+		break;
 	case TILE_SLOPE_UP:
 		THIS->y -= 16;
 		break;
-	case TILE_SLOP_DOWN:
+	case TILE_SLOPE_DOWN:
 		THIS->y += 12;
 		break;
-	case TILE_SPIKES:
+	default:
 		DamagePlayer();
-		break;
-	case TILE_INSTANT_DEATH:
-		KillPlayer();
 		break;
 	}
 }
@@ -183,7 +211,7 @@ static UINT8 HandleDying(void) {
 
 static void HandleInput(PlayerData* data, UINT8 velcro) {
 	// move
-	if (GetAutorun()) {
+	if (GetRealAutorun()) {
 		UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
 		TranslateSprite(THIS, speedSetting + delta_time, 0);
 		TranslateSprite(THIS, speedSetting + delta_time, 0);
@@ -199,7 +227,10 @@ static void HandleInput(PlayerData* data, UINT8 velcro) {
 			TranslateSprite(THIS, speedSetting + delta_time, 0);
 			TranslateSprite(THIS, speedSetting + delta_time, 0);
 		} else {
-			SetAnimationState(IDLE);
+			// during victory, we dont need the idle animation
+			if (!IsAutorunOverwritten()) {
+				SetAnimationState(IDLE);
+			}
 		}
 	}
 
@@ -264,7 +295,7 @@ static void ApplyJump(PlayerData* data) {
 static UINT8 HandleVictory(PlayerData* data, INT16 metersLeft) {
 	if (0 == metersLeft) {
 		if (0 == gameoverTimer) {
-			SetAutorun(0);
+			OverwriteAutorun(TRUE, FALSE);
 			OBP1_REG = normalPalette;
 			gameoverTimer = VICTORY_ANIM_TIME;
 			TranslateSprite(THIS, 0, GRAVITY); // we don't want to stop mid air
@@ -286,6 +317,7 @@ static UINT8 HandleVictory(PlayerData* data, INT16 metersLeft) {
 			SetAnimationState(VICTORY);
 			gameoverTimer--;
 			if (gameoverTimer == 0) {
+				OverwriteAutorun(FALSE, FALSE);
 				SetState(STATE_VICTORY, 1);
 			}
 			return TRUE;
@@ -343,7 +375,7 @@ void Start_SPRITE_PLAYER() {
 	speedSetting = WALK_SPEED + GetDifficulty();
 	gravitySetting = GRAVITY + GetDifficulty();
 
-	if(GetAutorun()) countdownTimer = START_DELAY;
+	if(GetRealAutorun()) countdownTimer = START_DELAY;
 	else countdownTimer = 0;
 
 	gameoverTimer = 0;
