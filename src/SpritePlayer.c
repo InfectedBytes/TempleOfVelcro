@@ -161,17 +161,18 @@ static void UpdateTriggers(void) {
 	UINT16 tx, ty;
 	UINT8 trigger = FIND_TRIGGER(THIS, TILE_TRIGGERS, TILE_TRIGGERS_MASK, &tx, &ty);
 	switch (trigger) {
+	case 0: break;
+	case TILE_INSTANT_DEATH:
+		KillPlayer();
+		break;
 	case TILE_SLOPE_UP:
 		THIS->y -= 16;
 		break;
-	case TILE_SLOP_DOWN:
+	case TILE_SLOPE_DOWN:
 		THIS->y += 12;
 		break;
-	case TILE_SPIKES:
+	default:
 		DamagePlayer();
-		break;
-	case TILE_INSTANT_DEATH:
-		KillPlayer();
 		break;
 	}
 }

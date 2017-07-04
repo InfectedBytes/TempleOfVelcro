@@ -12,7 +12,8 @@ UINT8 bank_STATE_GAME = 2;
 
 extern UINT8 n_sprite_types;
 
-UINT8 collision_tiles[] = { 1, 4, 0 };
+UINT8 collision_tiles[] = { 1, 2, 3, 11, 12, 13, 14, 15, 16, 30, 31, 32, 33, 35, 36, 37, 38, 39, 0 };
+UINT8 collision_tiles_down[] = { 46, 47, 48, 0 };
 
 extern UINT8* level_mod_Data[];
   
@@ -24,8 +25,8 @@ void Start_STATE_GAME() {
 	SpriteManagerLoad(SPRITE_COUNTDOWN);
 	SHOW_SPRITES;
 
-	InitScrollTiles(0, 32, tiles, 3);
-	InitScroll(mapWidth, mapHeight, map, collision_tiles, 0, 6);
+	InitScrollTiles(0, 128, tiles, 3);
+	InitScroll(mapWidth, mapHeight, map, collision_tiles, collision_tiles_down, 6);
 	adjustableOffsetX = 16; // player should be left of the screen
 	RefreshScroll();
 	SHOW_BKG;
@@ -34,6 +35,8 @@ void Start_STATE_GAME() {
 	PlayMusic(level_mod_Data, 5, 1);
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	Clear();
+
+	SpriteManagerAdd(SPRITE_PLAYER, 2 << 3, 12 << 3);
 
 	if (GetAutorun()) {
 		SpriteManagerAdd(SPRITE_COUNTDOWN, (SCREENWIDTH >> 1) + 8, SCREENHEIGHT >> 2);
