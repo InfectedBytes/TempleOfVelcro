@@ -21,6 +21,7 @@ void Start_STATE_GAME() {
 	SPRITES_8x16;
 	SpriteManagerLoad(SPRITE_PLAYER);
 	SpriteManagerLoad(SPRITE_HEART);
+	SpriteManagerLoad(SPRITE_COUNTDOWN);
 	SHOW_SPRITES;
 
 	InitScrollTiles(0, 32, tiles, 3);
@@ -33,6 +34,10 @@ void Start_STATE_GAME() {
 	PlayMusic(level_mod_Data, 5, 1);
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	Clear();
+
+	if (GetAutorun()) {
+		SpriteManagerAdd(SPRITE_COUNTDOWN, (SCREENWIDTH >> 1) + 8, SCREENHEIGHT >> 2);
+	}
 }
 
 void Update_STATE_GAME() {

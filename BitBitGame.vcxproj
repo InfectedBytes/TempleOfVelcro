@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SpiteCreditSheep.c" />
+    <ClCompile Include="src\SpriteCountdown.c" />
     <ClCompile Include="src\SpriteHeart.c" />
     <ClCompile Include="src\SpritePlayer.c" />
     <ClCompile Include="src\StateCredits.c" />
@@ -31,6 +32,7 @@
     <ClCompile Include="src\ZGBMain_Init.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\SpriteCountdown.h" />
     <ClInclude Include="src\SpriteCreditSheep.h" />
     <ClInclude Include="src\SpriteHeart.h" />
     <ClInclude Include="src\SpritePlayer.h" />

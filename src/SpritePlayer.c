@@ -159,10 +159,7 @@ static void PlayJumpSound(UINT8 velcro) {
 
 static UINT8 StartupInProgress(void) {
 	if (countdownTimer != 0) {
-		UINT8 countdown = (countdownTimer / 50) + 1;
-		PRINT_POS(7, 0);
-		if (--countdownTimer == 0) Printf("  "); // countdown finished
-		else Printf("%u", (UINT16)countdown);
+		countdownTimer--;
 		return TRUE;
 	}
 	return FALSE;

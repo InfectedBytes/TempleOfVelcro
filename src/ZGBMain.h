@@ -8,6 +8,9 @@
 #include "Utils.h"
 #include "Math.h"
 
+#define FRAMES_PER_SECOND 50
+#define START_DELAY 150
+
 #define MAX_TILE_ID 99
 
 // Helper function, used to replace the players frame cache.
@@ -41,6 +44,7 @@ typedef enum {
 	SPRITE_PLAYER,
 	SPRITE_HEART,
 	SPRITE_CREDIT_SHEEP,
+	SPRITE_COUNTDOWN,
 
 	N_SPRITE_TYPES
 } SPRITE_TYPE;
