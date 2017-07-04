@@ -33,8 +33,8 @@ DECLARE_SPRITE(SPRITE_PLAYER);
 // victory animation time
 #define VICTORY_ANIM_TIME 103
 
-void HealPlayer();
-void DamagePlayer();
+void HealPlayer(void);
+void DamagePlayer(void);
 UINT8 HitsPlayer(struct Sprite* sprite);
 
 typedef struct {

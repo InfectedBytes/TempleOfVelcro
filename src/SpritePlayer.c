@@ -55,7 +55,7 @@ static void SetAnimationState(AnimationState state) {
 	}
 }
 
-static void RevertAnimationState() {
+static void RevertAnimationState(void) {
 	SetAnimationState(lastState);
 }
 
@@ -78,14 +78,14 @@ static void DrawGui(INT16 metersLeft) {
 	for (i = data->Health; i < MAX_HEALTH; i++) Printf("°");
 }
 
-void KillPlayer() {
+void KillPlayer(void) {
 	data->Health = 0;
 	gameoverTimer = GAMEOVER_ANIM_TIME;
 }
 
 // If player is not at full health, this function will increment the player's health and updates the frame cache.
 // Caution: THIS is not necessarily the player!
-void HealPlayer() {
+void HealPlayer(void) {
 	if (data->Health < MAX_HEALTH) {
 		data->Health++;
 		UPDATE_FRAME_CACHE;
@@ -95,7 +95,7 @@ void HealPlayer() {
 
 // If player is not invincible, this function will decrement the player's health and updates the frame cache.
 // Caution: THIS is not necessarily the player!
-void DamagePlayer() {
+void DamagePlayer(void) {
 	if (data->Invincible) return;
 	if (data->Health == 1) {
 		KillPlayer();
@@ -114,7 +114,7 @@ UINT8 HitsPlayer(struct Sprite* sprite) {
 }
 
 // Checks for velcros and updates the internal states if we switch between modes.
-static UINT8 UpdateVelcro() {
+static UINT8 UpdateVelcro(void) {
 	UINT8 tx, ty, trigger;
 	trigger = FIND_TOP_TRIGGER(THIS, TILE_VELCRO, TILE_VELCRO_MASK, &tx, &ty);
 	if (trigger && !GET_BIT_MASK(THIS->flags, OAM_HORIZONTAL_FLAG)) {
@@ -130,7 +130,7 @@ static UINT8 UpdateVelcro() {
 }
 
 // Checks for trigger collisions (slopes, spikes, etc.)
-static void UpdateTriggers() {
+static void UpdateTriggers(void) {
 	UINT16 tx, ty;
 	UINT8 trigger = FIND_TRIGGER(THIS, TILE_TRIGGERS, TILE_TRIGGERS_MASK, &tx, &ty);
 	switch (trigger) {
@@ -157,7 +157,7 @@ static void PlayJumpSound(UINT8 velcro) {
 	}
 }
 
-static UINT8 StartupInProgress() {
+static UINT8 StartupInProgress(void) {
 	if (countdownTimer != 0) {
 		UINT8 countdown = (countdownTimer / 50) + 1;
 		PRINT_POS(7, 0);
@@ -165,6 +165,164 @@ static UINT8 StartupInProgress() {
 		else Printf("%u", (UINT16)countdown);
 		return TRUE;
 	}
+	return FALSE;
+}
+
+static UINT8 HandleDying(void) {
+	if (data->Health == 0) {
+		SetAnimationState(DEAD);
+		if (gameoverTimer-- == 0) {
+			SetState(STATE_GAMEOVER, 1);
+		} else if (gameoverTimer > (GAMEOVER_ANIM_TIME >> 1) + 5) {
+			THIS->y--;
+		} else {
+			THIS->y += 2;
+		}
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+}
+
+static void HandleInput(PlayerData* data, UINT8 velcro) {
+	// move
+	if (GetAutorun()) {
+		UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
+		TranslateSprite(THIS, speedSetting + delta_time, 0);
+		TranslateSprite(THIS, speedSetting + delta_time, 0);
+	} else {
+		// handle input
+		if (KEY_PRESSED(J_LEFT)) {
+			SET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
+			// to prevent glitching, we just translate in two small steps instead of one large step
+			TranslateSprite(THIS, -(speedSetting + delta_time), 0);
+			TranslateSprite(THIS, -(speedSetting + delta_time), 0);
+		} else if (KEY_PRESSED(J_RIGHT)) {
+			UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
+			TranslateSprite(THIS, speedSetting + delta_time, 0);
+			TranslateSprite(THIS, speedSetting + delta_time, 0);
+		} else {
+			SetAnimationState(IDLE);
+		}
+	}
+
+	// jump
+	if (KEY_TICKED(J_A)) {
+		if (GET_BIT(data->Flags, GROUNDED_BIT)) {
+			PlayJumpSound(velcro);
+			SetAnimationState(JUMP);
+			if (velcro)
+				data->Jump = VELCRO_JUMP_STRENGTH;
+			else
+				data->Jump = JUMP_STRENGTH;
+		} else if (!GET_BIT(data->Flags, DOUBLE_JUMP_BIT)) {
+			PlayJumpSound(FALSE);
+			SetAnimationState(JUMP);
+			SET_BIT(data->Flags, DOUBLE_JUMP_BIT);
+			data->Jump = JUMP_STRENGTH;
+		}
+	}
+}
+
+static void ApplyGravity(PlayerData* data, UINT8 velcro) {
+	// apply gravity and check if sprite is grounded
+	if (TranslateSprite(THIS, 0, velcro ? VELCRO_GRAVITY : (gravitySetting + delta_time))) {
+		if (!velcro && !GET_BIT(data->Flags, GROUNDED_BIT)) {
+			PLAYFX(player_grounded);
+		}
+		SET_BIT(data->Flags, GROUNDED_BIT);
+		UNSET_BIT(data->Flags, DOUBLE_JUMP_BIT);
+		SetAnimationState(WALK);
+	} else {
+		UNSET_BIT(data->Flags, GROUNDED_BIT);
+		if (data->Jump >= -gravitySetting) {
+			SetAnimationState(FALL);
+		}
+	}
+}
+
+static void ApplyJump(PlayerData* data) {
+	if (data->Jump != 0) {
+		if (data->Jump > 0) {
+			data->Jump--;
+		} else {
+			data->Jump++;
+		}
+
+		if (data->Jump <= -8) {
+			TranslateSprite(THIS, 0, -8);
+			if (TranslateSprite(THIS, 0, data->Jump + 8)) {
+				// we hit a collider -> stop jump
+				data->Jump = 0;
+			}
+		} else {
+			if (TranslateSprite(THIS, 0, data->Jump)) {
+				// we hit a collider -> stop jump
+				data->Jump = 0;
+			}
+		}
+	}
+}
+
+static UINT8 HandleVictory(PlayerData* data, INT16 metersLeft) {
+	if (0 == metersLeft) {
+		if (0 == gameoverTimer) {
+			SetAutorun(0);
+			OBP1_REG = normalPalette;
+			gameoverTimer = VICTORY_ANIM_TIME;
+			TranslateSprite(THIS, 0, GRAVITY); // we don't want to stop mid air
+			data->Jump = 0;
+		}
+		// jump for 3 times (why is it 3? timer starts with 103...)
+		if (gameoverTimer > 99) {
+			// initiate a jump by faking key input :)
+			if (!data->Jump && GET_BIT(data->Flags, GROUNDED_BIT)) {
+				UNSET_BIT(data->Flags, GROUNDED_BIT);
+				keys = J_A;
+				gameoverTimer--;
+			} else {
+				// prevent any key input handled below
+				keys = 0;
+			}
+		} else {
+			// play victory animation
+			SetAnimationState(VICTORY);
+			gameoverTimer--;
+			if (gameoverTimer == 0) {
+				SetState(STATE_VICTORY, 1);
+			}
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+static UINT8 HandleInvincible(PlayerData* data)
+{
+	// handle invincible animation
+	if (data->Invincible > 0) {
+		data->Invincible--;
+		// blink effect
+		OBP1_REG = (data->Invincible & 4) ? invertPalette : normalPalette;
+
+		if (data->Invincible > INVINCIBLE_TIME) {
+			// freeze and animate
+			return TRUE;
+		}
+
+		if (data->Health == 0) {
+			SetState(STATE_GAMEOVER, 1);
+			HIDE_WIN;
+			return TRUE;
+		}
+
+		if ((UINT16)data->Invincible == INVINCIBLE_TIME) { // set new frames
+			UPDATE_FRAME_CACHE;
+			RevertAnimationState();
+		}
+	}
+
 	return FALSE;
 }
 
@@ -210,132 +368,22 @@ void Update_SPRITE_PLAYER() {
 	if (StartupInProgress()) return;
 
 	// handle dying animation
-	if (data->Health == 0) {
-		SetAnimationState(DEAD);
-		if (gameoverTimer-- == 0) SetState(STATE_GAMEOVER, 1);
-		else if (gameoverTimer > (GAMEOVER_ANIM_TIME >> 1) + 5) THIS->y--;
-		else THIS->y+=2;
-		return;
-	}
+	if (HandleDying()) return;
 
-	// check for victory
-	if (0 == metersLeft) {
-		if (0 == gameoverTimer) {
-			SetAutorun(0);
-			OBP1_REG = normalPalette;
-			gameoverTimer = VICTORY_ANIM_TIME;
-			TranslateSprite(THIS, 0, GRAVITY); // we don't want to stop mid air
-			data->Jump = 0;
-		}
-
-		// jump for 3 times (why is it 3? timer starts with 103...)
-		if (gameoverTimer > 99) {
-			// initiate a jump by faking key input :)
-			if (!data->Jump && GET_BIT(data->Flags, GROUNDED_BIT)) {
-				UNSET_BIT(data->Flags, GROUNDED_BIT);
-				keys = J_A;
-				gameoverTimer--;
-			} else {
-				// prevent any key input handled below
-				keys = 0;
-			}
-		} else {
-			// play victory animation
-			SetAnimationState(VICTORY);
-
-			gameoverTimer--;
-			if (gameoverTimer == 0) {
-				SetState(STATE_VICTORY, 1);
-			}
-
-			return;
-		}
-	}
+	if (HandleVictory(data, metersLeft)) return;
 
 	velcro = UpdateVelcro();
 	UpdateTriggers();
-	if (data->Health == 0) return;
+	if (data->Health == 0) return; // TODO: why is this necessary?
 
-	// handle invincible animation
-	if (data->Invincible > 0) {
-		data->Invincible--;
-		// blink effect
-		OBP1_REG = (data->Invincible & 4) ? invertPalette : normalPalette;
-		if (data->Invincible > INVINCIBLE_TIME) // freeze and animate
-			return;
-		if (data->Health == 0) {
-			SetState(STATE_GAMEOVER, 1);
-			HIDE_WIN;
-			return;
-		}
-		if ((UINT16)data->Invincible == INVINCIBLE_TIME) { // set new frames
-			UPDATE_FRAME_CACHE;
-			RevertAnimationState();
-		}
-	}
+	HandleInvincible(data);
 
-	// apply jump
-	if (data->Jump != 0) {
-		if(data->Jump > 0) data->Jump--;
-		else data->Jump++;
-		if (data->Jump <= -8) {
-			TranslateSprite(THIS, 0, -8);
-			if (TranslateSprite(THIS, 0, data->Jump + 8))
-				data->Jump = 0; // we hit a collider -> stop jump
-		} else {
-			if (TranslateSprite(THIS, 0, data->Jump))
-				data->Jump = 0; // we hit a collider -> stop jump
-		}
-	}
+	ApplyJump(data);
 
-	// apply gravity and check if sprite is grounded
-	if (TranslateSprite(THIS, 0, velcro ? VELCRO_GRAVITY : (gravitySetting + delta_time))) {
-		if (!velcro && !GET_BIT(data->Flags, GROUNDED_BIT)) {
-			PLAYFX(player_grounded);
-		}
-		SET_BIT(data->Flags, GROUNDED_BIT);
-		UNSET_BIT(data->Flags, DOUBLE_JUMP_BIT);
-		SetAnimationState(WALK);
-	} else {
-		UNSET_BIT(data->Flags, GROUNDED_BIT);
-		if(data->Jump >= -gravitySetting) SetAnimationState(FALL);
-	}
+	ApplyGravity(data, velcro, gravitySetting);
 
-	if (GetAutorun()) {
-		UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-		TranslateSprite(THIS, speedSetting + delta_time, 0);
-		TranslateSprite(THIS, speedSetting + delta_time, 0);
-	} else {
-		// handle input
-		if (KEY_PRESSED(J_LEFT)) {
-			SET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-			// to prevent glitching, we just translate in two small steps instead of one large step
-			TranslateSprite(THIS, -(speedSetting + delta_time), 0);
-			TranslateSprite(THIS, -(speedSetting + delta_time), 0);
-		} else if (KEY_PRESSED(J_RIGHT)) {
-			UNSET_BIT_MASK(THIS->flags, OAM_VERTICAL_FLAG);
-			TranslateSprite(THIS, speedSetting + delta_time, 0);
-			TranslateSprite(THIS, speedSetting + delta_time, 0);
-		} else {
-			SetAnimationState(IDLE);
-		}
-	}
-
-	// jump
-	if (KEY_TICKED(J_A)) {
-		if (GET_BIT(data->Flags, GROUNDED_BIT)) {
-			PlayJumpSound(velcro);
-			SetAnimationState(JUMP);
-			if (velcro) data->Jump = VELCRO_JUMP_STRENGTH;
-			else data->Jump = JUMP_STRENGTH;
-		} else if (!GET_BIT(data->Flags, DOUBLE_JUMP_BIT)) {
-			PlayJumpSound(FALSE);
-			SetAnimationState(JUMP);
-			SET_BIT(data->Flags, DOUBLE_JUMP_BIT);
-			data->Jump = JUMP_STRENGTH;
-		}
-	}
+	HandleInput(data, velcro);
 }
 
-void Destroy_SPRITE_PLAYER() {
+void Destroy_SPRITE_PLAYER(void) {
 }
