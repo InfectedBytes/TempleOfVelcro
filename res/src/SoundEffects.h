@@ -7,6 +7,8 @@
 #define PLAYFX_player_heal         PlayFx(CHANNEL_4, 20, 0x06, 0xF2, 0x7D, 0xC0)
 #define PLAYFX_player_damage       PlayFx(CHANNEL_4, 20, 0x06, 0xF6, 0x3F, 0xC0)
 #define PLAYFX_player_grounded     PlayFx(CHANNEL_1, 20, 0x19, 0x81, 0xF2, 0x73, 0x86)
+#define PLAYFX_countdown_tick      PlayFx(CHANNEL_1, 20, 0x00, 0x01, 0xF1, 0xD6, 0x86)
+#define PLAYFX_countdown_start     PlayFx(CHANNEL_1, 20, 0x00, 0x01, 0xF1, 0x49, 0x87)
 
 /* helper macro to play a sound effect with symbolic name
  * example: PLAYFX(player_jump)
