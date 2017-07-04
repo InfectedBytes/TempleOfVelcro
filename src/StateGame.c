@@ -32,9 +32,6 @@ void Start_STATE_GAME() {
 	HIDE_WIN; // hide for now
 	PlayMusic(level_mod_Data, 5, 1);
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
-	NR52_REG = 0x80; //Enables sound, you should always setup this first
-	NR51_REG = 0xFF; //Enables all channels (left and right)
-	NR50_REG = 0x77; //Max volume
 	Clear();
 }
 

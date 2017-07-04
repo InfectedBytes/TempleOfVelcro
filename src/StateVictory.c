@@ -9,6 +9,8 @@ UINT8 bank_STATE_VICTORY = 4;
 #include "../res/src/gameoverMap.h"
 #include "../res/src/tiles.h"
 
+extern UINT8* victory_mod_Data[];
+
 void Start_STATE_VICTORY() {
 	HIDE_WIN;
 	InitScrollTiles(0, 32, tiles, 3);
@@ -21,10 +23,13 @@ void Start_STATE_VICTORY() {
 	PRINT_POS(3, 11);
 	Printf("Press any key");
 	SHOW_BKG;
+
+	/* play menu sound */
+	PlayMusic(victory_mod_Data, 5, 1);
 }
 
 void Update_STATE_VICTORY() {
 	if (KEY_TICKED(-1)) {
-		SetState(STATE_MENU);
+		SetState(STATE_MENU, 1);
 	}
 }

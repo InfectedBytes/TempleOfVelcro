@@ -180,13 +180,18 @@ void Start_SPRITE_PLAYER() {
 	COLLISION_BORDER(6, COLL_Y, 10, 20);
 	THIS->lim_x = THIS->lim_y = 100;
 	scroll_target = THIS;
+
 	lastState = currentState = IDLE;
 	SetAnimationState(currentState);
+
 	// difficulty
 	speedSetting = WALK_SPEED + GetDifficulty();
 	gravitySetting = GRAVITY + GetDifficulty();
+
 	if(GetAutorun()) countdownTimer = START_DELAY;
 	else countdownTimer = 0;
+
+	gameoverTimer = 0;
 }
 
 void Update_SPRITE_PLAYER() {
@@ -207,7 +212,7 @@ void Update_SPRITE_PLAYER() {
 	// handle dying animation
 	if (data->Health == 0) {
 		SetAnimationState(DEAD);
-		if (gameoverTimer-- == 0) SetState(STATE_GAMEOVER);
+		if (gameoverTimer-- == 0) SetState(STATE_GAMEOVER, 1);
 		else if (gameoverTimer > (GAMEOVER_ANIM_TIME >> 1) + 5) THIS->y--;
 		else THIS->y+=2;
 		return;
@@ -215,19 +220,36 @@ void Update_SPRITE_PLAYER() {
 
 	// check for victory
 	if (0 == metersLeft) {
-		if (VICTORY != GetAnimationState()) {
+		if (0 == gameoverTimer) {
+			SetAutorun(0);
 			OBP1_REG = normalPalette;
 			gameoverTimer = VICTORY_ANIM_TIME;
+			TranslateSprite(THIS, 0, GRAVITY); // we don't want to stop mid air
+			data->Jump = 0;
 		}
 
-		SetAnimationState(VICTORY);
-		TranslateSprite(THIS, 0, GRAVITY); // we don't want to stop mid air
+		// jump for 3 times (why is it 3? timer starts with 103...)
+		if (gameoverTimer > 99) {
+			// initiate a jump by faking key input :)
+			if (!data->Jump && GET_BIT(data->Flags, GROUNDED_BIT)) {
+				UNSET_BIT(data->Flags, GROUNDED_BIT);
+				keys = J_A;
+				gameoverTimer--;
+			} else {
+				// prevent any key input handled below
+				keys = 0;
+			}
+		} else {
+			// play victory animation
+			SetAnimationState(VICTORY);
 
-		if (gameoverTimer-- == 0) {
-			SetState(STATE_VICTORY);
+			gameoverTimer--;
+			if (gameoverTimer == 0) {
+				SetState(STATE_VICTORY, 1);
+			}
+
+			return;
 		}
-
-		return;
 	}
 
 	velcro = UpdateVelcro();
@@ -242,7 +264,7 @@ void Update_SPRITE_PLAYER() {
 		if (data->Invincible > INVINCIBLE_TIME) // freeze and animate
 			return;
 		if (data->Health == 0) {
-			SetState(STATE_GAMEOVER);
+			SetState(STATE_GAMEOVER, 1);
 			HIDE_WIN;
 			return;
 		}

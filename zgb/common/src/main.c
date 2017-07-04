@@ -18,6 +18,7 @@ extern UINT8 init_bank;
 UINT8 delta_time;
 UINT8 current_state;
 UINT8 state_running = 0;
+static UINT8 stopMusic = 0;
 
 extern UINT8 stateBanks[];
 extern Void_Func_Void startFuncs[];
@@ -34,9 +35,10 @@ extern UINT8 spriteNumFrames[];
 extern UINT8 spriteIdxs[];
 extern UINT8* spritePalDatas[];
 
-void SetState(UINT8 state) {
+void SetState(UINT8 state, UINT8 stopTheMusic) {
 	state_running = 0;
 	next_state = state;
+	stopMusic = stopTheMusic;
 }
 
 unsigned char* last_music = 0;
@@ -136,6 +138,13 @@ void main() {
 	set_interrupts(VBL_IFLAG | TIM_IFLAG);
 	enable_interrupts();
 
+#ifdef SOUND_AT_START_ENABLED
+	/* enable sound */
+	NR52_REG = 0x80; // Enables sound, you should always setup this first
+	NR51_REG = 0xFF; // Enables all channels (left and right)
+	NR50_REG = 0x77; // Max volume
+#endif
+
 	while(1) {
 		while (state_running) {
 			if(!vbl_count)
@@ -154,8 +163,10 @@ void main() {
 		FadeIn();
 		DISPLAY_OFF
 
-		gbt_stop();
-		last_music = 0;
+		if (stopMusic) {
+			gbt_stop();
+			last_music = 0;
+		}
 
 		last_sprite_loaded = 0;
 		SpriteManagerReset();
