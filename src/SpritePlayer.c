@@ -14,19 +14,17 @@
 #include "../res/src/map.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
-#define COLL_Y          12
-#define NORMAL_PALLETE  PAL_DEF(2, 0, 1, 3)
-#define INVERT_PALLETE  PAL_DEF(3, 2, 1, 0)
+#define COLL_Y 12
 
-static const UINT8* spriteSheets[] = { sheep1, sheep2, sheep3 };
+static UINT8* spriteSheets[] = { sheep1, sheep2, sheep3 };
 
-static const UINT8 idle_anim[] = { 3, 1, 3, 3 };
-const UINT8 walk_anim[] = { 12, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 4, 3 }; // not static, because it is also used in credits
-static const UINT8 damage_anim[] = {2, 12, 13};
-static const UINT8 gameover_anim[] = { 2, 8, 9};
-const UINT8 jump_anim[] = { 3, 5, 6, 6 }; // not static, because it is also used in credits
-const UINT8 fall_anim[] = { 1, 7 }; // not static, because it is also used in credits
-static const UINT8 victory_anim[] = { 3, 11, 10, 11 };
+static UINT8 idle_anim[] = { 3, 1, 3, 3 };
+UINT8 walk_anim[] = { 12, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 4, 3 }; // not static, because it is also used in credits
+static UINT8 damage_anim[] = {2, 12, 13};
+static UINT8 gameover_anim[] = { 2, 8, 9};
+UINT8 jump_anim[] = { 3, 5, 6, 6 }; // not static, because it is also used in credits
+UINT8 fall_anim[] = { 1, 7 }; // not static, because it is also used in credits
+static UINT8 victory_anim[] = { 3, 11, 10, 11 };
 
 // these variables are always pointing to the current player
 static struct Sprite* player;
@@ -35,6 +33,9 @@ static PlayerData* data;
 static AnimationState lastState, currentState;
 static UINT8 gameoverTimer;
 static UINT8 countdownTimer;
+
+static UINT8 normalPalette = PAL_DEF(2, 0, 1, 3);
+static UINT8 invertPalette = PAL_DEF(3, 2, 1, 0);
 
 // difficulty values
 static UINT8 speedSetting;
@@ -267,7 +268,7 @@ static UINT8 HandleVictory(PlayerData* data, INT16 metersLeft) {
 	if (0 == metersLeft) {
 		if (0 == gameoverTimer) {
 			SetAutorun(0);
-			OBP1_REG = NORMAL_PALLETE;
+			OBP1_REG = normalPalette;
 			gameoverTimer = VICTORY_ANIM_TIME;
 			TranslateSprite(THIS, 0, GRAVITY); // we don't want to stop mid air
 			data->Jump = 0;
@@ -303,7 +304,7 @@ static UINT8 HandleInvincible(PlayerData* data)
 	if (data->Invincible > 0) {
 		data->Invincible--;
 		// blink effect
-		OBP1_REG = (data->Invincible & 4) ? INVERT_PALLETE : NORMAL_PALLETE;
+		OBP1_REG = (data->Invincible & 4) ? invertPalette : normalPalette;
 
 		if (data->Invincible > INVINCIBLE_TIME) {
 			// freeze and animate
@@ -332,7 +333,7 @@ void Start_SPRITE_PLAYER() {
 	data->Flags = (1 << GROUNDED_BIT);
 	data->Jump = 0;
 	data->Invincible = 0;
-	OBP1_REG = NORMAL_PALLETE;
+	OBP1_REG = normalPalette;
 	PAL1;
 	COLLISION_BORDER(6, COLL_Y, 10, 20);
 	THIS->lim_x = THIS->lim_y = 100;
