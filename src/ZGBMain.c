@@ -2,7 +2,13 @@
 #include "Math.h"
 #include "Sprite.h"
 #include "BankManager.h"
+#include "../res/src/tiles.h"
 
+
+// animated background
+static UINT8 waterfallTimer = 0;
+static UINT8 torchTimer = 0;
+static UINT8 torchFrame = 0;
 
 static Difficulty difficulty = NORMAL;
 static UINT8 autorun = TRUE;
@@ -38,4 +44,24 @@ void Clear() {
 		PRINT_POS(0, i);
 		Printf("                    ");
 	}
+}
+
+void AnimateBackground() {
+	PUSH_BANK(3); // tileset bank
+	waterfallTimer++;
+	if(waterfallTimer == WATERFALL_SPEED) {
+		set_bkg_data(WATERFALL_BASE_ADDRESS, WATERFALL_TILES, &tiles[(WATERFALL_BASE_ADDRESS + WATERFALL_TILES) << 4]);
+		set_bkg_data(WATERFALL_END_ADDRESS, WATERFALL_TILES, &tiles[(WATERFALL_END_ADDRESS + WATERFALL_TILES) << 4]);
+	} else if (waterfallTimer == WATERFALL_SPEED << 1) {
+		waterfallTimer = 0;
+		set_bkg_data(WATERFALL_BASE_ADDRESS, WATERFALL_TILES, &tiles[WATERFALL_BASE_ADDRESS << 4]);
+		set_bkg_data(WATERFALL_END_ADDRESS, WATERFALL_TILES, &tiles[WATERFALL_END_ADDRESS << 4]);
+	}
+	torchTimer++;
+	if (torchTimer == TORCH_SPEED) {
+		torchTimer = 0;
+		if (++torchFrame == 3) torchFrame = 0;
+		set_bkg_data(TORCH_BASE_ADDRESS, 1, &tiles[(TORCH_BASE_ADDRESS + (UINT16)torchFrame) << 4]);
+	}
+	POP_BANK;
 }
