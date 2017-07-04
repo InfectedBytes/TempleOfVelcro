@@ -77,6 +77,10 @@ static void OverwriteAutorun(UINT8 overwrite, UINT8 autorun) {
 	}
 }
 
+static UINT8 IsAutorunOverwritten(void) {
+	return ((overwriteAutorunSetting & 1) != 0);
+}
+
 static UINT8 GetRealAutorun(void)
 {
 	if (overwriteAutorunSetting & 1) {
@@ -222,7 +226,10 @@ static void HandleInput(PlayerData* data, UINT8 velcro) {
 			TranslateSprite(THIS, speedSetting + delta_time, 0);
 			TranslateSprite(THIS, speedSetting + delta_time, 0);
 		} else {
-			SetAnimationState(IDLE);
+			// during victory, we dont need the idle animation
+			if (!IsAutorunOverwritten()) {
+				SetAnimationState(IDLE);
+			}
 		}
 	}
 
