@@ -5,16 +5,16 @@
 #include "Sprite.h"
 
 // velcros
-#define TILE_VELCRO 6
-#define TILE_VELCRO_MASK 1
+#define TILE_VELCRO 4
+#define TILE_VELCRO_MASK 3
 
 // other trigger
-#define TILE_TRIGGERS 8
-#define TILE_TRIGGERS_MASK 0x7
-#define TILE_SLOPE_UP 8
-#define TILE_SLOP_DOWN 9
-#define TILE_SPIKES 10
-#define TILE_INSTANT_DEATH 11
+#define TILE_TRIGGERS 120
+#define TILE_TRIGGERS_MASK 0xF
+#define TILE_INSTANT_DEATH 125
+#define TILE_SLOPE_UP 126
+#define TILE_SLOPE_DOWN 127
+#define TILE_HEART_SPAWN 22
 
 #define SET_PAL0(a, b, c, d) OBP0_REG = PAL_DEF(a, b, c, d)
 #define SET_PAL1(a, b, c, d) OBP1_REG = PAL_DEF(a, b, c, d)

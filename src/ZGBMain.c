@@ -15,9 +15,9 @@ UINT8 GetAutorun() { return autorun; }
 
 UINT8 GetTileReplacement(UINT8* tile_ptr, UINT8* tile) {
 	if(current_state == STATE_GAME) {
-		if(U_LESS_THAN(127 - (UINT16)*tile_ptr, N_SPRITE_TYPES)) {
+		if((UINT16)TILE_HEART_SPAWN == (UINT16)*tile_ptr) {
 			*tile = 0;
-			return 127 - (UINT16)*tile_ptr;
+			return SPRITE_HEART;
 		}
 
 		*tile = *tile_ptr;
