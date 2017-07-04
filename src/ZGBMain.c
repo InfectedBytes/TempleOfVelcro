@@ -47,18 +47,11 @@ void Clear() {
 }
 
 void AnimateBackground() {
+	UINT8 waterfall = waterfallTimer++ >> 1;
 	PUSH_BANK(3); // tileset bank
-	waterfallTimer++;
-	if(waterfallTimer == WATERFALL_SPEED) {
-		set_bkg_data(WATERFALL_BASE_ADDRESS, WATERFALL_TILES, &tiles[(WATERFALL_BASE_ADDRESS + WATERFALL_TILES) << 4]);
-		set_bkg_data(WATERFALL_END_ADDRESS, WATERFALL_TILES, &tiles[(WATERFALL_END_ADDRESS + WATERFALL_TILES) << 4]);
-	} else if (waterfallTimer == WATERFALL_SPEED << 1) {
-		waterfallTimer = 0;
-		set_bkg_data(WATERFALL_BASE_ADDRESS, WATERFALL_TILES, &tiles[WATERFALL_BASE_ADDRESS << 4]);
-		set_bkg_data(WATERFALL_END_ADDRESS, WATERFALL_TILES, &tiles[WATERFALL_END_ADDRESS << 4]);
-	}
-	torchTimer++;
-	if (torchTimer == TORCH_SPEED) {
+	set_bkg_data(WATERFALL_BASE_ADDRESS, 1, &tiles[(WATERFALL_BASE_ADDRESS + (UINT16)(waterfall & 0x7)) << 4]);
+	set_bkg_data(WATERFALL_END_ADDRESS, 4, &tiles[(WATERFALL_END_ADDRESS + (UINT16)((waterfall & 1) << 2)) << 4]);
+	if (++torchTimer == TORCH_SPEED) {
 		torchTimer = 0;
 		if (++torchFrame == 3) torchFrame = 0;
 		set_bkg_data(TORCH_BASE_ADDRESS, 1, &tiles[(TORCH_BASE_ADDRESS + (UINT16)torchFrame) << 4]);

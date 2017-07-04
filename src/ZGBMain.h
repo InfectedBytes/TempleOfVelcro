@@ -15,11 +15,8 @@
 
 // animated background
 // one tile costs 16 bytes => 4 tiles = 64 bytes
-#define WATERFALL_TILES 4
-#define WATERFALL_BYTES 64
 #define WATERFALL_BASE_ADDRESS 81
 #define WATERFALL_END_ADDRESS 89
-#define WATERFALL_SPEED 10
 #define TORCH_BASE_ADDRESS 100
 #define TORCH_SPEED 5
 
