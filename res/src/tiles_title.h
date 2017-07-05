@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define TileLabelBank 0
+#define tiles_titleBank 0
 /* Start of tile array. */
-extern unsigned char TileLabel[];
+extern unsigned char tiles_title[];
 
 /* End of TILES_TITLE.H */

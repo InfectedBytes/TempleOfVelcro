@@ -1,6 +1,6 @@
 /*
 
- SRC/MENUMAP.H
+ SRC/MAP_MENU.H
 
  Map Include File.
 
@@ -18,10 +18,10 @@
 
 */
 
-#define menuMapWidth 20
-#define menuMapHeight 18
-#define menuMapBank 0
+#define map_menuWidth 20
+#define map_menuHeight 18
+#define map_menuBank 0
 
-extern unsigned char menuMap[];
+extern unsigned char map_menu[];
 
-/* End of SRC/MENUMAP.H */
+/* End of SRC/MAP_MENU.H */
