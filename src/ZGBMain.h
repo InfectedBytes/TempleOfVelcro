@@ -19,6 +19,7 @@
 
 void AnimBkg_Setup(UINT8 _bkgBank, unsigned char *_animBkgTiles, UINT8 _waterfallBase, UINT8 _waterfallEnd, UINT8 _torchBase);
 void AnimBkg_Update(void);
+void ReplaceTiles(UINT8 bank, UINT8 address, UINT8 tiles, UINT8* data, UINT8 offset);
 
 // Helper function, used to replace the players frame cache.
 // This function can't be in switchable ROM, because it will swap banks in order to copy the frames.

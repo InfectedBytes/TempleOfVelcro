@@ -48,6 +48,7 @@ void Start_STATE_MENU(void) {
 
 	/* play menu sound */
 	PlayMusic(menu_mod_Data, 5, 1);
+	StateMenu_UpdateSelection(0);
 }
 
 void Update_STATE_MENU(void) {
@@ -94,8 +95,8 @@ void Update_STATE_MENU(void) {
  * \param newSelection is the new menu selection changed by UP, DOWN ticks
  */
 void StateMenu_UpdateSelection(UINT8 newSelection) {
-	// TODO: switch highlighted text
-
+	ReplaceTiles(7, 1, 4, titleTiles, newSelection ? 0 : 4);
+	ReplaceTiles(7, 9, 6, titleTiles, newSelection ? 6 : 0);
 	/* finally store the new selection */
 	selection = newSelection;
 }
