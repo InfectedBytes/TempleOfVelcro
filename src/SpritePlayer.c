@@ -11,7 +11,7 @@
 #include "../res/src/sheep1.h"
 #include "../res/src/sheep2.h"
 #include "../res/src/sheep3.h"
-#include "../res/src/map.h"
+#include "../res/src/level1.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
 #define COLL_Y 12
@@ -394,7 +394,7 @@ void Update_SPRITE_PLAYER() {
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 
 	// calculate meters left
-	metersLeft = mapWidth - (THIS->x >> 3) - 10;
+	metersLeft = level1Width - (THIS->x >> 3) - 10;
 	if (metersLeft < 0) metersLeft = 0;
 
 	// draw information on window

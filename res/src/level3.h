@@ -1,6 +1,6 @@
 /*
 
- LEVEL2MAP.H
+ LEVEL3.H
 
  Map Include File.
 
@@ -18,10 +18,10 @@
 
 */
 
-#define mapWidth 910
-#define mapHeight 18
-#define mapBank 0
+#define level3Width 910
+#define level3Height 18
+#define level3Bank 0
 
-extern unsigned char map[];
+extern unsigned char level3[];
 
-/* End of LEVEL2MAP.H */
+/* End of LEVEL3.H */
