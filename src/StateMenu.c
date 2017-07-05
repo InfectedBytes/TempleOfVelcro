@@ -111,7 +111,7 @@ static void StateMenu_Select(UINT8 selection) {
 		case 0: // Play Menu
 			// TODO: SetState(STATE_DIFFICULTY, 0);
 			SetDifficulty(EASY);
-			SetState(STATE_INTRO);
+			SetState(STATE_INTRO, 0);
 			break;
 		case 1: // Credits
 			SetState(STATE_CREDITS, 0);
