@@ -18,10 +18,10 @@
 
 */
 
-#define introTiles3Width 20
-#define introTiles3Height 18
-#define introTiles3Bank 0
+#define introMap3Width 20
+#define introMap3Height 18
+#define introMap3Bank 0
 
-extern unsigned char introTiles3[];
+extern unsigned char introMap3[];
 
 /* End of SRC/INTROMAP3.H */

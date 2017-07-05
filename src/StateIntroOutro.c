@@ -156,7 +156,7 @@ static void StateIntroOutro_LoadScreen(void) {
 		}
 		case 2: {
 			ZInitScrollTilesColor(INTRO_TILES_PARAMS_3, 0);
-			InitScrollColor(INTRO_MAP_PARAMS_2, 0);
+			InitScrollColor(INTRO_MAP_PARAMS_3, 0);
 			break;
 		}
 		}
@@ -174,7 +174,7 @@ static void StateIntroOutro_LoadScreen(void) {
 		}
 		case 2: {
 			ZInitScrollTilesColor(OUTRO_TILES_PARAMS_3, 0);
-			InitScrollColor(OUTRO_MAP_PARAMS_2, 0);
+			InitScrollColor(OUTRO_MAP_PARAMS_3, 0);
 			break;
 		}
 		}
