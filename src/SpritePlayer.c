@@ -267,6 +267,10 @@ static void ApplyGravity(PlayerData* data, UINT8 velcro) {
 			SetAnimationState(FALL);
 		}
 	}
+
+	if (THIS->y > 140) {
+		KillPlayer();
+	}
 }
 
 static void ApplyJump(PlayerData* data) {
