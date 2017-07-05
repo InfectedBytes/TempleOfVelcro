@@ -1,6 +1,6 @@
 /*
 
- OUTRO1TILES.H
+ OUTROTILES2.H
 
  Include File.
 
@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define tutorialTilesBank 0
+#define outroTiles2Bank 0
 /* Start of tile array. */
-extern unsigned char tutorialTiles[];
+extern unsigned char outroTiles2[];
 
-/* End of OUTRO1TILES.H */
+/* End of OUTROTILES2.H */

@@ -1,6 +1,6 @@
 /*
 
- SRC/OUTRO1MAP.H
+ SRC/OUTROMAP2.H
 
  Map Include File.
 
@@ -18,10 +18,10 @@
 
 */
 
-#define menuMapWidth 20
-#define menuMapHeight 18
-#define menuMapBank 0
+#define outroMap2Width 20
+#define outroMap2Height 18
+#define outroMap2Bank 0
 
-extern unsigned char menuMap[];
+extern unsigned char outroMap2[];
 
-/* End of SRC/OUTRO1MAP.H */
+/* End of SRC/OUTROMAP2.H */
