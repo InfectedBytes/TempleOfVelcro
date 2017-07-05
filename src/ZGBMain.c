@@ -2,13 +2,17 @@
 #include "Math.h"
 #include "Sprite.h"
 #include "BankManager.h"
-#include "../res/src/tiles.h"
 
 
 // animated background
 static UINT8 waterfallTimer = 0;
 static UINT8 torchTimer = 0;
 static UINT8 torchFrame = 0;
+static UINT8 bkgBank;
+static UINT8 waterfallBase;
+static UINT8 waterfallEnd;
+static UINT8 torchBase;
+static unsigned char *animBkgTiles;
 
 static Difficulty difficulty = NORMAL;
 static UINT8 autorun = TRUE;
@@ -46,15 +50,23 @@ void Clear() {
 	}
 }
 
-void AnimateBackground() {
+void AnimBkg_Setup(UINT8 _bkgBank, unsigned char *_animBkgTiles, UINT8 _waterfallBase, UINT8 _waterfallEnd, UINT8 _torchBase) {
+	bkgBank = _bkgBank;
+	animBkgTiles = _animBkgTiles;
+	waterfallBase = _waterfallBase;
+	waterfallEnd = _waterfallEnd;
+	torchBase = _torchBase;
+}
+
+void AnimBkg_Update(void) {
 	UINT8 waterfall = waterfallTimer++ >> 1;
-	PUSH_BANK(3); // tileset bank
-	set_bkg_data(WATERFALL_BASE_ADDRESS, 1, &tiles[(WATERFALL_BASE_ADDRESS + (UINT16)(waterfall & 0x7)) << 4]);
-	set_bkg_data(WATERFALL_END_ADDRESS, 4, &tiles[(WATERFALL_END_ADDRESS + (UINT16)((waterfall & 1) << 2)) << 4]);
+	PUSH_BANK(bkgBank); // tileset bank
+	set_bkg_data(waterfallBase, 1, &animBkgTiles[(waterfallBase + (UINT16)(waterfall & 0x7)) << 4]);
+	set_bkg_data(waterfallEnd, 4, &animBkgTiles[(waterfallEnd + (UINT16)((waterfall & 1) << 2)) << 4]);
 	if (++torchTimer == TORCH_SPEED) {
 		torchTimer = 0;
 		if (++torchFrame == 3) torchFrame = 0;
-		set_bkg_data(TORCH_BASE_ADDRESS, 1, &tiles[(TORCH_BASE_ADDRESS + (UINT16)torchFrame) << 4]);
+		set_bkg_data(torchBase, 1, &animBkgTiles[(torchBase + (UINT16)torchFrame) << 4]);
 	}
 	POP_BANK;
 }

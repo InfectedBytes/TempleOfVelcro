@@ -10,6 +10,10 @@ UINT8 bank_STATE_GAME = 2;
 #include "Scroll.h"
 #include "SpriteManager.h"
 
+#define WATERFALL_BASE_ADDRESS 81
+#define WATERFALL_END_ADDRESS 89
+#define TORCH_BASE_ADDRESS 100
+
 extern UINT8 n_sprite_types;
 
 UINT8 collision_tiles[] = { 11, 12, 13, 14, 15, 16, 18, 30, 31, 32, 33, 35, 36, 37, 38, 39, 0 };
@@ -25,6 +29,9 @@ void Start_STATE_GAME() {
 	SpriteManagerLoad(SPRITE_COUNTDOWN);
 	SHOW_SPRITES;
 
+	AnimBkg_Setup(3, tiles,
+			WATERFALL_BASE_ADDRESS, WATERFALL_END_ADDRESS,
+			TORCH_BASE_ADDRESS);
 	InitScrollTiles(0, 128, tiles, 3);
 	InitScroll(mapWidth, mapHeight, map, collision_tiles, collision_tiles_down, 6);
 	adjustableOffsetX = 16; // player should be left of the screen
@@ -45,5 +52,5 @@ void Start_STATE_GAME() {
 
 void Update_STATE_GAME() {
 	SHOW_WIN;
-	AnimateBackground();
+	AnimBkg_Update();
 }

@@ -8,100 +8,57 @@ UINT8 bank_STATE_MENU = 4;
 #include "Keys.h"
 #include "ZGBMain.h"
 #include "Scroll.h"
-#include "../res/src/menuMap.h"
-#include "../res/src/tiles.h"
-#include "../res/src/font.h"
+#include "../res/src/map_menu.h"
+#include "../res/src/tiles_title.h"
 
 
 /* ----- Defines ----- */
-#define MENU_SELECTION_COL  4
-#define MENU_INFO_COL 5
-#define MENU_INFO_LINE 7
-
+#define MAP_BANK        4
+#define TILES_BANK      3
+#define MAX_MENU_INDEX  1
 
 /* ----- Types / Enums ----- */
 
 
 /* ----- Prototypes ----- */
-
-static void StateMenu_Select(UINT8 selection);
-static void StateMenu_SelectDifficulty(UINT8 selection);
 static void StateMenu_UpdateSelection(UINT8 sel);
+static void StateMenu_Select(UINT8 selection);
 
 
 /* ----- Variables ----- */
 static UINT8 selection = 0;
-static const MenuEntry mainMenuEntries[] = {
-	{1, "  Play"},
-	{3, "  Credits"}
-};
-static const MenuEntry difficultyMenuEntries[] = {
-	{1, "  Easy"},
-	{2, "  Normal"},
-	{3, "  Hard"},
-	{5, "  Go Back"}
-};
-
-static Menu mainMenu = { 2, mainMenuEntries, StateMenu_Select };
-static Menu difficultyMenu = { 4, difficultyMenuEntries, StateMenu_SelectDifficulty };
-
-static Menu* currentMenu;
-
 extern UINT8* menu_mod_Data[];
+
 
 /* ----- Functions ----- */
 
-/**
-* \brief Selects the specified menu and draws it.
-*
-* \param menu is the new menu
-* \param sel is the new menu selection
-*/
-static void SelectMenu(Menu* menu, UINT8 sel) {
-	UINT8 i;
-	currentMenu = menu;
-	Clear();
-	for (i = 0; i < menu->Count; i++) {
-		MenuEntry* entry = &menu->Entries[i];
-		PRINT_POS(MENU_SELECTION_COL, entry->Line);
-		Printf(entry->Text);
-	}
-	StateMenu_UpdateSelection(sel);
-	PRINT_POS(MENU_INFO_COL, MENU_INFO_LINE);
-	Printf("BitBitJam4");
-}
-
 void Start_STATE_MENU(void) {
 	/* setup background logo */
-	InitScrollTiles(0, 32, tiles, 3);
-	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, 4);
-	RefreshScroll();
+	InitScrollTiles(0, 120, tiles_title, TILES_BANK);
+	InitScroll(map_menuWidth, map_menuHeight, map_menu, 0, 0, MAP_BANK);
+	//RefreshScroll();
 
-	INIT_WINDOW(font, 3, 0, 8);
+	AnimBkg_Setup(TILES_BANK, tiles_title, // bank, tileset
+				45,  // WATERFALL_BASE_ADDRESS
+				53,  // WATERFALL_END_ADDRESS
+				41); //TORCH_BASE_ADDRESS
 
-	SelectMenu(&mainMenu, 0);
-
-	SHOW_BKG;
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
+	SHOW_BKG;
 
 	/* play menu sound */
 	PlayMusic(menu_mod_Data, 5, 1);
 }
 
 void Update_STATE_MENU(void) {
-	BOTTOM_LINES(8);
-
 	/* Toggle autorun mode */
 	if (KEY_TICKED(J_B) && KEY_PRESSED(J_SELECT)) {
 		SetAutorun(!GetAutorun());
-		PRINT_POS(MENU_INFO_COL, MENU_INFO_LINE);
-		if (GetAutorun()) Printf("Autorun on ");
-		else Printf("Autorun off");
 	}
 
 	/* check for menu selection by pressing START or A */
 	if (KEY_TICKED(J_A | J_START)) {
-		currentMenu->Select(selection);
+		StateMenu_Select(selection);
 		return;
 	}
 
@@ -111,12 +68,13 @@ void Update_STATE_MENU(void) {
 		UINT8 newSelection = selection;
 
 		if (KEY_TICKED(J_UP)) {
-			/* decrement menu selection if possible */
+			/* decrement selection if possible */
 			if (newSelection != 0) {
 				newSelection--;
 			}
 		} else if (KEY_TICKED(J_DOWN)) {
-			if (newSelection != (currentMenu->Count - 1)) {
+			/* increment selection if possible */
+			if (newSelection != MAX_MENU_INDEX) {
 				newSelection++;
 			}
 		}
@@ -126,6 +84,8 @@ void Update_STATE_MENU(void) {
 			StateMenu_UpdateSelection(newSelection);
 		}
 	}
+
+	AnimBkg_Update();
 }
 
 /**
@@ -134,45 +94,26 @@ void Update_STATE_MENU(void) {
  * \param newSelection is the new menu selection changed by UP, DOWN ticks
  */
 void StateMenu_UpdateSelection(UINT8 newSelection) {
-	UINT8 line;
-
-	/* clear old selection */
-	line = currentMenu->Entries[selection].Line;
-	PRINT_POS(MENU_SELECTION_COL, line);
-	Printf(" ");
-
-	/* set new selection */
-	line = currentMenu->Entries[newSelection].Line;
-	PRINT_POS(MENU_SELECTION_COL, line);
-	Printf("X");
+	// TODO: switch highlighted text
 
 	/* finally store the new selection */
 	selection = newSelection;
 }
 
-
-/* Menu select functions */
-
-/* Handles the select event in the main menu (Play or Credits selected) */
-void StateMenu_Select(UINT8 selection) {
+/**
+ * \brief Handles the select event in the main menu (Play or Credits selected)
+ *
+ * \param selection is the menu to start
+ */
+static void StateMenu_Select(UINT8 selection) {
 	switch (selection) {
 		case 0: // Play Menu
-			SelectMenu(&difficultyMenu, GetDifficulty());
+			// TODO: SetState(STATE_DIFFICULTY, 0);
+			SetDifficulty(EASY);
+			SetState(STATE_GAME);
 			break;
 		case 1: // Credits
-			HIDE_WIN;
 			SetState(STATE_CREDITS, 0);
 			break;
-	}
-}
-
-/* Handles the select event in the difficulty menu */
-void StateMenu_SelectDifficulty(UINT8 selection) {
-	if (selection == currentMenu->Count - 1) { // Back
-		SelectMenu(&mainMenu, 0);
-	} else { // 0-2 Difficulty
-		HIDE_WIN;
-		SetDifficulty(selection);
-		SetState(STATE_GAME, 1);
 	}
 }
