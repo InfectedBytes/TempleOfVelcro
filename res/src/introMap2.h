@@ -1,6 +1,6 @@
 /*
 
- SRC/INTRO1MAP.H
+ SRC/INTROMAP2.H
 
  Map Include File.
 
@@ -18,10 +18,10 @@
 
 */
 
-#define menuMapWidth 20
-#define menuMapHeight 18
-#define menuMapBank 0
+#define introMap2Width 20
+#define introMap2Height 18
+#define introMap2Bank 0
 
-extern unsigned char menuMap[];
+extern unsigned char introMap2[];
 
-/* End of SRC/INTRO1MAP.H */
+/* End of SRC/INTROMAP2.H */

@@ -1,6 +1,6 @@
 /*
 
- INTRO1TILES.H
+ INTROTILES3.H
 
  Include File.
 
@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define tutorialTilesBank 0
+#define introTiles3Bank 0
 /* Start of tile array. */
-extern unsigned char tutorialTiles[];
+extern unsigned char introTiles3[];
 
-/* End of INTRO1TILES.H */
+/* End of INTROTILES3.H */

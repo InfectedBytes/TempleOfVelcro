@@ -1,6 +1,6 @@
 /*
 
- SRC/INTRO3MAP.B4.C
+ SRC/INTROMAP3.B8.C
 
  Map Source File.
 
@@ -18,11 +18,11 @@
 
 */
 
-#define menuMapWidth 20
-#define menuMapHeight 18
-#define menuMapBank 0
+#define introTiles3Width 20
+#define introTiles3Height 18
+#define introTiles3Bank 0
 
-unsigned char menuMap[] =
+const unsigned  char introTiles3[] =
 {
   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -62,4 +62,4 @@ unsigned char menuMap[] =
   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
 };
 
-/* End of SRC/INTRO3MAP.B4.C */
+/* End of SRC/INTROMAP3.B8.C */

@@ -1,6 +1,6 @@
 /*
 
- SRC/INTRO2MAP.B4.C
+ SRC/INTROMAP2.B8.C
 
  Map Source File.
 
@@ -18,11 +18,11 @@
 
 */
 
-#define menuMapWidth 20
-#define menuMapHeight 18
-#define menuMapBank 0
+#define introMap2Width 20
+#define introMap2Height 18
+#define introMap2Bank 0
 
-unsigned char menuMap[] =
+const unsigned  char introMap2[] =
 {
   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -62,4 +62,4 @@ unsigned char menuMap[] =
   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
 };
 
-/* End of SRC/INTRO2MAP.B4.C */
+/* End of SRC/INTROMAP2.B8.C */

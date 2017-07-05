@@ -1,6 +1,6 @@
 /*
 
- INTRO3TILES.H
+ INTROTILES1.H
 
  Include File.
 
@@ -10,7 +10,7 @@
   Compression          : None.
   Counter              : None.
   Tile size            : 8 x 8
-  Tiles                : 0 to 127
+  Tiles                : 0 to 56
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define tutorialTilesBank 0
+#define introTiles1Bank 0
 /* Start of tile array. */
-extern unsigned char tutorialTiles[];
+extern unsigned char introTiles1[];
 
-/* End of INTRO3TILES.H */
+/* End of INTROTILES1.H */
