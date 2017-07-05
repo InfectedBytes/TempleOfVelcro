@@ -1,0 +1,9 @@
+#ifndef STATE_INTRO_OUTRO_H
+#define STATE_INTRO_OUTRO_H
+
+#include "main.h"
+
+DECLARE_STATE(STATE_INTRO);
+DECLARE_STATE(STATE_OUTRO);
+
+#endif
