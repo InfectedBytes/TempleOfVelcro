@@ -9,7 +9,7 @@ UINT8 bank_STATE_MENU = 4;
 #include "ZGBMain.h"
 #include "Scroll.h"
 #include "../res/src/menuMap.h"
-#include "../res/src/tiles.h"
+#include "../res/src/titleTiles.h"
 #include "../res/src/font.h"
 
 
@@ -73,7 +73,7 @@ static void SelectMenu(Menu* menu, UINT8 sel) {
 
 void Start_STATE_MENU(void) {
 	/* setup background logo */
-	InitScrollTiles(0, 32, tiles, 3);
+	InitScrollTiles(0, 120, titleTiles, 7);
 	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, 4);
 	RefreshScroll();
 

@@ -1,6 +1,6 @@
 /*
 
- TILES_DIFFICULTY.H
+ CREDITSTILES.H
 
  Include File.
 
@@ -10,7 +10,7 @@
   Compression          : None.
   Counter              : None.
   Tile size            : 8 x 8
-  Tiles                : 0 to 0
+  Tiles                : 0 to 104
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define TileLabelBank 0
+#define creditsTilesBank 0
 /* Start of tile array. */
-extern unsigned char TileLabel[];
+extern unsigned char creditsTiles[];
 
-/* End of TILES_DIFFICULTY.H */
+/* End of CREDITSTILES.H */
