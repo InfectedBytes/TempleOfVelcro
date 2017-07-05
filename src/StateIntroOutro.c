@@ -142,6 +142,8 @@ static void StateIntroOutro_HandleInput(void) {
  * \brief Loads the given screens content
  */
 static void StateIntroOutro_LoadScreen(void) {
+	HIDE_BKG;
+
 	if (selection == IS_INTRO) {
 		switch (screen) {
 		case 0: {
@@ -179,6 +181,8 @@ static void StateIntroOutro_LoadScreen(void) {
 		}
 		}
 	}
+
+	SHOW_BKG;
 }
 
 /**
