@@ -1,6 +1,6 @@
 /*
 
- TITLE.H
+ TILES_TUTORIAL.H
 
  Include File.
 
@@ -10,7 +10,7 @@
   Compression          : None.
   Counter              : None.
   Tile size            : 8 x 8
-  Tiles                : 0 to 120
+  Tiles                : 0 to 0
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -28,4 +28,4 @@
 /* Start of tile array. */
 extern unsigned char TileLabel[];
 
-/* End of TITLE.H */
+/* End of TILES_TUTORIAL.H */
