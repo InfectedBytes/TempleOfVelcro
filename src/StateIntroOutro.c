@@ -9,12 +9,18 @@ UINT8 bank_STATE_OUTRO = 4;
 #include "Keys.h"
 #include "ZGBMain.h"
 #include "Scroll.h"
-#include "../res/src/intro1Map.h"
-#include "../res/src/intro2Map.h"
-#include "../res/src/intro3Map.h"
-#include "../res/src/intro1Tiles.h"
-#include "../res/src/intro2Tiles.h"
-#include "../res/src/intro3Tiles.h"
+#include "../res/src/introMap1.h"
+#include "../res/src/introMap2.h"
+#include "../res/src/introMap3.h"
+#include "../res/src/introTiles1.h"
+#include "../res/src/introTiles2.h"
+#include "../res/src/introTiles3.h"
+#include "../res/src/outroMap1.h"
+#include "../res/src/outroMap2.h"
+#include "../res/src/outroMap3.h"
+#include "../res/src/outroTiles1.h"
+#include "../res/src/outroTiles2.h"
+#include "../res/src/outroTiles3.h"
 
 
 /* ----- Defines ----- */
@@ -26,13 +32,13 @@ UINT8 bank_STATE_OUTRO = 4;
  * 3. the tileset lable XYZ (extern unsigned char XYZ[]), see tileset .h file
  * 4. tileset bank N, see "bN"-part in filename xyzTiles.bN.c
  */
-#define INTRO_TILES_PARAMS_1   0, 120, tutorialTiles, 4
-#define INTRO_TILES_PARAMS_2   0, 120, tutorialTiles, 4
-#define INTRO_TILES_PARAMS_3   0, 120, tutorialTiles, 4
+#define INTRO_TILES_PARAMS_1   0, 128, introTiles1, 8
+#define INTRO_TILES_PARAMS_2   0, 128, introTiles2, 8
+#define INTRO_TILES_PARAMS_3   0, 128, introTiles3, 8
 
-#define OUTRO_TILES_PARAMS_1   0, 120, tutorialTiles, 4
-#define OUTRO_TILES_PARAMS_2   0, 120, tutorialTiles, 4
-#define OUTRO_TILES_PARAMS_3   0, 120, tutorialTiles, 4
+#define OUTRO_TILES_PARAMS_1   0, 128, outroTiles1, 9
+#define OUTRO_TILES_PARAMS_2   0, 128, outroTiles2, 9
+#define OUTRO_TILES_PARAMS_3   0, 128, outroTiles3, 9
 
 /* Map parameters
  * 1. map width, use #define from map .h file
@@ -42,13 +48,13 @@ UINT8 bank_STATE_OUTRO = 4;
  * 5. always zero
  * 6. map bank N, see "bN"-part in filename xyzMap.bN.c
  */
-#define INTRO_MAP_PARAMS_1     menuMapWidth, menuMapHeight, menuMap, 0, 0, 4
-#define INTRO_MAP_PARAMS_2     menuMapWidth, menuMapHeight, menuMap, 0, 0, 4
-#define INTRO_MAP_PARAMS_3     menuMapWidth, menuMapHeight, menuMap, 0, 0, 4
+#define INTRO_MAP_PARAMS_1     introMap1Width, introMap1Height, introMap1, 0, 0, 8
+#define INTRO_MAP_PARAMS_2     introMap2Width, introMap2Height, introMap2, 0, 0, 8
+#define INTRO_MAP_PARAMS_3     introMap3Width, introMap3Height, introMap3, 0, 0, 8
 
-#define OUTRO_MAP_PARAMS_1     menuMapWidth, menuMapHeight, menuMap, 0, 0, 4
-#define OUTRO_MAP_PARAMS_2     menuMapWidth, menuMapHeight, menuMap, 0, 0, 4
-#define OUTRO_MAP_PARAMS_3     menuMapWidth, menuMapHeight, menuMap, 0, 0, 4
+#define OUTRO_MAP_PARAMS_1     outroMap1Width, outroMap1Height, outroMap1, 0, 0, 9
+#define OUTRO_MAP_PARAMS_2     outroMap2Width, outroMap2Height, outroMap2, 0, 0, 9
+#define OUTRO_MAP_PARAMS_3     outroMap3Width, outroMap3Height, outroMap3, 0, 0, 9
 
 
 /* ----- Types / Enums ----- */
@@ -101,11 +107,15 @@ void Start_STATE_OUTRO(void) {
 	PlayMusic(victory_mod_Data, 5, 1);
 }
 
+void Update_STATE_OUTRO(void) {
+	StateIntroOutro_HandleInput();
+}
+
 /**
  * \brief Handles the input for both intro and outro
  */
 static void StateIntroOutro_HandleInput(void) {
-	if (IntroOrOutro == IS_INTRO) {
+	if (selection == IS_INTRO) {
 		if (KEY_TICKED(J_START)) {
 			/* skip intro, start the game */
 			StateIntroOutro_NextState();
@@ -132,7 +142,7 @@ static void StateIntroOutro_HandleInput(void) {
  * \brief Loads the given screens content
  */
 static void StateIntroOutro_LoadScreen(void) {
-	if (IntroOrOutro == IS_INTRO) {
+	if (selection == IS_INTRO) {
 		switch (screen) {
 		case 0: {
 			ZInitScrollTilesColor(INTRO_TILES_PARAMS_1, 0);
@@ -175,7 +185,7 @@ static void StateIntroOutro_LoadScreen(void) {
  * \brief Loads the next state, depending on intro or outro setting
  */
 static void StateIntroOutro_NextState(void) {
-	if (IntroOrOutro == IS_INTRO) {
+	if (selection == IS_INTRO) {
 		// load the game
 		SetState(STATE_GAME, 1);
 	} else {

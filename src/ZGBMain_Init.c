@@ -7,7 +7,8 @@ UINT8 init_bank = 1;
 #include "StateMenu.h"
 #include "StateGameover.h"
 #include "StateCredits.h"
-#include "StateVictory.h"
+#include "StateVictory.h" // FIXME: REMOVE AFTER USING OUTRO
+#include "StateIntroOutro.h"
 
 #include "SpritePlayer.h"
 #include "SpriteHeart.h"
