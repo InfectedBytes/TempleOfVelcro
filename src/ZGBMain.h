@@ -13,6 +13,13 @@
 
 #define MAX_TILE_ID 99
 
+// animated background
+// one tile costs 16 bytes => 4 tiles = 64 bytes
+#define TORCH_SPEED 5
+
+void AnimBkg_Setup(UINT8 _bkgBank, unsigned char *_animBkgTiles, UINT8 _waterfallBase, UINT8 _waterfallEnd, UINT8 _torchBase);
+void AnimBkg_Update(void);
+
 // Helper function, used to replace the players frame cache.
 // This function can't be in switchable ROM, because it will swap banks in order to copy the frames.
 void ReplaceFrames(UINT8 firstTile, FrameSize frameSize, UINT8 frames, UINT8* data, UINT8 dataBank);

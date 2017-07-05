@@ -8,7 +8,7 @@
    Section       : 
    Bank          : 0
    Map size      : 24 x 18
-   Tile set      : tiles.gbr
+   Tile set      : credits.gbr
    Plane count   : 1 plane (8 bits)
    Plane order   : Tiles are continues
    Tile offset   : 0

@@ -161,7 +161,13 @@ static void UpdateTriggers(void) {
 	UINT16 tx, ty;
 	UINT8 trigger = FIND_TRIGGER(THIS, TILE_TRIGGERS, TILE_TRIGGERS_MASK, &tx, &ty);
 	switch (trigger) {
-	case 0: break;
+	case TILE_TRIGGERS:
+	case TILE_TRIGGERS + 1:
+	case TILE_TRIGGERS + 2:
+	case TILE_TRIGGERS + 3:
+	case TILE_TRIGGERS + 4:
+		DamagePlayer();
+		break;
 	case TILE_INSTANT_DEATH:
 		KillPlayer();
 		break;
@@ -170,9 +176,6 @@ static void UpdateTriggers(void) {
 		break;
 	case TILE_SLOPE_DOWN:
 		THIS->y += 12;
-		break;
-	default:
-		DamagePlayer();
 		break;
 	}
 }
@@ -266,6 +269,10 @@ static void ApplyGravity(PlayerData* data, UINT8 velcro) {
 		if (data->Jump >= -gravitySetting) {
 			SetAnimationState(FALL);
 		}
+	}
+
+	if (THIS->y > 140) {
+		KillPlayer();
 	}
 }
 
