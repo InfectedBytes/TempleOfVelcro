@@ -270,7 +270,8 @@ static void ApplyGravity(PlayerData* data, UINT8 velcro) {
 		}
 	}
 
-	if (THIS->y > 140) {
+	// if we don't check for upper and lower bound, the player will also die if he leaves the top of the screen
+	if (THIS->y > 120 && THIS->y < 200) {
 		KillPlayer();
 	}
 }
