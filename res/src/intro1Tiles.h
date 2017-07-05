@@ -1,6 +1,6 @@
 /*
 
- DIFFICULTYTILES.H
+ INTRO1TILES.H
 
  Include File.
 
@@ -10,7 +10,7 @@
   Compression          : None.
   Counter              : None.
   Tile size            : 8 x 8
-  Tiles                : 0 to 120
+  Tiles                : 0 to 127
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define TileLabelBank 0
+#define tutorialTilesBank 0
 /* Start of tile array. */
-extern unsigned char TileLabel[];
+extern unsigned char tutorialTiles[];
 
-/* End of DIFFICULTYTILES.H */
+/* End of INTRO1TILES.H */
