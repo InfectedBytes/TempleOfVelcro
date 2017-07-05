@@ -3,7 +3,7 @@
 UINT8 bank_STATE_GAME = 2;
 
 #include "..\res\src\tiles.h"
-#include "..\res\src\map.h"
+#include "..\res\src\level1.h"
 #include "..\res\src\font.h"
 
 #include "ZGBMain.h"
@@ -33,7 +33,7 @@ void Start_STATE_GAME() {
 			WATERFALL_BASE_ADDRESS, WATERFALL_END_ADDRESS,
 			TORCH_BASE_ADDRESS);
 	InitScrollTiles(0, 128, tiles, 3);
-	InitScroll(mapWidth, mapHeight, map, collision_tiles, collision_tiles_down, 6);
+	InitScroll(level1Width, level1Height, level1, collision_tiles, collision_tiles_down, 10);
 	adjustableOffsetX = 16; // player should be left of the screen
 	RefreshScroll();
 	SHOW_BKG;

@@ -70,3 +70,10 @@ void AnimBkg_Update(void) {
 	}
 	POP_BANK;
 }
+
+
+void ReplaceTiles(UINT8 bank, UINT8 address, UINT8 tiles, UINT8* data, UINT8 offset) {
+	PUSH_BANK(bank); // tileset bank
+	set_bkg_data(address, tiles, &data[(address + (UINT16)offset) << 4]);
+	POP_BANK;
+}
