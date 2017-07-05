@@ -1,16 +1,16 @@
 /*
 
- PICKUPS.H
+ TILES_TUTORIAL.B3.C
 
- Include File.
+ Tile Source File.
 
  Info:
   Form                 : All tiles as one unit.
   Format               : Gameboy 4 color.
   Compression          : None.
   Counter              : None.
-  Tile size            : 8 x 16
-  Tiles                : 0 to 8
+  Tile size            : 8 x 8
+  Tiles                : 0 to 0
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -22,10 +22,11 @@
 
 */
 
-
-/* Bank of tiles. */
-#define pickupsBank 0
 /* Start of tile array. */
-extern unsigned char pickups[];
+const unsigned  char TileLabel[] =
+{
+  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+};
 
-/* End of PICKUPS.H */
+/* End of TILES_TUTORIAL.B3.C */

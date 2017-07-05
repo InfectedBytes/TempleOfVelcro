@@ -1,6 +1,6 @@
 /*
 
- PICKUPS.H
+ TILES_DIFFICULTY.H
 
  Include File.
 
@@ -9,8 +9,8 @@
   Format               : Gameboy 4 color.
   Compression          : None.
   Counter              : None.
-  Tile size            : 8 x 16
-  Tiles                : 0 to 8
+  Tile size            : 8 x 8
+  Tiles                : 0 to 0
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define pickupsBank 0
+#define TileLabelBank 0
 /* Start of tile array. */
-extern unsigned char pickups[];
+extern unsigned char TileLabel[];
 
-/* End of PICKUPS.H */
+/* End of TILES_DIFFICULTY.H */

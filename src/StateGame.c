@@ -45,4 +45,5 @@ void Start_STATE_GAME() {
 
 void Update_STATE_GAME() {
 	SHOW_WIN;
+	AnimateBackground();
 }
