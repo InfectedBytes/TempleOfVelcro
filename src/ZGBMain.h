@@ -13,6 +13,18 @@
 
 #define MAX_TILE_ID 99
 
+
+// level selection
+#define LEVEL_FIRST_BANK 10
+#define LEVEL_COUNT 3
+#define LEVEL_MAP_ADDRESS 0x4000
+#define LEVEL_HEIGHT 18
+
+#define LEVEL_WIDTH levelWidths[currentLevel]
+
+extern UINT8 currentLevel;
+extern UINT16 levelWidths[];
+
 // animated background
 // one tile costs 16 bytes => 4 tiles = 64 bytes
 #define TORCH_SPEED 5

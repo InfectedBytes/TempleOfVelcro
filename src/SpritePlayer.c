@@ -11,7 +11,6 @@
 #include "../res/src/sheep1.h"
 #include "../res/src/sheep2.h"
 #include "../res/src/sheep3.h"
-#include "../res/src/level1.h"
 UINT8 bank_SPRITE_PLAYER = 2;
 
 #define COLL_Y 12
@@ -325,7 +324,10 @@ static UINT8 HandleVictory(PlayerData* data, INT16 metersLeft) {
 			gameoverTimer--;
 			if (gameoverTimer == 0) {
 				OverwriteAutorun(FALSE, FALSE);
-				SetState(STATE_VICTORY, 1);
+				if (++currentLevel == LEVEL_COUNT)
+					SetState(STATE_VICTORY, 1);
+				else
+					SetState(STATE_GAME, 0);
 			}
 			return TRUE;
 		}
@@ -394,7 +396,7 @@ void Update_SPRITE_PLAYER() {
 	PlayerData* data = (PlayerData*)THIS->custom_data;
 
 	// calculate meters left
-	metersLeft = level1Width - (THIS->x >> 3) - 10;
+	metersLeft = LEVEL_WIDTH - (THIS->x >> 3) - 10;
 	if (metersLeft < 0) metersLeft = 0;
 
 	// draw information on window
