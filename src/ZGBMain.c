@@ -2,7 +2,13 @@
 #include "Math.h"
 #include "Sprite.h"
 #include "BankManager.h"
+#include "../res/src/level1.h"
+#include "../res/src/level2.h"
+#include "../res/src/level3.h"
 
+// level selection
+UINT8 currentLevel = 0;
+UINT16 levelWidths[] = { level1Width, level2Width, level3Width };
 
 // animated background
 static UINT8 waterfallTimer = 0;
