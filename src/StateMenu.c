@@ -8,13 +8,13 @@ UINT8 bank_STATE_MENU = 4;
 #include "Keys.h"
 #include "ZGBMain.h"
 #include "Scroll.h"
-#include "../res/src/map_menu.h"
-#include "../res/src/tiles_title.h"
+#include "../res/src/menuMap.h"
+#include "../res/src/titleTiles.h"
 
 
 /* ----- Defines ----- */
 #define MAP_BANK        4
-#define TILES_BANK      3
+#define TILES_BANK      7
 #define MAX_MENU_INDEX  1
 
 /* ----- Types / Enums ----- */
@@ -34,11 +34,11 @@ extern UINT8* menu_mod_Data[];
 
 void Start_STATE_MENU(void) {
 	/* setup background logo */
-	InitScrollTiles(0, 120, tiles_title, TILES_BANK);
-	InitScroll(map_menuWidth, map_menuHeight, map_menu, 0, 0, MAP_BANK);
+	InitScrollTiles(0, 120, titleTiles, TILES_BANK);
+	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, MAP_BANK);
 	//RefreshScroll();
 
-	AnimBkg_Setup(TILES_BANK, tiles_title, // bank, tileset
+	AnimBkg_Setup(TILES_BANK, titleTiles, // bank, tileset
 				45,  // WATERFALL_BASE_ADDRESS
 				53,  // WATERFALL_END_ADDRESS
 				41); //TORCH_BASE_ADDRESS

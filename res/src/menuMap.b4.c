@@ -1,6 +1,6 @@
 /*
 
- SRC/MAP_MENU.B4.C
+ SRC/MENUMAP.B4.C
 
  Map Source File.
 
@@ -18,11 +18,11 @@
 
 */
 
-#define map_menuWidth 20
-#define map_menuHeight 18
-#define map_menuBank 0
+#define menuMapWidth 20
+#define menuMapHeight 18
+#define menuMapBank 0
 
-const unsigned  char map_menu[] =
+const unsigned  char menuMap[] =
 {
   0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,
   0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,0x3F,
@@ -62,4 +62,4 @@ const unsigned  char map_menu[] =
   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x37,0x38
 };
 
-/* End of SRC/MAP_MENU.B4.C */
+/* End of SRC/MENUMAP.B4.C */

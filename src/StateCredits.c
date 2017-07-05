@@ -10,7 +10,7 @@ UINT8 bank_STATE_CREDITS = 4;
 #include "Scroll.h"
 #include "SpriteManager.h"
 #include "../res/src/creditsMap.h"
-#include "../res/src/tiles.h"
+#include "../res/src/creditsTiles.h"
 #include "../res/src/font.h"
 
 
@@ -33,7 +33,7 @@ UINT8 bank_STATE_CREDITS = 4;
 /* ----- Variables ----- */
 static UINT8 sheepSpawnCountdown;
 UINT16 creditSheepCounter;
-static UINT8 collision_tiles[] = { 1, 0 };
+static UINT8 collision_tiles[] = { 2, 5, 0 };
 
 /* ----- Functions ----- */
 void Start_STATE_CREDITS(void) {
@@ -46,34 +46,13 @@ void Start_STATE_CREDITS(void) {
 	SHOW_SPRITES;
 
 	/* setup background logo */
-	InitScrollTiles(0, 32, tiles, 3);
+	InitScrollTiles(0, 104, creditsTiles, 7);
 	InitScroll(creditMapWidth, creditMapHeight, creditMap, collision_tiles, 0, 4);
 
 	/* clear screen */
 	Clear();
-
-	PRINT_POS(MENU_CREDITS_COL - 2, MENU_CREDITS_LINE);
-	Printf("TWITTER:");
-
-	PRINT_POS(MENU_CREDITS_COL, MENU_CREDITS_LINE + 1);
-	Printf("@DIMACHOTIN");
-
-	PRINT_POS(MENU_CREDITS_COL, MENU_CREDITS_LINE + 2);
-	Printf("@IAMVAULTKID");
-
-	PRINT_POS(MENU_CREDITS_COL, MENU_CREDITS_LINE + 3);
-	Printf("@INFECTED_BYTES");
-
-	PRINT_POS(MENU_CREDITS_COL, MENU_CREDITS_LINE + 4);
-	Printf("@STONYYBIRD");
-
-	PRINT_POS(MENU_HELP_COL, MENU_HELP_LINE);
-	Printf("PRESS ANY KEY");
-
-	BOTTOM_LINES(8);
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	SHOW_BKG;
-	SHOW_WIN;
 }
 
 void Update_STATE_CREDITS(void) {
