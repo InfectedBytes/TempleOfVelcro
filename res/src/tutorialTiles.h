@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define TileLabelBank 0
+#define tutorialTilesBank 0
 /* Start of tile array. */
-extern unsigned char TileLabel[];
+extern unsigned char tutorialTiles[];
 
 /* End of TUTORIALTILES.H */
