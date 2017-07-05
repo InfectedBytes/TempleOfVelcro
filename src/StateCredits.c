@@ -48,11 +48,11 @@ void Start_STATE_CREDITS(void) {
 	/* setup background logo */
 	InitScrollTiles(0, 104, creditsTiles, 7);
 	InitScroll(creditMapWidth, creditMapHeight, creditMap, collision_tiles, 0, 4);
+	INIT_FONT(font, 3, PRINT_BKG);
 
-	/* clear screen */
-	Clear();
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	SHOW_BKG;
+	HIDE_WIN;
 }
 
 void Update_STATE_CREDITS(void) {
@@ -61,8 +61,7 @@ void Update_STATE_CREDITS(void) {
 		SpriteManagerAdd(SPRITE_CREDIT_SHEEP, 0, CREDIT_SPAWN_Y);
 		sheepSpawnCountdown = CREDIT_SPAWN_TIME;
 	}
-	BOTTOM_LINES(8);
-	PRINT_POS(10, 0);
+	PRINT_POS(12, 10);
 	Printf("%u", creditSheepCounter);
 
 	/* leave the credits on any input */
