@@ -23,6 +23,6 @@ void Start_STATE_GAMEOVER() {
 
 void Update_STATE_GAMEOVER() {
 	if (KEY_TICKED(-1)) {
-		SetState(STATE_MENU, 1);
+		SetState(STATE_GAME, 1);
 	}
 }
