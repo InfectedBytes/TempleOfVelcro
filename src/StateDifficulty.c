@@ -47,10 +47,12 @@ void Start_STATE_DIFFICULTY(void) {
 
 void Update_STATE_DIFFICULTY(void) {
 	if (KEY_TICKED(J_A) || KEY_TICKED(J_START)) {
-		if (selection == DIFFICULTY_MENU_ENTRIES - 1)
+		if (selection == DIFFICULTY_MENU_ENTRIES - 1) {
 			SetState(STATE_MENU, 0);
-		else
+		} else {
+			SetDifficulty(selection);
 			SetState(STATE_INTRO, 0);
+		}
 	} else if (KEY_TICKED(J_UP) && selection > 0) {
 		selection--;
 		UpdateDifficulty();
@@ -70,5 +72,4 @@ void UpdateDifficulty() {
 		UINT16* data = difficultyImages + DIFFICULTY_IMAGE_TILES * selection;
 		set_bkg_tiles(DIFFICULTY_TARGET_X, DIFFICULTY_TARGET_Y, DIFFICULTY_IMAGE_WIDTH, DIFFICULTY_IMAGE_HEIGHT, data);
 	}
-	SetDifficulty(selection);
 }

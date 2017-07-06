@@ -84,6 +84,7 @@ void Start_STATE_INTRO(void) {
 
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	SHOW_BKG;
+	HIDE_WIN;
 
 	/* do not load music, menu music is still playing! */
 }
@@ -102,6 +103,7 @@ void Start_STATE_OUTRO(void) {
 
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	SHOW_BKG;
+	HIDE_WIN;
 
 	/* load victory music */
 	PlayMusic(victory_mod_Data, 5, 1);

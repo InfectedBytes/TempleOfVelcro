@@ -326,7 +326,7 @@ static UINT8 HandleVictory(PlayerData* data, INT16 metersLeft) {
 			if (gameoverTimer == 0) {
 				OverwriteAutorun(FALSE, FALSE);
 				if (++currentLevel == LEVEL_COUNT)
-					SetState(STATE_VICTORY, 1);
+					SetState(STATE_OUTRO, 1);
 				else
 					SetState(STATE_GAME, 0);
 			}
