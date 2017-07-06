@@ -43,6 +43,7 @@ void Start_STATE_DIFFICULTY(void) {
 	HIDE_WIN;
 	selection = GetDifficulty();
 	UpdateDifficulty();
+	BGP_REG = PAL_DEF(0, 1, 2, 3);
 }
 
 void Update_STATE_DIFFICULTY(void) {
