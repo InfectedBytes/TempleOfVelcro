@@ -95,7 +95,7 @@ static UINT8 GetRealAutorun(void)
 
 static void DrawGui(INT16 metersLeft) {
 	UINT8 i;
-	UINT8 icons[] = { font_idx + 61, font_idx + 62 };
+	UINT8 icons[] = { font_idx + 57, font_idx + 58 };
 
 	// print meters left
 	PRINT_POS(13, 0);

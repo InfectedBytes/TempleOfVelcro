@@ -50,6 +50,7 @@ void Start_STATE_GAME() {
 	SpriteManagerLoad(SPRITE_PLAYER);
 	SpriteManagerLoad(SPRITE_HEART);
 	SpriteManagerLoad(SPRITE_COUNTDOWN);
+	SpriteManagerLoad(SPRITE_SPARKLES);
 	SHOW_SPRITES;
 
 	AnimBkg_Setup(3, tiles,
