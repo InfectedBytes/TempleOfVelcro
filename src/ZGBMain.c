@@ -67,7 +67,7 @@ void AnimBkg_Setup(UINT8 _bkgBank, unsigned char *_animBkgTiles, UINT8 _waterfal
 }
 
 void AnimBkg_Update(void) {
-	UINT8 waterfall = waterfallTimer++ >> 1;
+	UINT8 waterfall = waterfallTimer++ >> 2;
 	PUSH_BANK(bkgBank); // tileset bank
 	set_bkg_data(waterfallBase, 1, &animBkgTiles[(waterfallBase + (UINT16)(waterfall & 0x7)) << 4]);
 	set_bkg_data(waterfallEnd, 4, &animBkgTiles[(waterfallEnd + (UINT16)((waterfall & 1) << 2)) << 4]);

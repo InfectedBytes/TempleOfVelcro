@@ -24,6 +24,8 @@ static UINT8 gameover_anim[] = { 2, 8, 9};
 UINT8 jump_anim[] = { 3, 5, 6, 6 }; // not static, because it is also used in credits
 UINT8 fall_anim[] = { 1, 7 }; // not static, because it is also used in credits
 static UINT8 victory_anim[] = { 3, 11, 10, 11 };
+// music
+extern UINT8* death_mod_Data[];
 
 // these variables are always pointing to the current player
 static struct Sprite* player;
@@ -113,6 +115,7 @@ static void DrawGui(INT16 metersLeft) {
 void KillPlayer(void) {
 	data->Health = 0;
 	gameoverTimer = GAMEOVER_ANIM_TIME;
+	PlayMusic(death_mod_Data, BANK_AUDIO, 1);
 }
 
 // If player is not at full health, this function will increment the player's health and updates the frame cache.
