@@ -7,7 +7,6 @@ UINT8 init_bank = 1;
 #include "StateMenu.h"
 #include "StateGameover.h"
 #include "StateCredits.h"
-#include "StateVictory.h" // FIXME: REMOVE AFTER USING OUTRO
 #include "StateIntroOutro.h"
 #include "StateDifficulty.h"
 
@@ -30,7 +29,6 @@ void InitStates() {
 	INIT_STATE(STATE_MENU);
 	INIT_STATE(STATE_GAMEOVER);
 	INIT_STATE(STATE_CREDITS);
-	INIT_STATE(STATE_VICTORY); // FIXME: REMOVE AFTER USING OUTRO
 	INIT_STATE(STATE_INTRO);
 	INIT_STATE(STATE_OUTRO);
 	INIT_STATE(STATE_DIFFICULTY);
