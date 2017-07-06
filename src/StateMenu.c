@@ -38,9 +38,10 @@ void Start_STATE_MENU(void) {
 	//RefreshScroll();
 
 	AnimBkg_Setup(BANK_MISC_TILES, titleTiles, // bank, tileset
-				45,  // WATERFALL_BASE_ADDRESS
-				55,  // WATERFALL_END_ADDRESS
-				41); //TORCH_BASE_ADDRESS
+		45,  // WATERFALL_BASE_ADDRESS
+		55,  // WATERFALL_END_ADDRESS
+		41,  // TORCH_BASE_ADDRESS
+		121); // FIRE_PIT_BASE_ADDRESS, does not occur in this map
 
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	SHOW_BKG;

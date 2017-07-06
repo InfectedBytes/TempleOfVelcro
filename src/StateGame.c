@@ -15,10 +15,11 @@ UINT8 bank_STATE_GAME = 2;
 #define WATERFALL_BASE_ADDRESS 81
 #define WATERFALL_END_ADDRESS 89
 #define TORCH_BASE_ADDRESS 100
+#define FIRE_PIT_BASE_ADDRESS 78
 
 extern UINT8 n_sprite_types;
 
-UINT8 collision_tiles[] = { 1, 2, 3, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 26, 27, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 0 };
+UINT8 collision_tiles[] = { 1, 2, 3, 11, 12, 13, 14, 15, 16, 18, 20, 21, 23, 26, 27, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 0 };
 UINT8 collision_tiles_down[] = { 46, 47, 48, 0 };
 
 extern UINT8* level_mod_Data[];
@@ -33,7 +34,7 @@ void Start_STATE_GAME() {
 
 	AnimBkg_Setup(3, tiles,
 			WATERFALL_BASE_ADDRESS, WATERFALL_END_ADDRESS,
-			TORCH_BASE_ADDRESS);
+			TORCH_BASE_ADDRESS, FIRE_PIT_BASE_ADDRESS);
 	InitScrollTiles(0, 128, tiles, 3);
 	InitScroll(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_MAP_ADDRESS, collision_tiles, collision_tiles_down, LEVEL_FIRST_BANK + currentLevel);
 	adjustableOffsetX = 16; // player should be left of the screen

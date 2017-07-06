@@ -34,7 +34,7 @@ extern UINT16 levelWidths[];
 // one tile costs 16 bytes => 4 tiles = 64 bytes
 #define TORCH_SPEED 5
 
-void AnimBkg_Setup(UINT8 _bkgBank, unsigned char *_animBkgTiles, UINT8 _waterfallBase, UINT8 _waterfallEnd, UINT8 _torchBase);
+void AnimBkg_Setup(UINT8 _bkgBank, unsigned char *_animBkgTiles, UINT8 _waterfallBase, UINT8 _waterfallEnd, UINT8 _torchBase, UINT8 _firePitBase);
 void AnimBkg_Update(void);
 void ReplaceTiles(UINT8 bank, UINT8 address, UINT8 tiles, UINT8* data, UINT8 offset);
 

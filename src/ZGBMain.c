@@ -18,6 +18,7 @@ static UINT8 bkgBank;
 static UINT8 waterfallBase;
 static UINT8 waterfallEnd;
 static UINT8 torchBase;
+static UINT8 firePitBase;
 static unsigned char *animBkgTiles;
 
 static Difficulty difficulty = NORMAL;
@@ -56,12 +57,13 @@ void Clear() {
 	}
 }
 
-void AnimBkg_Setup(UINT8 _bkgBank, unsigned char *_animBkgTiles, UINT8 _waterfallBase, UINT8 _waterfallEnd, UINT8 _torchBase) {
+void AnimBkg_Setup(UINT8 _bkgBank, unsigned char *_animBkgTiles, UINT8 _waterfallBase, UINT8 _waterfallEnd, UINT8 _torchBase, UINT8 _firePitBase) {
 	bkgBank = _bkgBank;
 	animBkgTiles = _animBkgTiles;
 	waterfallBase = _waterfallBase;
 	waterfallEnd = _waterfallEnd;
 	torchBase = _torchBase;
+	firePitBase = _firePitBase;
 }
 
 void AnimBkg_Update(void) {
@@ -73,6 +75,7 @@ void AnimBkg_Update(void) {
 		torchTimer = 0;
 		if (++torchFrame == 3) torchFrame = 0;
 		set_bkg_data(torchBase, 1, &animBkgTiles[(torchBase + (UINT16)torchFrame) << 4]);
+		set_bkg_data(firePitBase, 1, &animBkgTiles[(firePitBase + (UINT16)torchFrame) << 4]);
 	}
 	POP_BANK;
 }
