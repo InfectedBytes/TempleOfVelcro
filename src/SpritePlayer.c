@@ -44,6 +44,8 @@ static UINT8 gravitySetting;
 
 static UINT8 overwriteAutorunSetting;
 
+extern UINT8 paused;
+
 static void SetAnimationState(AnimationState state) {
 	lastState = currentState;
 	currentState = state;
@@ -94,8 +96,6 @@ static UINT8 GetRealAutorun(void)
 static void DrawGui(INT16 metersLeft) {
 	UINT8 i;
 	UINT8 icons[] = { font_idx + 61, font_idx + 62 };
-
-	BOTTOM_LINES(1);
 
 	// print meters left
 	PRINT_POS(13, 0);
@@ -411,6 +411,8 @@ void Update_SPRITE_PLAYER() {
 
 	// draw information on window
 	DrawGui(metersLeft);
+
+	if (paused) return; // do nothing if game is paused
 
 	// if startup sequence is not yet done => return
 	if (StartupInProgress()) return;

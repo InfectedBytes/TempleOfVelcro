@@ -1,6 +1,6 @@
 /*
 
- PAUSETILES.B7.C
+ PAUSETILES.B2.C
 
  Tile Source File.
 
@@ -71,4 +71,4 @@ const unsigned  char pauseTiles[] =
   0xC0,0xC0,0x40,0x40,0xC0,0xC0,0x00,0x00
 };
 
-/* End of PAUSETILES.B7.C */
+/* End of PAUSETILES.B2.C */

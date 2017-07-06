@@ -8,6 +8,7 @@
 UINT8 bank_SPRITE_COUNTDOWN = 2;
 
 static INT8 countdownTimer;
+extern UINT8 paused;
 
 void Start_SPRITE_COUNTDOWN() {
 	PAL1;
@@ -16,6 +17,7 @@ void Start_SPRITE_COUNTDOWN() {
 }
 
 void Update_SPRITE_COUNTDOWN() {
+	if (paused) return;
 	if (THIS->current_frame != 3) {
 		if (countdownTimer++ == FRAMES_PER_SECOND) {
 			countdownTimer = 0;
