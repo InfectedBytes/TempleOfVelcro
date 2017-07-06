@@ -46,6 +46,7 @@ static UINT8 overwriteAutorunSetting;
 
 // used to apply some cheats: increase health, invincible (mainly for debugging)
 static UINT8 cheatCounter;
+static UINT8 extraGravity; // hacky trick to improve gravity behavior
 extern UINT8 paused;
 
 static void SetAnimationState(AnimationState state) {
@@ -266,18 +267,27 @@ static void HandleInput(PlayerData* data, UINT8 velcro) {
 }
 
 static void ApplyGravity(PlayerData* data, UINT8 velcro) {
+	UINT8 grounded = 0;
+	INT8 gravity = velcro ? VELCRO_GRAVITY : (gravitySetting + delta_time + (extraGravity >> 1));
+	while (gravity > 8) {
+		grounded |= TranslateSprite(THIS, 0, 8);
+		gravity -= 8;
+	}
+	grounded |= TranslateSprite(THIS, 0, gravity);
 	// apply gravity and check if sprite is grounded
-	if (TranslateSprite(THIS, 0, velcro ? VELCRO_GRAVITY : (gravitySetting + delta_time))) {
+	if (grounded) {
 		if (!velcro && !GET_BIT(data->Flags, GROUNDED_BIT)) {
 			PLAYFX(player_grounded);
 		}
 		SET_BIT(data->Flags, GROUNDED_BIT);
 		UNSET_BIT(data->Flags, DOUBLE_JUMP_BIT);
 		SetAnimationState(WALK);
+		extraGravity = 0;
 	} else {
 		UNSET_BIT(data->Flags, GROUNDED_BIT);
 		if (data->Jump >= -gravitySetting) {
 			SetAnimationState(FALL);
+			extraGravity++; // as long as we are falling, we increase the gravity
 		}
 	}
 
@@ -414,6 +424,7 @@ void Start_SPRITE_PLAYER() {
 
 	gameoverTimer = 0;
 	cheatCounter = 0;
+	extraGravity = 0;
 }
 
 void Update_SPRITE_PLAYER() {
