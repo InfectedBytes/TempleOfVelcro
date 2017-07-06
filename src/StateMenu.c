@@ -39,7 +39,7 @@ void Start_STATE_MENU(void) {
 
 	AnimBkg_Setup(BANK_MISC_TILES, titleTiles, // bank, tileset
 				45,  // WATERFALL_BASE_ADDRESS
-				53,  // WATERFALL_END_ADDRESS
+				55,  // WATERFALL_END_ADDRESS
 				41); //TORCH_BASE_ADDRESS
 
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
