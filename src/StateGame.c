@@ -39,9 +39,9 @@ void Start_STATE_GAME() {
 	adjustableOffsetX = 16; // player should be left of the screen
 	RefreshScroll();
 	SHOW_BKG;
-	INIT_WINDOW(font, 3, 0, 1);
+	INIT_WINDOW(font, BANK_FONT, 0, 1);
 	HIDE_WIN; // hide for now
-	PlayMusic(level_mod_Data, 5, 1);
+	PlayMusic(level_mod_Data, BANK_AUDIO, 1);
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	Clear();
 

@@ -106,7 +106,7 @@ void Start_STATE_OUTRO(void) {
 	HIDE_WIN;
 
 	/* load victory music */
-	PlayMusic(victory_mod_Data, 5, 1);
+	PlayMusic(victory_mod_Data, BANK_AUDIO, 1);
 }
 
 void Update_STATE_OUTRO(void) {

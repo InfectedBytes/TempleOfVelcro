@@ -46,7 +46,7 @@ void Start_STATE_MENU(void) {
 	SHOW_BKG;
 
 	/* play menu sound */
-	PlayMusic(menu_mod_Data, 5, 1);
+	PlayMusic(menu_mod_Data, BANK_AUDIO, 1);
 	StateMenu_UpdateSelection(0);
 }
 

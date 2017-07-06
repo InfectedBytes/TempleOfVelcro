@@ -13,6 +13,9 @@
 
 #define MAX_TILE_ID 99
 
+#define BANK_FONT 3
+#define BANK_MISC_MAPS 4
+#define BANK_AUDIO 5
 #define BANK_MISC_TILES 7
 
 
