@@ -18,7 +18,7 @@ UINT8 bank_STATE_GAME = 2;
 
 extern UINT8 n_sprite_types;
 
-UINT8 collision_tiles[] = { 11, 12, 13, 14, 15, 16, 18, 30, 31, 32, 33, 35, 36, 37, 38, 39, 0 };
+UINT8 collision_tiles[] = { 11, 12, 13, 14, 15, 16, 18, 26, 27, 30, 31, 32, 33, 35, 36, 37, 38, 39, 0 };
 UINT8 collision_tiles_down[] = { 46, 47, 48, 0 };
 
 extern UINT8* level_mod_Data[];
