@@ -19,6 +19,7 @@ UINT8 bank_STATE_GAME = 2;
 #define TORCH_BASE_ADDRESS 100
 #define FIRE_PIT_BASE_ADDRESS 78
 
+#define PAUSE_POS_X 6
 // WY_REG is set to a value between these two, depending on whether the pause menu is visible or not
 #define PAUSE_MENU_IN 128
 #define PAUSE_MENU_OUT 136
@@ -107,9 +108,9 @@ void Update_STATE_GAME() {
 				HIDE_WIN;
 			}
 			// clear
-			PRINT_POS(5, 0);
+			PRINT_POS(PAUSE_POS_X, 0);
 			Printf("      ");
-			PRINT_POS(5, 1);
+			PRINT_POS(PAUSE_POS_X, 1);
 			Printf("      ");
 		}
 	} else {
@@ -118,9 +119,9 @@ void Update_STATE_GAME() {
 			paused = TRUE;
 			ReplaceFont();
 			// we are overriding the characters A-F with "continue" and G-L with "quit game"
-			PRINT_POS(5, 0);
+			PRINT_POS(PAUSE_POS_X, 0);
 			Printf("ABCDE");
-			PRINT_POS(5, 1);
+			PRINT_POS(PAUSE_POS_X, 1);
 			Printf("FGHIJK");
 		}
 	}
