@@ -46,7 +46,7 @@ void Start_STATE_CREDITS(void) {
 	SHOW_SPRITES;
 
 	/* setup background logo */
-	InitScrollTiles(0, 104, creditsTiles, 7);
+	InitScrollTiles(0, 104, creditsTiles, BANK_MISC_TILES);
 	InitScroll(creditMapWidth, creditMapHeight, creditMap, collision_tiles, 0, 4);
 	INIT_FONT(font, 3, PRINT_BKG);
 

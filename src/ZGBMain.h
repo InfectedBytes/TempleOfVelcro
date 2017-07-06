@@ -13,6 +13,8 @@
 
 #define MAX_TILE_ID 99
 
+#define BANK_MISC_TILES 7
+
 
 // level selection
 #define LEVEL_FIRST_BANK 10
@@ -58,6 +60,7 @@ typedef enum {
 	STATE_VICTORY, // FIXME: REMOVE AFTER USING OUTRO
 	STATE_INTRO,
 	STATE_OUTRO,
+	STATE_DIFFICULTY,
 
 	N_STATES
 } STATE;

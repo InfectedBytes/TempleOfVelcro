@@ -14,7 +14,6 @@ UINT8 bank_STATE_MENU = 4;
 
 /* ----- Defines ----- */
 #define MAP_BANK        4
-#define TILES_BANK      7
 #define MAX_MENU_INDEX  1
 
 /* ----- Types / Enums ----- */
@@ -34,11 +33,11 @@ extern UINT8* menu_mod_Data[];
 
 void Start_STATE_MENU(void) {
 	/* setup background logo */
-	InitScrollTiles(0, 120, titleTiles, TILES_BANK);
+	InitScrollTiles(0, 120, titleTiles, BANK_MISC_TILES);
 	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, MAP_BANK);
 	//RefreshScroll();
 
-	AnimBkg_Setup(TILES_BANK, titleTiles, // bank, tileset
+	AnimBkg_Setup(BANK_MISC_TILES, titleTiles, // bank, tileset
 				45,  // WATERFALL_BASE_ADDRESS
 				53,  // WATERFALL_END_ADDRESS
 				41); //TORCH_BASE_ADDRESS
@@ -95,8 +94,8 @@ void Update_STATE_MENU(void) {
  * \param newSelection is the new menu selection changed by UP, DOWN ticks
  */
 void StateMenu_UpdateSelection(UINT8 newSelection) {
-	ReplaceTiles(7, 1, 4, titleTiles, newSelection ? 0 : 4);
-	ReplaceTiles(7, 9, 6, titleTiles, newSelection ? 6 : 0);
+	ReplaceTiles(BANK_MISC_TILES, 1, 4, titleTiles, newSelection ? 0 : 4);
+	ReplaceTiles(BANK_MISC_TILES, 9, 6, titleTiles, newSelection ? 6 : 0);
 	/* finally store the new selection */
 	selection = newSelection;
 }
@@ -109,9 +108,7 @@ void StateMenu_UpdateSelection(UINT8 newSelection) {
 static void StateMenu_Select(UINT8 selection) {
 	switch (selection) {
 		case 0: // Play Menu
-			// TODO: SetState(STATE_DIFFICULTY, 0);
-			SetDifficulty(EASY);
-			SetState(STATE_INTRO, 0);
+			SetState(STATE_DIFFICULTY, 0);
 			break;
 		case 1: // Credits
 			SetState(STATE_CREDITS, 0);

@@ -9,6 +9,7 @@ UINT8 init_bank = 1;
 #include "StateCredits.h"
 #include "StateVictory.h" // FIXME: REMOVE AFTER USING OUTRO
 #include "StateIntroOutro.h"
+#include "StateDifficulty.h"
 
 #include "SpritePlayer.h"
 #include "SpriteHeart.h"
@@ -32,6 +33,7 @@ void InitStates() {
 	INIT_STATE(STATE_VICTORY); // FIXME: REMOVE AFTER USING OUTRO
 	INIT_STATE(STATE_INTRO);
 	INIT_STATE(STATE_OUTRO);
+	INIT_STATE(STATE_DIFFICULTY);
 }
 
 void InitSprites() {

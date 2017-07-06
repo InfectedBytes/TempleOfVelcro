@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define TileLabelBank 0
+#define difficultyTilesBank 0
 /* Start of tile array. */
-extern unsigned char TileLabel[];
+extern unsigned char difficultyTiles[];
 
 /* End of DIFFICULTYTILES.H */

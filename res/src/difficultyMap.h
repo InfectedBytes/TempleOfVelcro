@@ -18,10 +18,10 @@
 
 */
 
-#define menuMapWidth 20
-#define menuMapHeight 18
-#define menuMapBank 0
+#define difficultyMapWidth 20
+#define difficultyMapHeight 18
+#define difficultyMapBank 0
 
-extern unsigned char menuMap[];
+extern unsigned char difficultyMap[];
 
 /* End of SRC/DIFFICULTYMAP.H */
