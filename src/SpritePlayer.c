@@ -44,6 +44,8 @@ static UINT8 gravitySetting;
 
 static UINT8 overwriteAutorunSetting;
 
+// used to apply some cheats: increase health, invincible (mainly for debugging)
+static UINT8 cheatCounter;
 extern UINT8 paused;
 
 static void SetAnimationState(AnimationState state) {
@@ -374,6 +376,19 @@ static UINT8 HandleInvincible(PlayerData* data)
 	return FALSE;
 }
 
+static void HandleCheats() {
+	if (KEY_TICKED(J_UP)) cheatCounter++;
+	else if (KEY_TICKED(J_DOWN)) cheatCounter--;
+	else if (KEY_TICKED(J_B)) {
+		switch (cheatCounter) {
+			case 7: HealPlayer(); break;
+			case 8: DamagePlayer(); break;
+			case 9: data->Invincible = INVINCIBLE_TIME; break;
+			case 10: SetAutorun(TRUE);
+		}
+	}
+}
+
 void Start_SPRITE_PLAYER() {
 	player = THIS;
 	data = (PlayerData*)THIS->custom_data;
@@ -398,6 +413,7 @@ void Start_SPRITE_PLAYER() {
 	else countdownTimer = 0;
 
 	gameoverTimer = 0;
+	cheatCounter = 0;
 }
 
 void Update_SPRITE_PLAYER() {
@@ -433,6 +449,7 @@ void Update_SPRITE_PLAYER() {
 	ApplyGravity(data, velcro, gravitySetting);
 
 	HandleInput(data, velcro);
+	HandleCheats();
 }
 
 void Destroy_SPRITE_PLAYER(void) {
