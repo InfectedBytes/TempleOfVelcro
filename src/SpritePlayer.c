@@ -384,7 +384,7 @@ static void HandleCheats() {
 			case 7: HealPlayer(); break;
 			case 8: DamagePlayer(); break;
 			case 9: data->Invincible = INVINCIBLE_TIME; break;
-			case 10: SetAutorun(TRUE);
+			case 10: SetAutorun(!GetAutorun());
 		}
 	}
 }
