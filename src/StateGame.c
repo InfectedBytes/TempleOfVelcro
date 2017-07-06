@@ -57,7 +57,7 @@ void Start_STATE_GAME() {
 			WATERFALL_BASE_ADDRESS, WATERFALL_END_ADDRESS,
 			TORCH_BASE_ADDRESS, FIRE_PIT_BASE_ADDRESS);
 	InitScrollTiles(0, 128, tiles, 3);
-	InitScroll(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_MAP_ADDRESS, collision_tiles, collision_tiles_down, LEVEL_FIRST_BANK + currentLevel);
+	InitScroll(LEVEL_WIDTH, LEVEL_HEIGHT, LEVEL_MAP_ADDRESS, collision_tiles, collision_tiles_down, LEVEL_FIRST_BANK + 2);
 	adjustableOffsetX = 16; // player should be left of the screen
 	RefreshScroll();
 	SHOW_BKG;
@@ -99,7 +99,7 @@ void Update_STATE_GAME() {
 		} else if (KEY_TICKED(J_DOWN) && pauseSelection != QUIT) {
 			pauseSelection = QUIT;
 			ReplaceFont();
-		} else if (KEY_TICKED(J_START)) {
+		} else if (KEY_TICKED(J_START) || KEY_TICKED(J_A)) {
 			if (pauseSelection == CONTINUE) {
 				paused = FALSE;
 			} else {
