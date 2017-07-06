@@ -51,7 +51,7 @@ void Update_STATE_DIFFICULTY(void) {
 			SetState(STATE_MENU, 0);
 		} else {
 			SetDifficulty(selection);
-			SetState(STATE_INTRO, 0);
+			SetState(STATE_GAME, 1);
 		}
 	} else if (KEY_TICKED(J_UP) && selection > 0) {
 		selection--;

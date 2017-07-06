@@ -72,6 +72,7 @@ static void StateIntroOutro_NextState(void);
 /* ----- Variables ----- */
 static IntroOrOutro selection;
 static UINT8 screen = 0;
+extern UINT8* menu_mod_Data[];
 
 
 /* ----- Functions ----- */
@@ -86,7 +87,7 @@ void Start_STATE_INTRO(void) {
 	SHOW_BKG;
 	HIDE_WIN;
 
-	/* do not load music, menu music is still playing! */
+	PlayMusic(menu_mod_Data, BANK_AUDIO, 1);
 }
 
 void Update_STATE_INTRO(void) {
@@ -193,7 +194,7 @@ static void StateIntroOutro_LoadScreen(void) {
 static void StateIntroOutro_NextState(void) {
 	if (selection == IS_INTRO) {
 		// load the game
-		SetState(STATE_GAME, 1);
+		SetState(STATE_MENU, 0);
 	} else {
 		// load main menu
 		SetState(STATE_MENU, 1);

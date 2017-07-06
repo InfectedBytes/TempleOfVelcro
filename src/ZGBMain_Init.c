@@ -19,7 +19,7 @@ UINT8 init_bank = 1;
 #include "../res/src/pickups.h"
 #include "../res/src/countdownsprite.h"
 
-UINT8 next_state = STATE_MENU;
+UINT8 next_state = STATE_INTRO;
 
 SET_N_STATES(N_STATES);
 SET_N_SPRITE_TYPES(N_SPRITE_TYPES);
