@@ -91,12 +91,18 @@ static UINT8 GetRealAutorun(void)
 
 static void DrawGui(INT16 metersLeft) {
 	UINT8 i;
+	UINT8 icons[] = { font_idx + 61, font_idx + 62 };
 
 	BOTTOM_LINES(1);
 
 	// print meters left
-	PRINT_POS(14, 0);
-	Printf(" %um    ", (UINT16)metersLeft);
+	PRINT_POS(13, 0);
+	if (metersLeft >= 100) Printf("%um", (UINT16)metersLeft);
+	else if (metersLeft >= 10) Printf(" %um", (UINT16)metersLeft);
+	else Printf("  %um", (UINT16)metersLeft);
+	// no space left in bank 0, therefore we can't add more signs to printf
+	// as a result we just set the correct icons directly via set_win_tiles
+	set_win_tiles(print_x, print_y, 2, 1, icons);
 
 	// print health
 	PRINT_POS(1, 0);
