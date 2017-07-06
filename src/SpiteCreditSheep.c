@@ -2,10 +2,10 @@
 #include "SpriteCreditSheep.h"
 #include "SpriteManager.h"
 #include "SpritePlayer.h"
+#include "Sound.h"
+#include "../res/src/SoundEffects.h"
 
 UINT8 bank_SPRITE_CREDIT_SHEEP = 4;
-
-#define CREDIT_START_JUMP_TIME 40
 
 extern UINT16 creditSheepCounter;
 
@@ -23,9 +23,10 @@ void Start_SPRITE_CREDIT_SHEEP() {
 void Update_SPRITE_CREDIT_SHEEP() {
 	THIS->x+=2;
 	if (THIS->x < 20) return;
-	if (THIS->x == 70) {
+	if (THIS->x == 66) {
 		SetSpriteAnim(THIS, jump_anim, 5);
-		jump = 12;
+		PLAYFX_player_jump;
+		jump = 10;
 	}
 	if (jump != 0) {
 		TranslateSprite(THIS, 0, -jump);
@@ -34,8 +35,11 @@ void Update_SPRITE_CREDIT_SHEEP() {
 			SetSpriteAnim(THIS, fall_anim, 5);
 		}
 	}
-	if (TranslateSprite(THIS, 0, 2)) // gravity
+	if (TranslateSprite(THIS, 0, 2)) { // gravity
+		if (THIS->anim_data == fall_anim)
+			PLAYFX_player_grounded;
 		SetSpriteAnim(THIS, walk_anim, 10);
+	}
 }
 
 void Destroy_SPRITE_CREDIT_SHEEP() {
