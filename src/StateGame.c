@@ -69,7 +69,7 @@ void Start_STATE_GAME() {
 	SpriteManagerAdd(SPRITE_PLAYER, 2 << 3, 12 << 3);
 
 	if (GetAutorun()) {
-		SpriteManagerAdd(SPRITE_COUNTDOWN, (SCREENWIDTH >> 1) + 8, SCREENHEIGHT >> 2);
+		SpriteManagerAdd(SPRITE_COUNTDOWN, (SCREENWIDTH >> 1) - 4, (SCREENHEIGHT >> 2) + 16);
 	}
 	paused = 0;
 	pauseSelection = CONTINUE;
