@@ -12,7 +12,7 @@ extern UINT8* gameover_mod_Data[];
 
 void Start_STATE_GAMEOVER() {
 	HIDE_WIN;
-	InitScrollTiles(0, 74, gameoverTiles, 4);
+	InitScrollTiles(0, 75, gameoverTiles, 4);
 	InitScroll(gameoverMapWidth, gameoverMapHeight, gameoverMap, 0, 0, BANK_MISC_MAPS);
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	SHOW_BKG;

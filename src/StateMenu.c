@@ -33,7 +33,7 @@ extern UINT8* menu_mod_Data[];
 
 void Start_STATE_MENU(void) {
 	/* setup background logo */
-	InitScrollTiles(0, 120, titleTiles, BANK_MISC_TILES);
+	InitScrollTiles(0, 121, titleTiles, BANK_MISC_TILES);
 	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, MAP_BANK);
 	//RefreshScroll();
 
