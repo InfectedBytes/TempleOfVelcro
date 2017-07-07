@@ -29,7 +29,7 @@ DECLARE_SPRITE(SPRITE_PLAYER);
 // gameover animation time
 #define GAMEOVER_ANIM_TIME 80
 // victory animation time
-#define VICTORY_ANIM_TIME 103
+#define VICTORY_ANIM_TIME 203
 
 void HealPlayer(void);
 void DamagePlayer(void);

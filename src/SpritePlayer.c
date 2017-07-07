@@ -331,7 +331,7 @@ static UINT8 HandleVictory(PlayerData* data, INT16 metersLeft) {
 			data->Jump = 0;
 		}
 		// jump for 3 times (why is it 3? timer starts with 103...)
-		if (gameoverTimer > 99) {
+		if (gameoverTimer > 199) {
 			// initiate a jump by faking key input :)
 			if (!data->Jump && GET_BIT(data->Flags, GROUNDED_BIT)) {
 				UNSET_BIT(data->Flags, GROUNDED_BIT);
