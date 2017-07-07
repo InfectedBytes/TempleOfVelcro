@@ -51,6 +51,7 @@ void Update_STATE_DIFFICULTY(void) {
 		if (selection == DIFFICULTY_MENU_ENTRIES - 1) {
 			SetState(STATE_MENU, 0);
 		} else {
+			currentLevel = 0;
 			SetDifficulty(selection);
 			SetState(STATE_GAME, 1);
 		}
