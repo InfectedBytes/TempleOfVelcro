@@ -202,7 +202,7 @@ static void StateIntroOutro_LoadScreen(void) {
 static void StateIntroOutro_NextState(void) {
 	if (selection == IS_INTRO) {
 		// gamestart, load main menu, keep music running
-		SetState(STATE_INTRO, 0);
+		SetState(STATE_MENU, 0);
 	} else {
 		// from outro, load main menu, stop the music
 		SetState(STATE_MENU, 1);
