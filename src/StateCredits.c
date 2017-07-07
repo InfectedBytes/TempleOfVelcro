@@ -69,8 +69,10 @@ void Update_STATE_CREDITS(void) {
 		SpriteManagerAdd(SPRITE_CREDIT_SHEEP, 0, CREDIT_SPAWN_Y);
 		sheepSpawnCountdown = CREDIT_SPAWN_TIME;
 	}
-	PRINT_POS(12, 10);
-	Printf("%u", creditSheepCounter);
+	if (creditsOrTutorial == CREDITS_MODE) {
+		PRINT_POS(12, 10);
+		Printf("%u", creditSheepCounter);
+	}
 
 	/* leave the credits on any input */
 	if (KEY_TICKED(0xFFU))
