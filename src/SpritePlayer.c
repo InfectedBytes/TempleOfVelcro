@@ -318,6 +318,12 @@ static void ApplyJump(PlayerData* data) {
 				data->Jump = 0;
 			}
 		}
+
+		// prevent the player from glitching above the level
+		if (THIS->y + 48u < 24u) { // if(y < -24) y = -24; // but y is UINT16
+			THIS->y = -24;
+			data->Jump = 0;
+		}
 	}
 }
 
