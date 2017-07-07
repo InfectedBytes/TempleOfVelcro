@@ -44,6 +44,9 @@ static UINT8 gravitySetting;
 
 static UINT8 overwriteAutorunSetting;
 
+// used to apply some cheats: increase health, invincible (mainly for debugging)
+static UINT8 cheatCounter;
+static UINT8 extraGravity; // hacky trick to improve gravity behavior
 extern UINT8 paused;
 
 static void SetAnimationState(AnimationState state) {
@@ -95,7 +98,7 @@ static UINT8 GetRealAutorun(void)
 
 static void DrawGui(INT16 metersLeft) {
 	UINT8 i;
-	UINT8 icons[] = { font_idx + 61, font_idx + 62 };
+	UINT8 icons[] = { font_idx + 57, font_idx + 58 };
 
 	// print meters left
 	PRINT_POS(13, 0);
@@ -264,18 +267,27 @@ static void HandleInput(PlayerData* data, UINT8 velcro) {
 }
 
 static void ApplyGravity(PlayerData* data, UINT8 velcro) {
+	UINT8 grounded = 0;
+	INT8 gravity = velcro ? VELCRO_GRAVITY : (gravitySetting + delta_time + (extraGravity >> 1));
+	while (gravity > 8) {
+		grounded |= TranslateSprite(THIS, 0, 8);
+		gravity -= 8;
+	}
+	grounded |= TranslateSprite(THIS, 0, gravity);
 	// apply gravity and check if sprite is grounded
-	if (TranslateSprite(THIS, 0, velcro ? VELCRO_GRAVITY : (gravitySetting + delta_time))) {
+	if (grounded) {
 		if (!velcro && !GET_BIT(data->Flags, GROUNDED_BIT)) {
 			PLAYFX(player_grounded);
 		}
 		SET_BIT(data->Flags, GROUNDED_BIT);
 		UNSET_BIT(data->Flags, DOUBLE_JUMP_BIT);
 		SetAnimationState(WALK);
+		extraGravity = 0;
 	} else {
 		UNSET_BIT(data->Flags, GROUNDED_BIT);
 		if (data->Jump >= -gravitySetting) {
 			SetAnimationState(FALL);
+			extraGravity++; // as long as we are falling, we increase the gravity
 		}
 	}
 
@@ -374,6 +386,19 @@ static UINT8 HandleInvincible(PlayerData* data)
 	return FALSE;
 }
 
+static void HandleCheats() {
+	if (KEY_TICKED(J_UP)) cheatCounter++;
+	else if (KEY_TICKED(J_DOWN)) cheatCounter--;
+	else if (KEY_TICKED(J_B)) {
+		switch (cheatCounter) {
+			case 7: HealPlayer(); break;
+			case 8: DamagePlayer(); break;
+			case 9: data->Invincible = INVINCIBLE_TIME; break;
+			case 10: SetAutorun(!GetAutorun());
+		}
+	}
+}
+
 void Start_SPRITE_PLAYER() {
 	player = THIS;
 	data = (PlayerData*)THIS->custom_data;
@@ -398,6 +423,8 @@ void Start_SPRITE_PLAYER() {
 	else countdownTimer = 0;
 
 	gameoverTimer = 0;
+	cheatCounter = 0;
+	extraGravity = 0;
 }
 
 void Update_SPRITE_PLAYER() {
@@ -433,6 +460,7 @@ void Update_SPRITE_PLAYER() {
 	ApplyGravity(data, velcro, gravitySetting);
 
 	HandleInput(data, velcro);
+	HandleCheats();
 }
 
 void Destroy_SPRITE_PLAYER(void) {

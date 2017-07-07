@@ -35,6 +35,9 @@ UINT8 GetTileReplacement(UINT8* tile_ptr, UINT8* tile) {
 		if((UINT16)TILE_HEART_SPAWN == (UINT16)*tile_ptr) {
 			*tile = 0;
 			return SPRITE_HEART;
+		} else if ((UINT16)TILE_TREASURE == (UINT16)*tile_ptr) {
+			*tile = *tile_ptr;
+			return SPRITE_SPARKLES;
 		}
 
 		*tile = *tile_ptr;

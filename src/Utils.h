@@ -4,6 +4,7 @@
 #include "Scroll.h"
 #include "Sprite.h"
 
+#define TILE_TREASURE 54
 // velcros
 #define TILE_VELCRO 4
 #define TILE_VELCRO_MASK 3

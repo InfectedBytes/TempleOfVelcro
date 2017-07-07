@@ -23,6 +23,7 @@
     <ClCompile Include="src\SpriteCountdown.c" />
     <ClCompile Include="src\SpriteHeart.c" />
     <ClCompile Include="src\SpritePlayer.c" />
+    <ClCompile Include="src\SpriteSparkles.c" />
     <ClCompile Include="src\StateCredits.c" />
     <ClCompile Include="src\StateDifficulty.c" />
     <ClCompile Include="src\StateGame.c" />
@@ -37,6 +38,7 @@
     <ClInclude Include="src\SpriteCreditSheep.h" />
     <ClInclude Include="src\SpriteHeart.h" />
     <ClInclude Include="src\SpritePlayer.h" />
+    <ClInclude Include="src\SpriteSparkles.h" />
     <ClInclude Include="src\StateCredits.h" />
     <ClInclude Include="src\StateDifficulty.h" />
     <ClInclude Include="src\StateGame.h" />
