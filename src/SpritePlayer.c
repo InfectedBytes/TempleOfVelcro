@@ -394,7 +394,6 @@ static UINT8 HandleInvincible(PlayerData* data)
 }
 
 static void HandleCheats() {
-	UINT8 cheat;
 	if (KEY_PRESSED(J_SELECT)) {
 		if (KEY_TICKED(J_UP) && cheatLevel < LEVEL_COUNT - 1) cheatLevel++;
 		else if (KEY_TICKED(J_DOWN) && cheatLevel > 0) cheatLevel--;
