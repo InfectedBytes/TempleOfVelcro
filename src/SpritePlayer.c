@@ -46,6 +46,7 @@ static UINT8 overwriteAutorunSetting;
 
 // used to apply some cheats: increase health, invincible (mainly for debugging)
 static UINT8 cheatCounter;
+static UINT8 cheatLevel;
 static UINT8 extraGravity; // hacky trick to improve gravity behavior
 extern UINT8 paused;
 
@@ -388,21 +389,23 @@ static UINT8 HandleInvincible(PlayerData* data)
 
 static void HandleCheats() {
 	UINT8 cheat;
-	if (KEY_TICKED(J_UP)) cheatCounter++;
-	else if (KEY_TICKED(J_DOWN)) cheatCounter--;
-	else if (KEY_TICKED(J_B)) {
-		switch (cheatCounter) {
-			case 7: HealPlayer(); break;
-			case 8: DamagePlayer(); break;
-			case 9: data->Invincible = INVINCIBLE_TIME; break;
-			case 10: SetAutorun(!GetAutorun());
-			default:
-				cheat = cheatCounter - 11;
-				if (cheat < LEVEL_COUNT) {
-					currentLevel = cheat;
-					SetState(STATE_GAME, 0);
-					break;
-				}
+	if (KEY_PRESSED(J_SELECT)) {
+		if (KEY_TICKED(J_UP) && cheatLevel < LEVEL_COUNT - 1) cheatLevel++;
+		else if (KEY_TICKED(J_DOWN) && cheatLevel > 0) cheatLevel--;
+		else if (KEY_TICKED(J_B)) {
+			currentLevel = cheatLevel;
+			SetState(STATE_GAME, 0);
+		}
+	} else {
+		if (KEY_TICKED(J_UP)) cheatCounter++;
+		else if (KEY_TICKED(J_DOWN)) cheatCounter--;
+		else if (KEY_TICKED(J_B)) {
+			switch (cheatCounter) {
+				case 7: HealPlayer(); break;
+				case 8: DamagePlayer(); break;
+				case 9: data->Invincible = INVINCIBLE_TIME; break;
+				case 10: SetAutorun(!GetAutorun());
+			}
 		}
 	}
 }
@@ -432,6 +435,7 @@ void Start_SPRITE_PLAYER() {
 
 	gameoverTimer = 0;
 	cheatCounter = 0;
+	cheatLevel = 0;
 	extraGravity = 0;
 }
 
