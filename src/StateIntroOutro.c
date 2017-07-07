@@ -9,6 +9,7 @@ UINT8 bank_STATE_OUTRO = 4;
 #include "Keys.h"
 #include "ZGBMain.h"
 #include "Scroll.h"
+#include "Fade.h"
 #include "../res/src/introMap1.h"
 #include "../res/src/introMap2.h"
 #include "../res/src/introMap3.h"
@@ -145,7 +146,10 @@ static void StateIntroOutro_HandleInput(void) {
  * \brief Loads the given screens content
  */
 static void StateIntroOutro_LoadScreen(void) {
-	HIDE_BKG;
+	if (screen != 0) {
+		FadeIn();
+		DISPLAY_OFF;
+	}
 
 	if (selection == IS_INTRO) {
 		switch (screen) {
@@ -185,7 +189,11 @@ static void StateIntroOutro_LoadScreen(void) {
 		}
 	}
 
-	SHOW_BKG;
+	if (screen != 0) {
+		BGP_REG = PAL_DEF(0, 1, 2, 3);
+		DISPLAY_ON;
+		FadeOut();
+	}
 }
 
 /**
@@ -193,10 +201,10 @@ static void StateIntroOutro_LoadScreen(void) {
  */
 static void StateIntroOutro_NextState(void) {
 	if (selection == IS_INTRO) {
-		// load the game
-		SetState(STATE_MENU, 0);
+		// gamestart, load main menu, keep music running
+		SetState(STATE_INTRO, 0);
 	} else {
-		// load main menu
+		// from outro, load main menu, stop the music
 		SetState(STATE_MENU, 1);
 	}
 }
