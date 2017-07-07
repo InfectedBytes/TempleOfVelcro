@@ -11,6 +11,8 @@ UINT8 bank_STATE_CREDITS = 4;
 #include "SpriteManager.h"
 #include "../res/src/creditsMap.h"
 #include "../res/src/creditsTiles.h"
+#include "../res/src/tutorialTiles.h"
+#include "../res/src/tutorialMap.h"
 #include "../res/src/font.h"
 
 
@@ -31,6 +33,7 @@ UINT8 bank_STATE_CREDITS = 4;
 
 
 /* ----- Variables ----- */
+UINT8 creditsOrTutorial;
 static UINT8 sheepSpawnCountdown;
 UINT16 creditSheepCounter;
 static UINT8 collision_tiles[] = { 2, 5, 0 };
@@ -46,8 +49,13 @@ void Start_STATE_CREDITS(void) {
 	SHOW_SPRITES;
 
 	/* setup background logo */
-	InitScrollTiles(0, 104, creditsTiles, BANK_MISC_TILES);
-	InitScroll(creditMapWidth, creditMapHeight, creditMap, collision_tiles, 0, BANK_MISC_MAPS);
+	if (creditsOrTutorial == CREDITS_MODE) {
+		InitScrollTiles(0, 105, creditsTiles, BANK_MISC_TILES);
+		InitScroll(creditMapWidth, creditMapHeight, creditMap, collision_tiles, 0, BANK_MISC_MAPS);
+	} else {
+		InitScrollTiles(0, 73, tutorialTiles, BANK_MISC_TILES);
+		InitScroll(tutorialMapWidth, tutorialMapHeight, tutorialMap, collision_tiles, 0, BANK_MISC_MAPS);
+	}
 	INIT_FONT(font, BANK_FONT, PRINT_BKG);
 
 	BGP_REG = PAL_DEF(0, 1, 2, 3);

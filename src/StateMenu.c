@@ -8,13 +8,14 @@ UINT8 bank_STATE_MENU = 4;
 #include "Keys.h"
 #include "ZGBMain.h"
 #include "Scroll.h"
+#include "StateCredits.h"
 #include "../res/src/menuMap.h"
 #include "../res/src/titleTiles.h"
 
 
 /* ----- Defines ----- */
 #define MAP_BANK        4
-#define MAX_MENU_INDEX  1
+#define MAX_MENU_INDEX  2
 
 /* ----- Types / Enums ----- */
 
@@ -27,13 +28,14 @@ static void StateMenu_Select(UINT8 selection);
 /* ----- Variables ----- */
 static UINT8 selection = 0;
 extern UINT8* menu_mod_Data[];
+extern UINT8 creditsOrTutorial;
 
 
 /* ----- Functions ----- */
 
 void Start_STATE_MENU(void) {
 	/* setup background logo */
-	InitScrollTiles(0, 121, titleTiles, BANK_MISC_TILES);
+	InitScrollTiles(0, 137, titleTiles, BANK_MISC_TILES);
 	InitScroll(menuMapWidth, menuMapHeight, menuMap, 0, 0, MAP_BANK);
 	//RefreshScroll();
 
@@ -41,7 +43,7 @@ void Start_STATE_MENU(void) {
 		45,  // WATERFALL_BASE_ADDRESS
 		55,  // WATERFALL_END_ADDRESS
 		41,  // TORCH_BASE_ADDRESS
-		121); // FIRE_PIT_BASE_ADDRESS, does not occur in this map
+		255); // FIRE_PIT_BASE_ADDRESS, does not occur in this map
 
 	BGP_REG = PAL_DEF(0, 1, 2, 3);
 	SHOW_BKG;
@@ -95,8 +97,9 @@ void Update_STATE_MENU(void) {
  * \param newSelection is the new menu selection changed by UP, DOWN ticks
  */
 void StateMenu_UpdateSelection(UINT8 newSelection) {
-	ReplaceTiles(BANK_MISC_TILES, 1, 4, titleTiles, newSelection ? 0 : 4);
-	ReplaceTiles(BANK_MISC_TILES, 9, 6, titleTiles, newSelection ? 6 : 0);
+	ReplaceTiles(BANK_MISC_TILES, 1, 4, titleTiles, newSelection == 0 ? 4 : 0);
+	ReplaceTiles(BANK_MISC_TILES, 121, 8, titleTiles, newSelection == 1 ? 8 : 0);
+	ReplaceTiles(BANK_MISC_TILES, 9, 6, titleTiles, newSelection == 2 ? 6 : 0);
 	/* finally store the new selection */
 	selection = newSelection;
 }
@@ -111,7 +114,12 @@ static void StateMenu_Select(UINT8 selection) {
 		case 0: // Play Menu
 			SetState(STATE_DIFFICULTY, 0);
 			break;
-		case 1: // Credits
+		case 1: // Tutorial
+			creditsOrTutorial = TUTORIAL_MODE;
+			SetState(STATE_CREDITS, 0);
+			break;
+		case 2: // Credits
+			creditsOrTutorial = CREDITS_MODE;
 			SetState(STATE_CREDITS, 0);
 			break;
 	}
