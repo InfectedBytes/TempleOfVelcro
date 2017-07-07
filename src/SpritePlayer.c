@@ -387,6 +387,7 @@ static UINT8 HandleInvincible(PlayerData* data)
 }
 
 static void HandleCheats() {
+	UINT8 cheat;
 	if (KEY_TICKED(J_UP)) cheatCounter++;
 	else if (KEY_TICKED(J_DOWN)) cheatCounter--;
 	else if (KEY_TICKED(J_B)) {
@@ -395,6 +396,13 @@ static void HandleCheats() {
 			case 8: DamagePlayer(); break;
 			case 9: data->Invincible = INVINCIBLE_TIME; break;
 			case 10: SetAutorun(!GetAutorun());
+			default:
+				cheat = cheatCounter - 11;
+				if (cheat < LEVEL_COUNT) {
+					currentLevel = cheat;
+					SetState(STATE_GAME, 0);
+					break;
+				}
 		}
 	}
 }
